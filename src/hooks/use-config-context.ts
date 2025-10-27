@@ -20,7 +20,16 @@
 
 import {useEffect, useState} from "react";
 import {api} from "../utility/api.ts";
-import type {Account, AppInfo, Bank, Config, StandingOrders, TransactionData, User} from "./config-interfaces.ts";
+import type {
+    Account,
+    AppInfo,
+    Bank,
+    Config,
+    Payee,
+    StandingOrders,
+    TransactionData,
+    User
+} from "./config-interfaces.ts";
 
 /**
  * A custom React Hook that acts as the application's central data store.
@@ -79,6 +88,7 @@ const useConfigContext = () => {
     const [banksWithAllAccounts, setBanksWithAllAccounts] = useState<BanksWithAccounts[]>([])
     const [transactionDatas, setTransactionDatas] = useState<TransactionData[]>([])
     const [standingOrdersList, setStandingOrdersList] = useState<StandingOrders[]>([])
+    const [payeesData, setPayeesData] = useState<Payee[]>([])
 
     useEffect(() => {
         const fetchData = async ()=>{
@@ -126,10 +136,13 @@ const useConfigContext = () => {
 
             const standingOrders= response.standingOrders;
             setStandingOrdersList(standingOrders)
+
+            const payeesData= response.payees;
+            setPayeesData(payeesData)
         }
         fetchData();
     },[])
-    return { appInfo: config.name as AppInfo, userInfo: config.user as User, bankTotals: totalsOfBanks, chartInfo: chartDatas, total: totalBalances, banksWithAccounts: banksWithAllAccounts, transactions: transactionDatas, standingOrderList: standingOrdersList  }
+    return { appInfo: config.name as AppInfo, userInfo: config.user as User, bankTotals: totalsOfBanks, chartInfo: chartDatas, total: totalBalances, banksWithAccounts: banksWithAllAccounts, transactions: transactionDatas, standingOrderList: standingOrdersList, payeesData:payeesData  }
 }
 
 export default useConfigContext;

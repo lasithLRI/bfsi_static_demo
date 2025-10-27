@@ -20,6 +20,7 @@ import {Route, Routes} from "react-router-dom";
 import Home from "./pages/home-page/home.jsx";
 import useConfigContext from "./hooks/use-config-context.ts";
 import AppThemeProvider from "./providers/app-theme-provider.tsx";
+import PaymentsPage from "./pages/payments-page/payments-page.tsx";
 
 /**
  * The root component of the application, responsible for setting up the main routing structure
@@ -31,7 +32,7 @@ import AppThemeProvider from "./providers/app-theme-provider.tsx";
  */
 function App() {
 
-    const {appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList} = useConfigContext();
+    const {appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList,payeesData} = useConfigContext();
 
     return (<>
         <AppThemeProvider>
@@ -50,6 +51,7 @@ function App() {
                                          appInfo={appInfo}
                                    />
                                }/>
+                        <Route path="payments" element={<PaymentsPage payeeData={payeesData} banksWithAccounts={banksWithAccounts} appInfo={appInfo}/>}/>
                     </Routes>
                 } />
             </Routes>

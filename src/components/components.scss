@@ -94,16 +94,17 @@
   z-index: 1000;
 
   .overlay-inner{
-    background: white;
-    padding: 4rem;
-    border-radius: 2%;
-    max-width: 40rem;
-    flex-direction: column;
-  }
-
-  .overlay-inner{
-    margin-top: 3rem;
     display: flex;
     justify-content: space-between;
+    padding: 4rem;
+    max-width: 40rem;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .button-container{
+     flex: 1;
+      gap: 1.5rem;
+      display: flex;
+    }
   }
 }

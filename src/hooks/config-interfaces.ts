@@ -45,7 +45,7 @@ export interface Account {
     balance: number;
 }
 
-interface Payee {
+export interface Payee {
     name: string;
     bank: string;
     accountNumber: string;
