@@ -27,7 +27,7 @@ import type {
     Config,
     Payee,
     StandingOrders,
-    TransactionData,
+    TransactionData, UseCaseCategories,
     User
 } from "./config-interfaces.ts";
 
@@ -40,12 +40,13 @@ import type {
  */
 const initialConfig: Config = {
     user: { name: '', image: '', background: '' },
-    name: { route: '', applicationName: '' ,route_bank_one:''},
+    name: { route: '', applicationName: '' ,banksInfo:[]},
     banks: [],
     accounts: [],
     payees: [],
     transactions: [],
     standingOrders: [],
+    useCases: {} as UseCaseCategories
 }
 
 interface BankWithTotal{
@@ -89,6 +90,8 @@ const useConfigContext = () => {
     const [transactionDatas, setTransactionDatas] = useState<TransactionData[]>([])
     const [standingOrdersList, setStandingOrdersList] = useState<StandingOrders[]>([])
     const [payeesData, setPayeesData] = useState<Payee[]>([])
+    const [useCasesData, setUseCasesData] = useState<UseCaseCategories>({})
+    const [allBanks, setAllBanks] = useState<Bank[]>([])
 
     useEffect(() => {
         const fetchData = async ()=>{
@@ -139,10 +142,16 @@ const useConfigContext = () => {
 
             const payeesData= response.payees;
             setPayeesData(payeesData)
+
+            const useCases = response.useCases;
+            setUseCasesData(useCases)
+
+            const banksList = response.banks;
+            setAllBanks(banksList)
         }
         fetchData();
     },[])
-    return { appInfo: config.name as AppInfo, userInfo: config.user as User, bankTotals: totalsOfBanks, chartInfo: chartDatas, total: totalBalances, banksWithAccounts: banksWithAllAccounts, transactions: transactionDatas, standingOrderList: standingOrdersList, payeesData:payeesData  }
+    return { appInfo: config.name as AppInfo, userInfo: config.user as User, bankTotals: totalsOfBanks, chartInfo: chartDatas, total: totalBalances, banksWithAccounts: banksWithAllAccounts, transactions: transactionDatas, standingOrderList: standingOrdersList, payeesData:payeesData, useCases: useCasesData, banksList:allBanks }
 }
 
 export default useConfigContext;

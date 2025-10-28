@@ -24,10 +24,15 @@ export interface User {
     background: string;
 }
 
+export interface DynamicBanks {
+    name: string;
+    route: string;
+}
+
 export interface AppInfo {
     route: string;
     applicationName: string;
-    route_bank_one: string;
+    banksInfo: DynamicBanks[];
 }
 
 export interface Bank {
@@ -51,6 +56,16 @@ export interface Payee {
     accountNumber: string;
 }
 
+export type UseCaseSequence = string[];
+
+export interface SpecificUseCases {
+    [useCaseName: string]: UseCaseSequence;
+}
+
+export interface UseCaseCategories {
+    [category: string]: SpecificUseCases;
+}
+
 export interface TransactionData{
     "id": string,
     "date": string,
@@ -59,6 +74,19 @@ export interface TransactionData{
     "Account": string,
     "Amount": string,
     "Currency": string
+}
+
+interface UseCaseUnits{
+    sequence: string[];
+}
+
+interface UseCaseTypes{
+    useCases: UseCaseUnits[];
+}
+
+export interface UseCase {
+    type: UseCaseTypes[];
+
 }
 
 export interface StandingOrders{
@@ -79,4 +107,5 @@ export interface Config {
     payees: Payee[];
     transactions: TransactionData[];
     standingOrders: StandingOrders[];
+    useCases: UseCaseCategories;
 }

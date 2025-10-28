@@ -18,27 +18,23 @@
  *
  */
 
+import { Button } from "@oxygen-ui/react";
+import { useOutletContext } from "react-router-dom";
 
-import {Box, Button} from "@oxygen-ui/react";
-
-interface TitleProps {
-    title: string;
-    buttonName?: string;
-    buttonType?: "contained"|"outlined";
-    onPress?: (buttonName:string) => void;
+interface OutletContext{
+    handleStepChange : () => void;
 }
 
-const CustomTitle = ({title,buttonName,buttonType, onPress}:TitleProps)=>{
+const LoginPage = ()=>{
 
-    const visibility = buttonName? "flex" : "none";
-    return(
+    const { handleStepChange } = useOutletContext<OutletContext>();
+
+    return (
         <>
-            <Box className={'title-container'}>
-                <p>{title}</p>
-                <Button sx={{display:visibility}} variant={buttonType} onClick={()=>{onPress?.(buttonName||'')}}>{buttonName}</Button>
-            </Box>
+            Login Page
+            <Button variant={'contained'} onClick={handleStepChange}>Success</Button>
         </>
-    );
+    )
 }
 
-export default CustomTitle;
+export default LoginPage;

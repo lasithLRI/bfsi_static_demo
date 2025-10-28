@@ -7,8 +7,7 @@
   "name": {
     "route": "accounts-central",
     "applicationName": "Accounts Central",
-    "route_bank_one": "ascend-global",
-    "bank_one_name": "Ascend Global Bank"
+    "banksInfo": [{"name": "Ascend Global Bank","route": "ascend-global"},{"name": "Trust Union Bank","route": "trust-union"},{"name": "Global Assets Trust","route": "global-assets-trust"}]
   },
   "banks": [
     {
@@ -176,5 +175,12 @@
       "Amount": "299.00",
       "Currency": "USD"
     }
-  ]
+  ],
+
+  "useCases": {
+    "payment": {
+      "useCase1": ["login","Otp","Content1","Content2"],
+      "useCase2": ["login","Otp","Content2","Content3"]
+    }
+  }
 }

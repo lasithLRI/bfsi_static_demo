@@ -81,7 +81,14 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData}:PaymentFormProps)
         if (formDataToSubmit){
             console.log("Submitting data and redirecting:", formDataToSubmit);
             setIsConfirming(false);
-            navigate("/"+appInfo.route_bank_one+"/login/?type=payment",{
+
+            const bankName = formDataToSubmit.userAccount.split('-')[0];
+
+            const target = appInfo.banksInfo.find((bank)=>{
+                return bank.name === bankName;
+            })
+
+            navigate("/"+target?.route+"/?type=payment",{
                 state:{
                     formData: formDataToSubmit,
                     message: "confirmed payment information",

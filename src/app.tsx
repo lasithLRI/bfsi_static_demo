@@ -21,6 +21,9 @@ import Home from "./pages/home-page/home.jsx";
 import useConfigContext from "./hooks/use-config-context.ts";
 import AppThemeProvider from "./providers/app-theme-provider.tsx";
 import PaymentsPage from "./pages/payments-page/payments-page.tsx";
+import LoginPage from "./banking-pages/pages/login-page.tsx";
+import BankingHomePage from "./banking-pages/pages/banking-home-page.tsx";
+import AddAccountsPage from "./pages/add-accounts-page/add-accounts-page.tsx";
 
 /**
  * The root component of the application, responsible for setting up the main routing structure
@@ -32,7 +35,8 @@ import PaymentsPage from "./pages/payments-page/payments-page.tsx";
  */
 function App() {
 
-    const {appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList,payeesData} = useConfigContext();
+    const {appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList,payeesData,useCases,banksList} = useConfigContext();
+    console.log("appInfo",appInfo);
 
     return (<>
         <AppThemeProvider>
@@ -49,11 +53,22 @@ function App() {
                                          transactions={transactions}
                                          standingOrderList={standingOrderList}
                                          appInfo={appInfo}
+                                         banksList={banksList}
                                    />
                                }/>
                         <Route path="payments" element={<PaymentsPage payeeData={payeesData} banksWithAccounts={banksWithAccounts} appInfo={appInfo}/>}/>
+                        <Route path="accounts" element={<AddAccountsPage/>}/>
                     </Routes>
                 } />
+
+
+                {appInfo.banksInfo.map((bank,index)=>(
+                    <Route key={index} path={`/${bank.route}/*`} element={<BankingHomePage useCases={useCases}/>}>
+                        <Route path={"login"} element={<LoginPage/>}/>
+                    </Route>
+                ))}
+
+
             </Routes>
         </AppThemeProvider>
         </>)

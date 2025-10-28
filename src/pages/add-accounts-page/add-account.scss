@@ -1,4 +1,4 @@
-/*
+/*!
  * *
  *  * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *  *
@@ -18,27 +18,27 @@
  *
  */
 
+.account-button-outer{
+  width: 30vw;
+  height: 15vh;
+  display: flex;
+  background: var(--oxygen-palette-primary-innerButtonBackground);;
+  border-radius: 0;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.5rem;
+  color: var(--oxygen-palette-fontColor-white);
 
-import {Box, Button} from "@oxygen-ui/react";
 
-interface TitleProps {
-    title: string;
-    buttonName?: string;
-    buttonType?: "contained"|"outlined";
-    onPress?: (buttonName:string) => void;
+  .logo-container{
+    width: 5rem;
+    height: 5rem;
+
+    img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 }
 
-const CustomTitle = ({title,buttonName,buttonType, onPress}:TitleProps)=>{
-
-    const visibility = buttonName? "flex" : "none";
-    return(
-        <>
-            <Box className={'title-container'}>
-                <p>{title}</p>
-                <Button sx={{display:visibility}} variant={buttonType} onClick={()=>{onPress?.(buttonName||'')}}>{buttonName}</Button>
-            </Box>
-        </>
-    );
-}
-
-export default CustomTitle;

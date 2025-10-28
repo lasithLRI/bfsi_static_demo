@@ -18,7 +18,7 @@
  *
  */
 
-import {Box, Card, Grid, IconButton} from "@oxygen-ui/react";
+import {Box, Grid, IconButton} from "@oxygen-ui/react";
 import { useNavigate } from "react-router-dom";
 // @ts-ignore
 import {ChevronLeftIcon} from "@oxygen-ui/react-icons";
@@ -45,9 +45,9 @@ const PaymentAccountPageLayout = ({children,title}:PageLayoutProps)=>{
             </Box>
             <Grid container className={'payments-layout'}>
                 <Grid xs={12} sm={6} md={4}>
-                    <Card>
+
                         {children}
-                    </Card>
+
                 </Grid>
             </Grid>
         </>
