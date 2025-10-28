@@ -177,10 +177,20 @@
     }
   ],
 
-  "useCases": {
+    "usecases": {
     "payment": {
-      "useCase1": ["login","Otp","Content1","Content2"],
-      "useCase2": ["login","Otp","Content2","Content3"]
+      "Usecase1": [
+        "Login",
+        "Content1",
+        "Content2",
+        "Content3"
+      ],
+      "Usecase2": [
+        "Login",
+        "Content2"
+      ]
     }
-  }
+  },
+
+  "usecases": [{"payments": [{"usecase1": ["login","otp","content1"]},{"usecase2": ["login","otp","content2"]}]}]
 }
