@@ -36,7 +36,7 @@ import AddAccountsPage from "./pages/add-accounts-page/add-accounts-page.tsx";
 function App() {
 
     const {appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList,payeesData,useCases,banksList} = useConfigContext();
-    console.log("appInfo",appInfo);
+    console.log("appInfo",useCases);
 
     return (<>
         <AppThemeProvider>

@@ -56,15 +56,7 @@ export interface Payee {
     accountNumber: string;
 }
 
-export type UseCaseSequence = string[];
 
-export interface SpecificUseCases {
-    [useCaseName: string]: UseCaseSequence;
-}
-
-export interface UseCaseCategories {
-    [category: string]: SpecificUseCases;
-}
 
 export interface TransactionData{
     "id": string,
@@ -76,18 +68,7 @@ export interface TransactionData{
     "Currency": string
 }
 
-interface UseCaseUnits{
-    sequence: string[];
-}
 
-interface UseCaseTypes{
-    useCases: UseCaseUnits[];
-}
-
-export interface UseCase {
-    type: UseCaseTypes[];
-
-}
 
 export interface StandingOrders{
     "ID": string,
@@ -99,6 +80,25 @@ export interface StandingOrders{
     "Currency": string,
 }
 
+export interface Step {
+    id: string;
+    name: string;
+    component: string;
+}
+
+interface UseCase {
+    id: string;
+    title: string;
+    steps: Step[];
+}
+
+export interface Type {
+    id: string;
+    title: string;
+    useCases: UseCase[];
+}
+
+
 export interface Config {
     user: User;
     name: AppInfo;
@@ -107,5 +107,5 @@ export interface Config {
     payees: Payee[];
     transactions: TransactionData[];
     standingOrders: StandingOrders[];
-    useCases: UseCaseCategories;
+    types: Type[];
 }

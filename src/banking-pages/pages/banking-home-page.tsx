@@ -18,87 +18,118 @@
  *
  */
 
-import {Outlet, useNavigate, useSearchParams} from "react-router-dom";
-import type {SpecificUseCases, UseCaseCategories} from "../../hooks/config-interfaces.ts";
-import { Box, Button } from "@oxygen-ui/react";
-import {useCallback, useEffect, useState} from "react";
+import {useSearchParams} from "react-router-dom";
+import {Box, Button,} from "@oxygen-ui/react";
+import type {Type} from "../../hooks/config-interfaces.ts";
+import {useBankNavigationHook} from "../banking-hooks/use-bank-navigation-hook.ts";
+import LoginPage from "./login-page.tsx";
 
-interface BankingHomePageProps {
-    useCases: UseCaseCategories;
-    // Assuming 'bank' prop exists based on previous context, even if not defined here
-    // bank: string;
+
+
+
+
+
+export interface BankingHomePageProps {
+    useCases: Type[];
 }
 
 const BankingHomePage = ({ useCases }: BankingHomePageProps) => { // Removed 'bank' if not defined in props
-
-    // const [selectedUseCaseId, setSelectedUseCaseId] = useState<number>(0);
-    // const [sequence, setSequence] = useState<string[]>([]);
-    const [step, setStep] = useState<number>(0);
-    const [specificUseCases, setSpecificUseCases] = useState<SpecificUseCases>();
-
-
 
 
     const [params] = useSearchParams();
     const type = params.get("type") || '';
 
-    setSpecificUseCases(useCases[type]) ;
-    const useCasesList = specificUseCases ? Object.keys(specificUseCases) : [];
+    const {usecase,usecasesList,usecaseSelectionHandler,currentStep,onSuccessHandler} = useBankNavigationHook({usecase: useCases, type: type});
 
-    const navigate = useNavigate();
-
-    console.log(specificUseCases);
-
-    let selectedUseCaseId = 0;
+    console.log(usecase)
+    console.log(usecasesList)
+    console.log(currentStep)
 
 
 
-    const callback = useCallback(() => {
-
-        if (specificUseCases) {
-            const aa = specificUseCases[useCasesList[selectedUseCaseId]];
-            const ww=aa[step]
-            console.log(ww);
 
 
 
-            navigate(ww);
 
 
-        } else {
-            console.log("specificUseCases is undefined.");
-        }
 
-    }, [specificUseCases, useCasesList, selectedUseCaseId, step]);
 
-    useEffect(() => {
-        callback()
-    },[callback])
+    // console.log(type);
+    // console.log(useCases);
+    // console.log(useCases);
+    //
+    // const title = useCases[0].useCases[1].steps
+    // console.log("========================")
+    // console.log(title)
 
-    const handleStepChange = () => {
-        setStep(step + 1);
-        callback()
-        console.log(step)
-    }
+
+
+
+
+
+    //
+    // console.log(useCaseIndex);
+    //
+    // const useCasesList = specificUseCases ? Object.keys(specificUseCases) : [];
+    //
+    // const navigate = useNavigate();
+    //
+    // console.log(specificUseCases);
+    //
+    // let selectedUseCaseId = 0;
+    //
+    //
+    //
+    // const callback = useCallback(() => {
+    //
+    //     if (specificUseCases) {
+    //         const aa = specificUseCases[useCasesList[selectedUseCaseId]];
+    //         const ww=aa[step]
+    //         console.log(ww);
+    //
+    //
+    //
+    //         navigate(ww);
+    //
+    //
+    //     } else {
+    //         console.log("specificUseCases is undefined.");
+    //     }
+    //
+    // }, [specificUseCases, useCasesList, selectedUseCaseId, step]);
+    //
+    // useEffect(() => {
+    //     callback()
+    // },[callback])
+    //
+    // const handleStepChange = () => {
+    //     setStep(step + 1);
+    //     callback()
+    //     console.log(step)
+    // }
 
 
     return(
         <>
-            <h1>Banking Home Page</h1>
+            <h3>Banking Home Page</h3>
+            {/*<Box>*/}
+            {/*    {useCasesList.map((item,index)=>(*/}
+            {/*        <Button*/}
+            {/*            variant={"contained"}*/}
+            {/*            key={index}*/}
+            {/*        >*/}
+            {/*            {item}*/}
+            {/*        </Button>*/}
+            {/*    ))}*/}
+            {/*</Box>*/}
+
             <Box>
-                {useCasesList.map((item,index)=>(
-                    <Button
-                        variant={index===selectedUseCaseId? "contained":"outlined"}
-                        key={index}
-                    >
-                        {item}
-                    </Button>
-                ))}
+
+               <Button variant={"contained"} onClick={()=>{usecaseSelectionHandler(0)}}>Select Usecase</Button>
             </Box>
 
             <Box>
-
-                <Outlet context={handleStepChange}/>
+                <LoginPage onSuccessHandler={onSuccessHandler} />
             </Box>
 
         </>

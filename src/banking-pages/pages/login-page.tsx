@@ -19,20 +19,22 @@
  */
 
 import { Button } from "@oxygen-ui/react";
-import { useOutletContext } from "react-router-dom";
 
-interface OutletContext{
-    handleStepChange : () => void;
+// interface OutletContext{
+//     handleStepChange : () => void;
+// }
+
+interface LoginPageProps {
+    onSuccessHandler:()=>void;
 }
+const LoginPage = ({onSuccessHandler}:LoginPageProps)=>{
 
-const LoginPage = ()=>{
-
-    const { handleStepChange } = useOutletContext<OutletContext>();
+    // const { handleStepChange } = useOutletContext<OutletContext>();
 
     return (
         <>
             Login Page
-            <Button variant={'contained'} onClick={handleStepChange}>Success</Button>
+            <Button variant={'contained'} onClick={onSuccessHandler}>Success</Button>
         </>
     )
 }

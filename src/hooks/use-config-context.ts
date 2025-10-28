@@ -27,7 +27,7 @@ import type {
     Config,
     Payee,
     StandingOrders,
-    TransactionData, UseCaseCategories,
+    TransactionData, Type,
     User
 } from "./config-interfaces.ts";
 
@@ -46,7 +46,7 @@ const initialConfig: Config = {
     payees: [],
     transactions: [],
     standingOrders: [],
-    useCases: {} as UseCaseCategories
+    types: []
 }
 
 interface BankWithTotal{
@@ -90,7 +90,7 @@ const useConfigContext = () => {
     const [transactionDatas, setTransactionDatas] = useState<TransactionData[]>([])
     const [standingOrdersList, setStandingOrdersList] = useState<StandingOrders[]>([])
     const [payeesData, setPayeesData] = useState<Payee[]>([])
-    const [useCasesData, setUseCasesData] = useState<UseCaseCategories>({})
+    const [useCasesData, setUseCasesData] = useState<Type[]>([])
     const [allBanks, setAllBanks] = useState<Bank[]>([])
 
     useEffect(() => {
@@ -143,13 +143,16 @@ const useConfigContext = () => {
             const payeesData= response.payees;
             setPayeesData(payeesData)
 
-            const useCases = response.useCases;
+            const useCases = response.types;
             setUseCasesData(useCases)
+            console.log(useCases)
 
             const banksList = response.banks;
             setAllBanks(banksList)
         }
         fetchData();
+
+
     },[])
     return { appInfo: config.name as AppInfo, userInfo: config.user as User, bankTotals: totalsOfBanks, chartInfo: chartDatas, total: totalBalances, banksWithAccounts: banksWithAllAccounts, transactions: transactionDatas, standingOrderList: standingOrdersList, payeesData:payeesData, useCases: useCasesData, banksList:allBanks }
 }

@@ -176,21 +176,50 @@
       "Currency": "USD"
     }
   ],
-
-    "usecases": {
-    "payment": {
-      "Usecase1": [
-        "Login",
-        "Content1",
-        "Content2",
-        "Content3"
-      ],
-      "Usecase2": [
-        "Login",
-        "Content2"
+  "types": [
+    {
+      "id": "payment",
+      "title": "Payment",
+      "useCases": [
+        {
+          "id": "usecase1",
+          "title": "usecase1 name",
+          "steps": [
+            { "id": "1", "name": "Login to your Account", "component": "LoginPage" },
+            { "id": "2", "name": "Two step verification", "component": "OtpPage" },
+            { "id": "3", "name": "Payment Information", "component": "PaymentConfirmationPage" }
+          ]
+        },
+        {
+          "id": "usecase2",
+          "title": "usecase2 name",
+          "steps": [
+            { "id": "1", "name": "Login to your Account", "component": "LoginPage" },
+            { "id": "2", "name": "Two step verification", "component": "OtpPage" },
+            { "id": "3", "name": "Payment Information", "component": "PaymentConfirmationPage" },
+            { "id": "4", "name": "Payment Information 2", "component": "PaymentConfirmation2Page" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "account",
+      "title": "Account",
+      "useCases": [
+        {
+          "id": "create",
+          "title": "Create Account",
+          "steps": [
+            { "id": "1", "name": "Fill form", "component": "AccountStep1" },
+            { "id": "2", "name": "Verify email", "component": "AccountStep2" }
+          ]
+        }
       ]
     }
-  },
-
-  "usecases": [{"payments": [{"usecase1": ["login","otp","content1"]},{"usecase2": ["login","otp","content2"]}]}]
+  ]
 }
+
+
+
+
+
