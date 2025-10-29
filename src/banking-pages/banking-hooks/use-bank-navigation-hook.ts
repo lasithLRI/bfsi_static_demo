@@ -19,25 +19,37 @@
  */
 
 
-import type {Step, Type} from "../../hooks/config-interfaces.ts";
+import type {AppInfo, Step, Type, UseCase} from "../../hooks/config-interfaces.ts";
 import {useCallback, useEffect, useState} from "react";
 
 
 interface BankingHookProps {
     usecase: Type[];
     type: string;
+    appInfo: AppInfo;
 }
 
-export const useBankNavigationHook = ({usecase,type}:BankingHookProps)=>{
+export const useBankNavigationHook = ({usecase,type,appInfo}:BankingHookProps)=>{
 
-    const [sequence, setSequence] = useState<Step[]>([]);
-
+    const [sequence, setSequence] = useState<Step[]>(usecase[0].useCases[0].steps);
     const [steps, setSteps] = useState<number>(0);
-    const [currentStep, setCurrentStep] = useState<Step | undefined>(undefined);
+    const [currentStep, setCurrentStep] = useState<Step >(sequence[0]);
+    const [typeIndex, setTypeIndex] = useState<number>(0);
+    const [usecasesList, setUseCasesList] = useState<UseCase[]>([]);
 
-    const typeIndex = usecase.findIndex((i) => i.id === type);
+    useEffect(() => {
+        const typex = usecase.findIndex((i) => i.id+1 === type);
+        setTypeIndex(typex);
 
-    const usecasesList = usecase[typeIndex].useCases;
+        const list = usecase[typeIndex].useCases;
+        setUseCasesList(list);
+
+        console.log(appInfo)
+    }, []);
+
+
+
+
 
     const usecaseSelectionHandler = useCallback(
         (indexOfUsecase:number = 0)=>{
@@ -54,20 +66,20 @@ export const useBankNavigationHook = ({usecase,type}:BankingHookProps)=>{
     console.log("===============")
     console.log(sequence);
 
-    const onSuccessHandler = useCallback(
-        ()=>{
-            if (steps <= sequence.length-1) {
-                setSteps((currentState)=> currentState+1)
-            }
-        },
-        [steps,sequence]
-    );
+    const onSuccessHandler =()=>{
 
-    useEffect(() => {
-        if (sequence.length > 0) {
-            setCurrentStep(sequence[steps]);
+
+
+        if (steps < sequence.length-1) {
+            setSteps((steps)=> steps+1)
         }
-    }, [steps,sequence]);
+        const step = sequence[steps+1];
 
-    return {usecase,usecasesList,usecaseSelectionHandler, onSuccessHandler,currentStep}
+        console.log(currentStep)
+
+        setCurrentStep(step);
+    }
+
+
+    return {usecasesList,usecaseSelectionHandler, onSuccessHandler,currentStep}
 }

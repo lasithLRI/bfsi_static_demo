@@ -18,26 +18,27 @@
  *
  */
 
-import { Button } from "@oxygen-ui/react";
-import {useOutletContext} from "react-router-dom";
 
-export interface OutletContext{
-    onSuccessHandler : () => void;
-}
+import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
-// interface LoginPageProps {
-//     onSuccessHandler:()=>void;
-// }
-const LoginPage = ()=>{
+const RedirectionPage = ()=>{
 
-    const { onSuccessHandler } = useOutletContext<OutletContext>();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const timer = setTimeout(()=>{
+            navigate("/accounts-central/home")
+        },1000);
+        return () => clearTimeout(timer);
+    }, [navigate]);
+
 
     return (
         <>
-            Login Page
-            <Button variant={'contained'} onClick={onSuccessHandler}>Success</Button>
+            Redirecting...
         </>
     )
 }
 
-export default LoginPage;
+export default RedirectionPage;

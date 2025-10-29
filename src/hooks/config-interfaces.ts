@@ -86,7 +86,7 @@ export interface Step {
     component: string;
 }
 
-interface UseCase {
+export interface UseCase {
     id: string;
     title: string;
     steps: Step[];

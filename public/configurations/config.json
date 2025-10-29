@@ -185,16 +185,17 @@
           "id": "usecase1",
           "title": "usecase1 name",
           "steps": [
-            { "id": "1", "name": "Login to your Account", "component": "LoginPage" },
-            { "id": "2", "name": "Two step verification", "component": "OtpPage" },
-            { "id": "3", "name": "Payment Information", "component": "PaymentConfirmationPage" }
+            { "id": "1", "name": "Login to your Account", "component": "login" },
+            { "id": "2", "name": "Two step verification", "component": "otp" },
+            { "id": "3", "name": "Payment Information", "component": "payment-confirmation" },
+            { "id": "4", "name": "redirection", "component": "redirecting" }
           ]
         },
         {
           "id": "usecase2",
           "title": "usecase2 name",
           "steps": [
-            { "id": "1", "name": "Login to your Account", "component": "LoginPage" },
+            { "id": "1", "name": "Login to your Account", "component": "login" },
             { "id": "2", "name": "Two step verification", "component": "OtpPage" },
             { "id": "3", "name": "Payment Information", "component": "PaymentConfirmationPage" },
             { "id": "4", "name": "Payment Information 2", "component": "PaymentConfirmation2Page" }

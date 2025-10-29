@@ -21,9 +21,12 @@ import Home from "./pages/home-page/home.jsx";
 import useConfigContext from "./hooks/use-config-context.ts";
 import AppThemeProvider from "./providers/app-theme-provider.tsx";
 import PaymentsPage from "./pages/payments-page/payments-page.tsx";
-import LoginPage from "./banking-pages/pages/login-page.tsx";
 import BankingHomePage from "./banking-pages/pages/banking-home-page.tsx";
 import AddAccountsPage from "./pages/add-accounts-page/add-accounts-page.tsx";
+import LoginPage from "./banking-pages/pages/login-page.tsx";
+import OtpPage from "./banking-pages/pages/otp-page.tsx";
+import PaymentConfirmation from "./banking-pages/pages/payment-confirmation.tsx";
+import RedirectionPage from "./banking-pages/pages/redirection-page.tsx";
 
 /**
  * The root component of the application, responsible for setting up the main routing structure
@@ -63,8 +66,11 @@ function App() {
 
 
                 {appInfo.banksInfo.map((bank,index)=>(
-                    <Route key={index} path={`/${bank.route}/*`} element={<BankingHomePage useCases={useCases}/>}>
-                        <Route path={"login"} element={<LoginPage/>}/>
+                    <Route key={index} path={`/${bank.route}/*`} element={<BankingHomePage appInfo={appInfo} useCases={useCases} bank={bank}/>}>
+                        <Route path={"login"} element={<LoginPage />}/>
+                        <Route path={"otp"} element={<OtpPage />}/>
+                        <Route path={"payment-confirmation"} element={<PaymentConfirmation/>}/>
+                        <Route path={"redirecting"} element={<RedirectionPage/>}/>
                     </Route>
                 ))}
 

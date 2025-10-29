@@ -18,26 +18,21 @@
  *
  */
 
-import { Button } from "@oxygen-ui/react";
+import {Button} from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
+import type {OutletContext} from "./login-page.tsx";
 
-export interface OutletContext{
-    onSuccessHandler : () => void;
-}
-
-// interface LoginPageProps {
-//     onSuccessHandler:()=>void;
-// }
-const LoginPage = ()=>{
+const OtpPage = ()=>{
 
     const { onSuccessHandler } = useOutletContext<OutletContext>();
 
-    return (
+    return(
         <>
-            Login Page
+        otp page
             <Button variant={'contained'} onClick={onSuccessHandler}>Success</Button>
+
         </>
     )
 }
 
-export default LoginPage;
+export default OtpPage;

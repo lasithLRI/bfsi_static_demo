@@ -18,110 +18,44 @@
  *
  */
 
-import {useSearchParams} from "react-router-dom";
+import {useSearchParams,useNavigate,Outlet} from "react-router-dom";
 import {Box, Button,} from "@oxygen-ui/react";
-import type {Type} from "../../hooks/config-interfaces.ts";
+import type {AppInfo, DynamicBanks, Type} from "../../hooks/config-interfaces.ts";
 import {useBankNavigationHook} from "../banking-hooks/use-bank-navigation-hook.ts";
-import LoginPage from "./login-page.tsx";
-
-
-
-
-
+import {useEffect} from "react";
 
 export interface BankingHomePageProps {
     useCases: Type[];
+    bank: DynamicBanks
+    appInfo: AppInfo
 }
 
-const BankingHomePage = ({ useCases }: BankingHomePageProps) => { // Removed 'bank' if not defined in props
+const BankingHomePage = ({ useCases,bank, appInfo }: BankingHomePageProps) => {
 
 
+    const navigate = useNavigate();
     const [params] = useSearchParams();
     const type = params.get("type") || '';
 
-    const {usecase,usecasesList,usecaseSelectionHandler,currentStep,onSuccessHandler} = useBankNavigationHook({usecase: useCases, type: type});
+    const {usecasesList,usecaseSelectionHandler,currentStep,onSuccessHandler} = useBankNavigationHook({usecase: useCases, type: type , appInfo: appInfo});
 
-    console.log(usecase)
     console.log(usecasesList)
     console.log(currentStep)
+    console.log(bank)
 
 
 
+    useEffect(() => {
+        const path = currentStep?.component
+        console.log(path)
 
-
-
-
-
-
-
-    // console.log(type);
-    // console.log(useCases);
-    // console.log(useCases);
-    //
-    // const title = useCases[0].useCases[1].steps
-    // console.log("========================")
-    // console.log(title)
-
-
-
-
-
-
-    //
-    // console.log(useCaseIndex);
-    //
-    // const useCasesList = specificUseCases ? Object.keys(specificUseCases) : [];
-    //
-    // const navigate = useNavigate();
-    //
-    // console.log(specificUseCases);
-    //
-    // let selectedUseCaseId = 0;
-    //
-    //
-    //
-    // const callback = useCallback(() => {
-    //
-    //     if (specificUseCases) {
-    //         const aa = specificUseCases[useCasesList[selectedUseCaseId]];
-    //         const ww=aa[step]
-    //         console.log(ww);
-    //
-    //
-    //
-    //         navigate(ww);
-    //
-    //
-    //     } else {
-    //         console.log("specificUseCases is undefined.");
-    //     }
-    //
-    // }, [specificUseCases, useCasesList, selectedUseCaseId, step]);
-    //
-    // useEffect(() => {
-    //     callback()
-    // },[callback])
-    //
-    // const handleStepChange = () => {
-    //     setStep(step + 1);
-    //     callback()
-    //     console.log(step)
-    // }
+        navigate(`/${bank.route}/`+path)
+    },[currentStep])
 
 
     return(
         <>
             <h3>Banking Home Page</h3>
-            {/*<Box>*/}
-            {/*    {useCasesList.map((item,index)=>(*/}
-            {/*        <Button*/}
-            {/*            variant={"contained"}*/}
-            {/*            key={index}*/}
-            {/*        >*/}
-            {/*            {item}*/}
-            {/*        </Button>*/}
-            {/*    ))}*/}
-            {/*</Box>*/}
 
             <Box>
 
@@ -129,7 +63,7 @@ const BankingHomePage = ({ useCases }: BankingHomePageProps) => { // Removed 'ba
             </Box>
 
             <Box>
-                <LoginPage onSuccessHandler={onSuccessHandler} />
+                <Outlet context={{onSuccessHandler}}/>
             </Box>
 
         </>
