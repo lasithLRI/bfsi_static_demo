@@ -23,7 +23,7 @@ import {Box, Button, FormControl, MenuItem, OutlinedInput, Select} from "@oxygen
 import {NumericFormat} from "react-number-format";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import type {AppInfo, Payee} from "../../../hooks/config-interfaces.ts";
+import type {AppInfo, Bank, Payee} from "../../../hooks/config-interfaces.ts";
 import OverlayConfirmation from "../../../components/overlay-confirmation/overlay-confirmation.tsx";
 import '../payments-page.scss'
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -44,12 +44,13 @@ interface PaymentFormProps {
     appInfo: AppInfo;
     banksWithAllAccounts: BanksWithAccounts[];
     payeeData: Payee[];
+    banksList: Bank[];
 }
 
 const currency = ["GBP","EURO","USD"]
 
 
-const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData}:PaymentFormProps) => {
+const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:PaymentFormProps) => {
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsiveDirection = isSmallScreen ? 'column' : 'row';
@@ -92,10 +93,14 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData}:PaymentFormProps)
 
             console.log(target)
 
-            navigate("/"+target?.route+"/?type=payment",{
+            const bank = banksList.find((bank)=>{return bank.name === bankName})
+            console.log(bank)
+
+            navigate("/"+target?.route+"/login?type=payment",{
                 state:{
                     formData: formDataToSubmit,
                     message: "confirmed payment information",
+                    bankInfo: bank
                 }
             });
 

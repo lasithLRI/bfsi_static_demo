@@ -18,18 +18,36 @@
  *
  */
 
-import {Button} from "@oxygen-ui/react";
+import {Box, Button, FormControl, Grid, OutlinedInput} from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 
 const OtpPage = ()=>{
 
-    const { onSuccessHandler } = useOutletContext<OutletContext>();
+    const { onSuccessHandler,navigationData } = useOutletContext<OutletContext>();
+
+    console.log(navigationData)
 
     return(
         <>
-        otp page
-            <Button variant={'contained'} onClick={onSuccessHandler}>Success</Button>
+            <Grid container className={'login-container'}>
+                SMS Authentication
+
+                <div className={"form-input"}>
+                    <FormControl fullWidth={true} margin={'normal'} >
+                        <label>OTP code</label>
+                        <OutlinedInput
+                            placeholder={"Enter your email"}
+                            type={"number"}
+                        />
+                    </FormControl>
+
+                    <Box sx={{marginTop:'60%'}}>
+                        <Button variant={'contained'} onClick={onSuccessHandler}>Success</Button>
+                        <Button variant={'outlined'} >Cancel</Button>
+                    </Box>
+                </div>
+            </Grid>
 
         </>
     )

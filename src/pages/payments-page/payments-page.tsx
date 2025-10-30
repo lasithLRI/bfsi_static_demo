@@ -21,7 +21,7 @@
 
 import ApplicationLayout from "../../layouts/application-layout/application-layout.tsx";
 import PaymentAccountPageLayout from "../../layouts/payment-account-page-layout/payment-account-page-layout.tsx";
-import type {AppInfo, Payee} from "../../hooks/config-interfaces.ts";
+import type {AppInfo, Bank, Payee} from "../../hooks/config-interfaces.ts";
 import PaymentForm from "./payment-form/payment-form.tsx";
 import type {BanksWithAccounts} from "../../hooks/use-config-context.ts";
 import { Card } from "@oxygen-ui/react";
@@ -30,15 +30,16 @@ interface PaymentsPageProps {
     appInfo: AppInfo
     banksWithAccounts: BanksWithAccounts[];
     payeeData: Payee[];
+    banksList: Bank[];
 }
 
-const PaymentsPage = ({appInfo,banksWithAccounts, payeeData}:PaymentsPageProps) => {
+const PaymentsPage = ({appInfo,banksWithAccounts, payeeData, banksList}:PaymentsPageProps) => {
     return (
         <>
             <ApplicationLayout name={appInfo.applicationName}>
                 <PaymentAccountPageLayout title={"Payments"}>
                     <Card>
-                        <PaymentForm payeeData={payeeData} appInfo={appInfo} banksWithAllAccounts={banksWithAccounts}/>
+                        <PaymentForm banksList={banksList} payeeData={payeeData} appInfo={appInfo} banksWithAllAccounts={banksWithAccounts}/>
                     </Card>
 
                 </PaymentAccountPageLayout>

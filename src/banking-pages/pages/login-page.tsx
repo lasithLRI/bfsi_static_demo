@@ -18,11 +18,18 @@
  *
  */
 
-import { Button } from "@oxygen-ui/react";
+import {Box, Button, FormControl, Grid, OutlinedInput} from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
+import {Controller, useForm} from "react-hook-form";
 
 export interface OutletContext{
     onSuccessHandler : () => void;
+    navigationData : any;
+}
+
+interface loginformData{
+    email: string;
+    password: string;
 }
 
 // interface LoginPageProps {
@@ -30,12 +37,60 @@ export interface OutletContext{
 // }
 const LoginPage = ()=>{
 
-    const { onSuccessHandler } = useOutletContext<OutletContext>();
+    const { onSuccessHandler, } = useOutletContext<OutletContext>();
+    const {control, handleSubmit, formState: {errors}} = useForm<loginformData>({
+        defaultValues:{
+            email:'', password:''
+        }
+    })
+
+    const onSubmit = ()=>{
+        console.log("Submitting...")
+    }
 
     return (
         <>
-            Login Page
-            <Button variant={'contained'} onClick={onSuccessHandler}>Success</Button>
+            <Grid container className={'login-container'}>
+                Login Page
+                <form onSubmit={handleSubmit(onSubmit)} className={"form-input"}>
+                    <FormControl fullWidth={true} margin={'normal'} >
+                        <label>Email</label>
+                        <Controller name={'email'} control={control} render={({field}) => (
+                            <OutlinedInput
+                                {...field}
+                                placeholder={"Enter your email"}
+                                type={"text"}
+                                error={!!errors.email}
+
+                            />
+                        )}/>
+                    </FormControl>
+
+                    <FormControl fullWidth={true} margin={'normal'} >
+                        <label>password</label>
+                        <Controller name={'password'} control={control} render={({field}) => (
+                            <OutlinedInput
+                                {...field}
+                                placeholder={"Enter your password"}
+                                type={"password"}
+                                error={!!errors.email}
+                            />
+                        )}/>
+                    </FormControl>
+
+                    <Box sx={{marginTop:'1rem'}}>
+                        <Button variant={'contained'} onClick={onSuccessHandler}>Success</Button>
+                        <Button variant={'outlined'} >Cancel</Button>
+                    </Box>
+                </form>
+
+
+
+
+
+            </Grid>
+
+
         </>
     )
 }

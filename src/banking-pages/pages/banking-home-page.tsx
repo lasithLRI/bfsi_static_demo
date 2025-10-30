@@ -18,11 +18,14 @@
  *
  */
 
-import {useSearchParams,useNavigate,Outlet} from "react-router-dom";
-import {Box, Button,} from "@oxygen-ui/react";
+import {useSearchParams, useNavigate, Outlet, useLocation} from "react-router-dom";
+import {Button, Grid,} from "@oxygen-ui/react";
 import type {AppInfo, DynamicBanks, Type} from "../../hooks/config-interfaces.ts";
 import {useBankNavigationHook} from "../banking-hooks/use-bank-navigation-hook.ts";
-import {useEffect} from "react";
+import {useEffect, useRef} from "react";
+import '../banking.scss'
+import BankingOuterLayout from "../banking-layouts/banking-outer-layout.tsx";
+
 
 export interface BankingHomePageProps {
     useCases: Type[];
@@ -33,38 +36,55 @@ export interface BankingHomePageProps {
 const BankingHomePage = ({ useCases,bank, appInfo }: BankingHomePageProps) => {
 
 
+
     const navigate = useNavigate();
+    const location = useLocation();
+    const navigationData = useRef(location.state)
+
+
+    console.log(navigationData);
+
     const [params] = useSearchParams();
     const type = params.get("type") || '';
 
-    const {usecasesList,usecaseSelectionHandler,currentStep,onSuccessHandler} = useBankNavigationHook({usecase: useCases, type: type , appInfo: appInfo});
 
-    console.log(usecasesList)
-    console.log(currentStep)
-    console.log(bank)
+
+    const {usecasesList,usecaseSelectionHandler,currentStep,onSuccessHandler, selectedUsecaseIndex} = useBankNavigationHook({usecase: useCases, type: type , appInfo: appInfo});
 
 
 
     useEffect(() => {
         const path = currentStep?.component
-        console.log(path)
-
         navigate(`/${bank.route}/`+path)
     },[currentStep])
 
 
+
+
+
+
     return(
         <>
-            <h3>Banking Home Page</h3>
+            <Grid container className={'banking-outer-layout'}>
+                <h3>{navigationData.current.bankInfo?.name}</h3>
+                <Grid className="banking-usecase-layout">
+                    {usecasesList.map((useCase,index) => {
 
-            <Box>
+                       const isSelected = selectedUsecaseIndex === index;
 
-               <Button variant={"contained"} onClick={()=>{usecaseSelectionHandler(0)}}>Select Usecase</Button>
-            </Box>
+                        return (
+                            <Button key={index} variant={isSelected?'contained':'outlined'} onClick={()=>{usecaseSelectionHandler(index)}}>{useCase.title}</Button>
+                        )
+                    })}
+                </Grid>
 
-            <Box>
-                <Outlet context={{onSuccessHandler}}/>
-            </Box>
+                <Grid className={'banking-inner-component-container'}>
+                    <BankingOuterLayout image={navigationData.current.bankInfo?.image}>
+                        <Outlet context={{onSuccessHandler, navigationData}}/>
+                    </BankingOuterLayout>
+
+                </Grid>
+            </Grid>
 
         </>
     )

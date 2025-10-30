@@ -59,7 +59,7 @@ function App() {
                                          banksList={banksList}
                                    />
                                }/>
-                        <Route path="payments" element={<PaymentsPage payeeData={payeesData} banksWithAccounts={banksWithAccounts} appInfo={appInfo}/>}/>
+                        <Route path="payments" element={<PaymentsPage banksList={banksList} payeeData={payeesData} banksWithAccounts={banksWithAccounts} appInfo={appInfo}/>}/>
                         <Route path="accounts" element={<AddAccountsPage/>}/>
                     </Routes>
                 } />

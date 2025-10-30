@@ -7,7 +7,7 @@
   "name": {
     "route": "accounts-central",
     "applicationName": "Accounts Central",
-    "banksInfo": [{"name": "Ascend Global Bank","route": "ascend-global"},{"name": "Trust Union Bank","route": "trust-union"},{"name": "Global Assets Trust","route": "global-assets-trust"}]
+    "banksInfo": [{"name": "Ascend Global Bank","route": "ascend-global"},{"name": "Trust Union","route": "trust-union"},{"name": "Global Asset Trust","route": "global-asset-trust"}]
   },
   "banks": [
     {

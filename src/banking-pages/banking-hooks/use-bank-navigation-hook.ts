@@ -36,50 +36,54 @@ export const useBankNavigationHook = ({usecase,type,appInfo}:BankingHookProps)=>
     const [currentStep, setCurrentStep] = useState<Step >(sequence[0]);
     const [typeIndex, setTypeIndex] = useState<number>(0);
     const [usecasesList, setUseCasesList] = useState<UseCase[]>([]);
-
-    useEffect(() => {
-        const typex = usecase.findIndex((i) => i.id+1 === type);
-        setTypeIndex(typex);
-
-        const list = usecase[typeIndex].useCases;
-        setUseCasesList(list);
-
-        console.log(appInfo)
-    }, []);
-
-
-
+    const [selectedUsecaseIndex, setSelectedUsecaseIndex] = useState<number>(0);
 
 
     const usecaseSelectionHandler = useCallback(
-        (indexOfUsecase:number = 0)=>{
-            setSequence(usecase[typeIndex].useCases[indexOfUsecase].steps)
-            console.log(sequence)
+        (indexOfUsecase: number = 0) => {
+
+            const newSteps = usecase[typeIndex]?.useCases[indexOfUsecase]?.steps;
+
+            if (newSteps) {
+                setSelectedUsecaseIndex(indexOfUsecase);
+                setSequence(newSteps);
+                setSteps(0);
+                setCurrentStep(newSteps[0]);
+            }
         },
-        [sequence]
+
+        [usecase, typeIndex]
     );
 
-    useEffect(()=>{
-        usecaseSelectionHandler(0);
-    },[usecaseSelectionHandler])
+    useEffect(() => {
+        const foundTypeIndex = usecase.findIndex((i) => `${i.id + 1}` === type);
+        const actualTypeIndex = foundTypeIndex !== -1 ? foundTypeIndex : 0;
 
-    console.log("===============")
-    console.log(sequence);
+
+
+        setTypeIndex(actualTypeIndex);
+
+        const list = usecase[actualTypeIndex]?.useCases || [];
+        setUseCasesList(list);
+
+        // if (list.length > 0) {
+        //     usecaseSelectionHandler(0);
+        // }
+
+        console.log('AppInfo:', appInfo);
+    }, [selectedUsecaseIndex,sequence]);
+
 
     const onSuccessHandler =()=>{
-
-
 
         if (steps < sequence.length-1) {
             setSteps((steps)=> steps+1)
         }
         const step = sequence[steps+1];
 
-        console.log(currentStep)
-
         setCurrentStep(step);
     }
 
 
-    return {usecasesList,usecaseSelectionHandler, onSuccessHandler,currentStep}
+    return {usecasesList, onSuccessHandler,currentStep,selectedUsecaseIndex,usecaseSelectionHandler}
 }
