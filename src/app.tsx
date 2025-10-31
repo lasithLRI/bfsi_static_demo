@@ -41,6 +41,14 @@ function App() {
     const {appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList,payeesData,useCases,banksList} = useConfigContext();
     console.log("appInfo",useCases);
 
+    if (!appInfo) {
+        return (
+            <div style={{ padding: '50px', textAlign: 'center', fontSize: '1.5em' }}>
+                Loading application configuration...
+            </div>
+        );
+    }
+
     return (<>
         <AppThemeProvider>
             <Routes>
@@ -77,6 +85,7 @@ function App() {
 
             </Routes>
         </AppThemeProvider>
+
         </>)
 }
 

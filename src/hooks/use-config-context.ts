@@ -19,7 +19,6 @@
  */
 
 import {useEffect, useState} from "react";
-import {api} from "../utility/api.ts";
 import type {
     Account,
     AppInfo,
@@ -30,6 +29,8 @@ import type {
     TransactionData, Type,
     User
 } from "./config-interfaces.ts";
+import {useConfig} from "./use-config.ts";
+
 
 /**
  * A custom React Hook that acts as the application's central data store.
@@ -38,16 +39,6 @@ import type {
  * various derived state variables (e.g., total balances, chart data).
  * It returns all application information and processed financial totals for global use.
  */
-const initialConfig: Config = {
-    user: { name: '', image: '', background: '' },
-    name: { route: '', applicationName: '' ,banksInfo:[]},
-    banks: [],
-    accounts: [],
-    payees: [],
-    transactions: [],
-    standingOrders: [],
-    types: []
-}
 
 interface BankWithTotal{
     bank: Bank,
@@ -71,90 +62,82 @@ export interface BanksWithAccounts{
 }
 
 
-
 const useConfigContext = () => {
+    const { data: configData, isLoading } = useConfig() as any;
 
-    const [config,setConfig] = useState<Config>(initialConfig)
-    const [totalsOfBanks, setTotalsOfBanks] = useState<BankWithTotal[]>()
+    console.log("configData:", configData, "isLoading:", isLoading);
+
+    const [totalsOfBanks, setTotalsOfBanks] = useState<BankWithTotal[]>([]);
     const [chartDatas, setChartDatas] = useState<ChartData>({
         label: '',
-        labels:[],
+        labels: [],
         data: [],
         backgroundColor: [],
         borderColor: [],
         borderWidth: 0,
         cutout: '0%'
-    })
-    const [totalBalances, setTotalBalances] = useState<number>(0)
-    const [banksWithAllAccounts, setBanksWithAllAccounts] = useState<BanksWithAccounts[]>([])
-    const [transactionDatas, setTransactionDatas] = useState<TransactionData[]>([])
-    const [standingOrdersList, setStandingOrdersList] = useState<StandingOrders[]>([])
-    const [payeesData, setPayeesData] = useState<Payee[]>([])
-    const [useCasesData, setUseCasesData] = useState<Type[]>([])
-    const [allBanks, setAllBanks] = useState<Bank[]>([])
+    });
+    const [totalBalances, setTotalBalances] = useState<number>(0);
+    const [banksWithAllAccounts, setBanksWithAllAccounts] = useState<BanksWithAccounts[]>([]);
+    const [transactionDatas, setTransactionDatas] = useState<TransactionData[]>([]);
+    const [standingOrdersList, setStandingOrdersList] = useState<StandingOrders[]>([]);
+    const [payeesData, setPayeesData] = useState<Payee[]>([]);
+    const [useCasesData, setUseCasesData] = useState<Type[]>([]);
+    const [allBanks, setAllBanks] = useState<Bank[]>([]);
 
     useEffect(() => {
-        const fetchData = async ()=>{
+        if (!configData) return;
 
-            const response = await api.get('config.json') as Config;
-            setConfig(response);
+        const config: Config = configData;
 
-            const totalsOfBanks = response.banks.map((bank) => {
-                const totals = response.accounts.filter((account)=> account.bank===bank.name).reduce((sum,account)=>sum + account.balance,0);
-                return {
-                    bank: bank,
-                    total: totals
-                }
-            });
-            setTotalsOfBanks(totalsOfBanks)
+        const totals = config.banks.map((bank) => {
+            const total = config.accounts
+                .filter((a) => a.bank === bank.name)
+                .reduce((sum, acc) => sum + acc.balance, 0);
+            return { bank, total };
+        });
+        setTotalsOfBanks(totals);
 
-            const data : ChartData ={
-                label:'',
-                labels:totalsOfBanks.map(bankdata=> bankdata.bank.name),
-                data: totalsOfBanks.map(bankData=>bankData.total),
-                backgroundColor: totalsOfBanks.map(bankData=>bankData.bank.color),
-                borderColor: totalsOfBanks.map(bankData=>bankData.bank.border),
-                borderWidth: 2,
-                cutout: '35%'
-            }
-            setChartDatas(data)
+        const chart: ChartData = {
+            label: '',
+            labels: totals.map((t) => t.bank.name),
+            data: totals.map((t) => t.total),
+            backgroundColor: totals.map((t) => t.bank.color),
+            borderColor: totals.map((t) => t.bank.border),
+            borderWidth: 2,
+            cutout: '35%'
+        };
+        setChartDatas(chart);
 
-            const totalBalance = totalsOfBanks.reduce((sum,bank) => sum + bank.total, 0)
-            setTotalBalances(totalBalance)
+        setTotalBalances(totals.reduce((s, b) => s + b.total, 0));
 
-            const banksWithAccounts = response.banks.map((bank)=>{
-                const accounts = response.accounts.filter((account)=> account.bank===bank.name);
-                const total = response.accounts.filter((account)=> account.bank===bank.name).reduce((sum,account)=>sum + account.balance,0);
+        const banksWithAccounts = config.banks.map((bank) => {
+            const accounts = config.accounts.filter((a) => a.bank === bank.name);
+            const total = accounts.reduce((s, a) => s + a.balance, 0);
+            return { bank, accounts, total };
+        });
+        setBanksWithAllAccounts(banksWithAccounts);
 
-                return{
-                    bank: bank,
-                    accounts: accounts,
-                    total: total
-                }
-            })
-            setBanksWithAllAccounts(banksWithAccounts)
+        setTransactionDatas(config.transactions ?? []);
+        setStandingOrdersList(config.standingOrders ?? []);
+        setPayeesData(config.payees ?? []);
+        setUseCasesData(config.types ?? []);
+        setAllBanks(config.banks ?? []);
+    }, [configData]);
 
-            const transcations = response.transactions;
-            setTransactionDatas(transcations);
-
-            const standingOrders= response.standingOrders;
-            setStandingOrdersList(standingOrders)
-
-            const payeesData= response.payees;
-            setPayeesData(payeesData)
-
-            const useCases = response.types;
-            setUseCasesData(useCases)
-            console.log(useCases)
-
-            const banksList = response.banks;
-            setAllBanks(banksList)
-        }
-        fetchData();
-
-
-    },[])
-    return { appInfo: config.name as AppInfo, userInfo: config.user as User, bankTotals: totalsOfBanks, chartInfo: chartDatas, total: totalBalances, banksWithAccounts: banksWithAllAccounts, transactions: transactionDatas, standingOrderList: standingOrdersList, payeesData:payeesData, useCases: useCasesData, banksList:allBanks }
-}
+    return {
+        appInfo: configData?.name as AppInfo,
+        userInfo: configData?.user as User,
+        bankTotals: totalsOfBanks,
+        chartInfo: chartDatas,
+        total: totalBalances,
+        banksWithAccounts: banksWithAllAccounts,
+        transactions: transactionDatas,
+        standingOrderList: standingOrdersList,
+        payeesData: payeesData,
+        useCases: useCasesData,
+        banksList: allBanks,
+    };
+};
 
 export default useConfigContext;
