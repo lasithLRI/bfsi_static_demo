@@ -23,7 +23,7 @@ import App from './app.tsx'
 import {BrowserRouter} from "react-router-dom";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 
-const queryClient = new QueryClient()
+export  const queryClient = new QueryClient()
 /**
  * The entry point of the React application.
  * It creates a new React root for the DOM element with the ID 'root',

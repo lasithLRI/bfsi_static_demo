@@ -18,7 +18,7 @@
  *
  */
 
-import {Box, Card, Grid } from "@oxygen-ui/react";
+import {Box, Grid } from "@oxygen-ui/react";
 import '../banking.scss'
 
 interface BankingOuterLayoutProps {
@@ -32,18 +32,15 @@ const BankingOuterLayout = ({children, image}:BankingOuterLayoutProps)=>{
 
     return(
         <>
-            <Grid container className="banks-pages-inner-container" md={4} sm={12} xs={12} >
-                <Card sx={{width:'100%', height:'100%'}}>
-                    <Grid sx={{justifyContent:'center', display:'flex'}}>
+            <Grid container className="banks-pages-inner-container" md={12} xs={12} sm={12}>
+                    <Grid sx={{justifyContent:'center', display:'flex', alignContent:'center'}} md={12} xs={12} sm={12} >
                         <Box className="banking-logo-container">
                             <img src={image} alt="" style={{width:'100%', height:'100%'}} />
                         </Box>
                     </Grid>
-                    <Grid>
+                    <Grid sx={{width:'100%',display:'flex',flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
                         {children}
                     </Grid>
-
-                </Card>
             </Grid>
 
 

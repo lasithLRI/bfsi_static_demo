@@ -24,11 +24,27 @@ import {useEffect} from "react";
 
 const RedirectionPage = ()=>{
 
+    const info = {
+        "id": "T00123457",
+        "date": "2025-10-16",
+        "reference": "PAY-9876/XYZ",
+        "bank": "Trust Union",
+        "Account": "0054-4435-9454",
+        "Amount": "500.00",
+        "Currency": "EUR"
+
+    }
+
     const navigate = useNavigate();
 
     useEffect(() => {
         const timer = setTimeout(()=>{
-            navigate("/accounts-central/home")
+            navigate("/accounts-central/home",{
+                state:{
+                    "type":"payment",
+                    "transaction":info
+                }
+            })
         },1000);
         return () => clearTimeout(timer);
     }, [navigate]);

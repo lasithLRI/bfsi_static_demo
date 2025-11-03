@@ -51,7 +51,7 @@ const LoginPage = ()=>{
     return (
         <>
             <Grid container className={'login-container'}>
-                Login Page
+                <h3>Login Page</h3>
                 <form onSubmit={handleSubmit(onSubmit)} className={"form-input"}>
                     <FormControl fullWidth={true} margin={'normal'} >
                         <label>Email</label>
@@ -61,7 +61,6 @@ const LoginPage = ()=>{
                                 placeholder={"Enter your email"}
                                 type={"text"}
                                 error={!!errors.email}
-
                             />
                         )}/>
                     </FormControl>
@@ -78,16 +77,11 @@ const LoginPage = ()=>{
                         )}/>
                     </FormControl>
 
-                    <Box sx={{marginTop:'1rem'}}>
-                        <Button variant={'contained'} onClick={onSuccessHandler}>Success</Button>
-                        <Button variant={'outlined'} >Cancel</Button>
+                    <Box sx={{marginTop:'1rem', display:'flex', justifyContent:'end', gap:'1rem'}}>
+                        <Button variant={'contained'} onClick={onSuccessHandler} sx={{width:'6rem',height:'3rem'}}>Login</Button>
+                        <Button variant={'outlined'} sx={{width:'6rem',height:'3rem'}}>Cancel</Button>
                     </Box>
                 </form>
-
-
-
-
-
             </Grid>
 
 

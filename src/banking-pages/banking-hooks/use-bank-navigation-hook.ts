@@ -59,16 +59,10 @@ export const useBankNavigationHook = ({usecase,type,appInfo}:BankingHookProps)=>
         const foundTypeIndex = usecase.findIndex((i) => `${i.id + 1}` === type);
         const actualTypeIndex = foundTypeIndex !== -1 ? foundTypeIndex : 0;
 
-
-
         setTypeIndex(actualTypeIndex);
 
         const list = usecase[actualTypeIndex]?.useCases || [];
         setUseCasesList(list);
-
-        // if (list.length > 0) {
-        //     usecaseSelectionHandler(0);
-        // }
 
         console.log('AppInfo:', appInfo);
     }, [selectedUsecaseIndex,sequence]);

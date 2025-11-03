@@ -29,7 +29,9 @@ import type {
     TransactionData, Type,
     User
 } from "./config-interfaces.ts";
+import {useLocation} from "react-router-dom";
 import {useConfig} from "./use-config.ts";
+import {queryClient} from "../main.tsx";
 
 
 /**
@@ -61,9 +63,12 @@ export interface BanksWithAccounts{
     total: number;
 }
 
+const LATEST_TRANSACTION_COUNT = 4;
 
 const useConfigContext = () => {
-    const { data: configData, isLoading } = useConfig() as any;
+    const { data: configData, isLoading } = useConfig() ;
+
+    const location = useLocation();
 
     console.log("configData:", configData, "isLoading:", isLoading);
 
@@ -88,7 +93,55 @@ const useConfigContext = () => {
     useEffect(() => {
         if (!configData) return;
 
-        const config: Config = configData;
+        let config: Config = configData;
+
+        if (location.state){
+            if (location.state.type==="payment"){
+                const newTransactionData = location.state.transaction;
+
+                const transactionAmount = parseFloat(newTransactionData.Amount);
+                const sourceBankName = newTransactionData.bank;
+                const sourceAccountNumber = newTransactionData.Account;
+
+                const CONFIG_QUER_KEY = ["appConfig"];
+
+                const newConfig = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
+                    const baseConfig = oldConfig || configData;
+
+                    const currentTransaction = baseConfig?.transactions || [];
+                    const updatedTransactionData = [newTransactionData, ...currentTransaction];
+
+                    const updatedAccounts = (baseConfig.accounts ?? []).map((account:Account) => {
+
+                        if (account.bank === sourceBankName && account.id === sourceAccountNumber){
+
+                            const newBalance = (account.balance ?? 0) - transactionAmount;
+
+                            console.log(`Updated balance for ${account.id} in ${account.bank}: ${account.balance} -> ${newBalance}`);
+
+                            return {
+                                ...account,
+                                balance: newBalance,
+                            };
+                        }
+                        return account;
+                    });
+
+                    return {
+                        ...baseConfig!,
+                        accounts: updatedAccounts,
+                        transactions: updatedTransactionData,
+                    }
+                })
+
+                config = newConfig as Config;
+                window.history.replaceState({}, document.title, location.pathname);
+            }
+
+            if (location.state.type==="account"){
+                
+            }
+        }
 
         const totals = config.banks.map((bank) => {
             const total = config.accounts
@@ -109,6 +162,8 @@ const useConfigContext = () => {
         };
         setChartDatas(chart);
 
+
+
         setTotalBalances(totals.reduce((s, b) => s + b.total, 0));
 
         const banksWithAccounts = config.banks.map((bank) => {
@@ -123,7 +178,9 @@ const useConfigContext = () => {
         setPayeesData(config.payees ?? []);
         setUseCasesData(config.types ?? []);
         setAllBanks(config.banks ?? []);
-    }, [configData]);
+
+
+    }, [configData,location]);
 
     return {
         appInfo: configData?.name as AppInfo,
@@ -132,7 +189,7 @@ const useConfigContext = () => {
         chartInfo: chartDatas,
         total: totalBalances,
         banksWithAccounts: banksWithAllAccounts,
-        transactions: transactionDatas,
+        transactions: transactionDatas.slice(0,LATEST_TRANSACTION_COUNT),
         standingOrderList: standingOrdersList,
         payeesData: payeesData,
         useCases: useCasesData,
@@ -140,4 +197,5 @@ const useConfigContext = () => {
     };
 };
 
+// @ts-ignore
 export default useConfigContext;

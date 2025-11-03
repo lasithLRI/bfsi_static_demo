@@ -25,8 +25,8 @@ import BankingHomePage from "./banking-pages/pages/banking-home-page.tsx";
 import AddAccountsPage from "./pages/add-accounts-page/add-accounts-page.tsx";
 import LoginPage from "./banking-pages/pages/login-page.tsx";
 import OtpPage from "./banking-pages/pages/otp-page.tsx";
-import PaymentConfirmation from "./banking-pages/pages/payment-confirmation.tsx";
 import RedirectionPage from "./banking-pages/pages/redirection-page.tsx";
+import PaymentConfirmationPage from "./banking-pages/pages/payment-confirmation-page.tsx";
 
 /**
  * The root component of the application, responsible for setting up the main routing structure
@@ -77,7 +77,7 @@ function App() {
                     <Route key={index} path={`/${bank.route}/*`} element={<BankingHomePage appInfo={appInfo} useCases={useCases} bank={bank}/>}>
                         <Route path={"login"} element={<LoginPage />}/>
                         <Route path={"otp"} element={<OtpPage />}/>
-                        <Route path={"payment-confirmation"} element={<PaymentConfirmation/>}/>
+                        <Route path={"payment-confirmation"} element={<PaymentConfirmationPage/>}/>
                         <Route path={"redirecting"} element={<RedirectionPage/>}/>
                     </Route>
                 ))}

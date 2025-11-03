@@ -18,11 +18,12 @@
  *
  */
 
-import {Box, Button, FormControl, Grid, OutlinedInput} from "@oxygen-ui/react";
+import {Box, Button, Grid, Typography,} from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
+import '../banking.scss'
 
-const OtpPage = ()=>{
+const PaymentConfirmationPage = ()=>{
 
     const { onSuccessHandler,navigationData } = useOutletContext<OutletContext>();
 
@@ -31,19 +32,18 @@ const OtpPage = ()=>{
     return(
         <>
             <Grid container className={'payments-outer-container'}>
-                SMS Authentication
+                Payment Information
 
-                <Grid className={"form-input"}>
-                    <FormControl fullWidth={true} margin={'normal'} >
-                        <label>OTP code</label>
-                        <OutlinedInput
-                            placeholder={"Enter your email"}
-                            type={"number"}
-                        />
-                    </FormControl>
+                <Grid className={"payment-info-container"}>
 
-                    <Box sx={{marginTop:'60%'}}>
-                        <Button variant={'contained'} onClick={onSuccessHandler}>Success</Button>
+                   <Box sx={{width:'80%'}}>
+                        <Typography>
+                            survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                        </Typography>
+                   </Box>
+
+                    <Box sx={{marginTop:'20%', gap:'1rem',display:'flex'}}>
+                        <Button variant={'contained'} onClick={onSuccessHandler}>Confirm</Button>
                         <Button variant={'outlined'} >Cancel</Button>
                     </Box>
                 </Grid>
@@ -53,4 +53,4 @@ const OtpPage = ()=>{
     )
 }
 
-export default OtpPage;
+export default PaymentConfirmationPage;

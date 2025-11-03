@@ -55,6 +55,10 @@ const Home = ({name,userInfo,total,chartData,banksWithAccounts,transactions,stan
 
     const navigate = useNavigate();
 
+
+
+
+
     const onButtonHandler = (buttonName:string) => {
         if(buttonName === "Add Account"){
             navigate(`/${appInfo.route}/accounts`,{
@@ -65,6 +69,8 @@ const Home = ({name,userInfo,total,chartData,banksWithAccounts,transactions,stan
             });
         }
     }
+
+
 
     return (
         <>

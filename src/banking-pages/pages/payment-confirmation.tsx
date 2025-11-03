@@ -18,9 +18,10 @@
  *
  */
 
-import {Box, Button} from "@oxygen-ui/react";
+import {Box, Button, FormControl, Grid} from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
+import '../banking.scss'
 
 const PaymentConfirmation = ()=>{
 
@@ -29,16 +30,20 @@ const PaymentConfirmation = ()=>{
     return (
         <>
 
-            <div className="form-input">
-                Confirm the following payment <strong>{navigationData.current.formData.amount}</strong> in {navigationData.current.formData.currency} to {navigationData.current.formData.payeeAccount} under the reference {navigationData.current.formData.reference}.
-                Please confirm the payment to proceed.
+            <Grid container className={'login-container'}>
 
+                <FormControl>
+                    <p>Confirm the following payment <strong>{navigationData.current.formData.amount}</strong> in {navigationData.current.formData.currency} to {navigationData.current.formData.payeeAccount} under the reference {navigationData.current.formData.reference}.
+                        Please confirm the payment to proceed.
+                    </p>
 
-                <Box sx={{marginTop:'60%'}}>
-                    <Button variant={'contained'} onClick={onSuccessHandler}>Success</Button>
-                    <Button variant={'outlined'} >Cancel</Button>
-                </Box>
-            </div>
+                    <Box sx={{marginTop:'60%'}}>
+                        <Button variant={'contained'} onClick={onSuccessHandler}>Success</Button>
+                        <Button variant={'outlined'} >Cancel</Button>
+                    </Box>
+                </FormControl>
+
+            </Grid>
         </>
     )
 }
