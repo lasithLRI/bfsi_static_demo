@@ -19,9 +19,9 @@
  */
 
 import ApplicationLayout from "../../layouts/application-layout/application-layout.tsx";
-import { useLocation } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import PaymentAccountPageLayout from "../../layouts/payment-account-page-layout/payment-account-page-layout.tsx";
-import type {Bank} from "../../hooks/config-interfaces.ts";
+import type {AppInfo, Bank} from "../../hooks/config-interfaces.ts";
 import {Box, IconButton} from "@oxygen-ui/react";
 import './add-account.scss'
 
@@ -31,8 +31,14 @@ interface NavigationState {
     banksWithAccounts: Bank[];
 }
 
-const AddAccountsPage = ()=>{
+interface AddAccountsPageProps {
+    appInfo: AppInfo;
+    banks: Bank[];
+}
 
+const AddAccountsPage = ({appInfo,banks}:AddAccountsPageProps)=>{
+
+    const navigate = useNavigate();
     const location = useLocation();
     const navigationState = location.state as NavigationState;
     const appName = navigationState?.name;
@@ -40,6 +46,28 @@ const AddAccountsPage = ()=>{
 
     console.log(banksList)
 
+    const onAddAccoutsHandler = (bankName:string)=>{
+
+        console.log(bankName)
+
+        const relaventBank = banks.find((bank)=>{return bank.name === bankName})
+        console.log(relaventBank)
+
+        console.log("=============================================")
+        console.log(relaventBank)
+
+        const target = appInfo.banksInfo.find((bank) => {
+            return bank.name === bankName;
+        });
+        console.log(target)
+        navigate("/"+target?.route+"/?type=account",{
+            state:{
+                formData: null,
+                message: "confirmed payment information",
+                bankInfo: relaventBank
+            }
+        });
+    }
 
     return (
 
@@ -49,7 +77,7 @@ const AddAccountsPage = ()=>{
                     <PaymentAccountPageLayout title={"Add Account"}>
                         <h3 style={{marginBottom:"1.5rem"}}>Select your Bank here</h3>
                         {banksList?.map((account, index) => (
-                            <IconButton key={index} >
+                            <IconButton key={index} onClick={()=>{onAddAccoutsHandler(account.name)}}>
                                 <Box className={"account-button-outer"}>
                                     <Box className={"logo-container"}>
                                         <img src={account.image} alt=""/>
@@ -60,7 +88,6 @@ const AddAccountsPage = ()=>{
                         ))}
                     </PaymentAccountPageLayout>
                 </ApplicationLayout>
-
         </>
 
     )

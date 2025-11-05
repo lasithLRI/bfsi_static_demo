@@ -93,14 +93,14 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
 
             console.log(target)
 
-            const bank = banksList.find((bank)=>{return bank.name === bankName})
-            console.log(bank)
+            const relaventBank = banksList.find((bank)=>{return bank.name === bankName})
+            console.log(relaventBank)
 
             navigate("/"+target?.route+"/login?type=payment",{
                 state:{
                     formData: formDataToSubmit,
-                    message: "confirmed payment information",
-                    bankInfo: bank
+                    message: "payment",
+                    bankInfo: relaventBank
                 }
             });
 

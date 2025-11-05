@@ -33,23 +33,20 @@ export interface BankingHomePageProps {
     appInfo: AppInfo
 }
 
-const BankingHomePage = ({ useCases,bank, appInfo }: BankingHomePageProps) => {
-
+const BankingHomePage = ({ useCases,bank }: BankingHomePageProps) => {
 
 
     const navigate = useNavigate();
     const location = useLocation();
     const navigationData = useRef(location.state)
+    const accountsToAdd = useRef([]);
 
-
-    console.log(navigationData);
+    console.log(navigationData)
 
     const [params] = useSearchParams();
     const type = params.get("type") || '';
 
-
-
-    const {usecasesList,usecaseSelectionHandler,currentStep,onSuccessHandler, selectedUsecaseIndex} = useBankNavigationHook({usecase: useCases, type: type , appInfo: appInfo});
+    const {usecasesList,usecaseSelectionHandler,currentStep,onSuccessHandler, selectedUsecaseIndex} = useBankNavigationHook({usecase: useCases, type: type });
 
 
 
@@ -66,7 +63,7 @@ const BankingHomePage = ({ useCases,bank, appInfo }: BankingHomePageProps) => {
     return(
         <>
             <Grid container className={'banking-outer-layout'}>
-                <h3>{navigationData.current.bankInfo?.name}</h3>
+                <h3>{navigationData.current?.bankInfo?.name}</h3>
                 <Grid className="banking-usecase-layout">
                     {usecasesList.map((useCase,index) => {
 
@@ -79,8 +76,8 @@ const BankingHomePage = ({ useCases,bank, appInfo }: BankingHomePageProps) => {
                 </Grid>
 
                 <Grid className={'banking-inner-component-container'}>
-                    <BankingOuterLayout image={navigationData.current.bankInfo?.image}>
-                        <Outlet context={{onSuccessHandler, navigationData}}/>
+                    <BankingOuterLayout image={navigationData.current?.bankInfo.image}>
+                        <Outlet context={{onSuccessHandler, navigationData,accountsToAdd}} />
                     </BankingOuterLayout>
 
                 </Grid>

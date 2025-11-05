@@ -18,8 +18,16 @@
  *
  */
 
-export const formatCurrency = (value: number | string): string => {
-    return value.toLocaleString('en-US', {
+export const formatCurrency = (value: number | string | null | undefined): string => {
+
+    let numericValue = parseFloat(String(value));
+
+    if (isNaN(numericValue)) {
+        numericValue = 0;
+        console.warn(`Attempted to format non-numeric value: ${value}. Defaulted to 0.`);
+    }
+
+    return numericValue.toLocaleString('en-US', {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });

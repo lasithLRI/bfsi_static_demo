@@ -27,6 +27,11 @@ import LoginPage from "./banking-pages/pages/login-page.tsx";
 import OtpPage from "./banking-pages/pages/otp-page.tsx";
 import RedirectionPage from "./banking-pages/pages/redirection-page.tsx";
 import PaymentConfirmationPage from "./banking-pages/pages/payment-confirmation-page.tsx";
+import LoginWithEmailPage from "./banking-pages/pages/login-with-email.tsx";
+import AccountsSelectionPage from "./banking-pages/pages/accounts-selection-page.tsx";
+import AccountsAuthorizationPage from "./banking-pages/pages/accounts-authorization-page.tsx";
+import AccountsSelectionTwoPage from "./banking-pages/pages/accounts-selection-two-page.tsx";
+import AccountsAuthorizationTwoPage from "./banking-pages/pages/accounts-authorization-two-page.tsx";
 
 /**
  * The root component of the application, responsible for setting up the main routing structure
@@ -68,7 +73,7 @@ function App() {
                                    />
                                }/>
                         <Route path="payments" element={<PaymentsPage banksList={banksList} payeeData={payeesData} banksWithAccounts={banksWithAccounts} appInfo={appInfo}/>}/>
-                        <Route path="accounts" element={<AddAccountsPage/>}/>
+                        <Route path="accounts" element={<AddAccountsPage appInfo={appInfo} banks={banksList}/>}/>
                     </Routes>
                 } />
 
@@ -79,6 +84,11 @@ function App() {
                         <Route path={"otp"} element={<OtpPage />}/>
                         <Route path={"payment-confirmation"} element={<PaymentConfirmationPage/>}/>
                         <Route path={"redirecting"} element={<RedirectionPage/>}/>
+                        <Route path={"login-with-email"} element={<LoginWithEmailPage/>}/>
+                        <Route path={"account-select"} element={<AccountsSelectionPage/>}/>
+                        <Route path={"account-authorize"} element={<AccountsAuthorizationPage/>}/>
+                        <Route path={"account-select-uc-2"} element={<AccountsSelectionTwoPage/>}/>
+                        <Route path={"account-authorization-uc-2"} element={<AccountsAuthorizationTwoPage/>}/>
                     </Route>
                 ))}
 

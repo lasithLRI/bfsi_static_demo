@@ -95,11 +95,22 @@ const useConfigContext = () => {
 
         let config: Config = configData;
 
-        if (location.state){
-            if (location.state.type==="payment"){
-                const newTransactionData = location.state.transaction;
+        if (location.state != null){
+            console.log("location.state:", location.state);
+            if (location.state.operationState && location.state.operationState.type === "payment") {
+                const newTransactionData = location.state.operationState.data;
 
-                const transactionAmount = parseFloat(newTransactionData.Amount);
+                const fullAccountNumber = newTransactionData.account;
+                const firstHyphenIndex = fullAccountNumber.indexOf('-');
+                newTransactionData.Account = fullAccountNumber.substring(firstHyphenIndex + 1);
+
+                newTransactionData.Currency = newTransactionData.currency;
+
+                const transactionAmount = parseFloat(newTransactionData.amount);
+                newTransactionData.Amount = parseFloat(newTransactionData.amount);
+
+                console.log(newTransactionData.Account)
+                console.log("newTransactionData:", newTransactionData);
                 const sourceBankName = newTransactionData.bank;
                 const sourceAccountNumber = newTransactionData.Account;
 
@@ -135,12 +146,41 @@ const useConfigContext = () => {
                 })
 
                 config = newConfig as Config;
+                setTransactionDatas(config.transactions ?? []);
                 window.history.replaceState({}, document.title, location.pathname);
+
+            }else if(location.state.operationState && location.state.operationState.type === "account"){
+                console.log(location.state.operationState)
+                const newAccountData = location.state.operationState.data;
+                console.log("newAccountData:", newAccountData);
+
+                const CONFIG_QUER_KEY = ["appConfig"];
+
+                const newConfigWithAccount = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
+                    const baseConfig = oldConfig || configData;
+
+                    console.log(baseConfig);
+
+                    const accountToBeAdded= {id:newAccountData.accountDetails[0], bank:newAccountData.bankInfo,name:"savings account",balance:500}
+
+
+                    const updateNewAccounts = [...baseConfig.accounts,accountToBeAdded]
+
+                    console.log(updateNewAccounts)
+
+
+                    return {
+                        ...baseConfig!,
+                        accounts: updateNewAccounts
+                    }
+
+                })
+
+                config = newConfigWithAccount as Config;
+                window.history.replaceState({}, document.title, location.pathname);
+
             }
 
-            if (location.state.type==="account"){
-                
-            }
         }
 
         const totals = config.banks.map((bank) => {
@@ -182,6 +222,8 @@ const useConfigContext = () => {
 
     }, [configData,location]);
 
+    console.log(transactionDatas)
+
     return {
         appInfo: configData?.name as AppInfo,
         userInfo: configData?.user as User,
@@ -189,7 +231,7 @@ const useConfigContext = () => {
         chartInfo: chartDatas,
         total: totalBalances,
         banksWithAccounts: banksWithAllAccounts,
-        transactions: transactionDatas.slice(0,LATEST_TRANSACTION_COUNT),
+        transactions: transactionDatas.slice(0, LATEST_TRANSACTION_COUNT),
         standingOrderList: standingOrdersList,
         payeesData: payeesData,
         useCases: useCasesData,

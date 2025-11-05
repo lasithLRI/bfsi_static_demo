@@ -19,21 +19,71 @@
  */
 
 
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useOutletContext} from "react-router-dom";
 import {useEffect} from "react";
+import type {OutletContext} from "./login-page.tsx";
+
+
 
 const RedirectionPage = ()=>{
 
-    const info = {
-        "id": "T00123457",
-        "date": "2025-10-16",
-        "reference": "PAY-9876/XYZ",
-        "bank": "Trust Union",
-        "Account": "0054-4435-9454",
-        "Amount": "500.00",
-        "Currency": "EUR"
+    const { navigationData,accountsToAdd} = useOutletContext<OutletContext>();
 
+    let data = null;
+    let id = 2345;
+
+    let state = null;
+
+    if(navigationData.current?.formData != null){
+        id = id+1;
+        data = {
+            "id": "T0000"+ id,
+            "date": new Date().toLocaleDateString(),
+            "reference": navigationData.current?.formData.reference,
+            "bank": navigationData.current?.bankInfo.name,
+            "account":navigationData.current?.formData.userAccount,
+            "amount": navigationData.current?.formData.amount.toString().replace(/[^\d.-]/g, ''),
+            "currency":navigationData.current?.formData.currency,
+        }
+
+        state = {
+            "type": "payment",
+            "data": data
+        }
+    }else if(accountsToAdd.current?.length > 0 ){
+        console.log("Accounts are available!");
     }
+
+    console.log(data)
+
+    if (accountsToAdd.current?.length > 0 ){
+        console.log("Accounts are available!");
+
+        data={
+            accountDetails : accountsToAdd.current,
+            bankInfo : navigationData.current?.bankInfo.name,
+        }
+
+        state = {
+            "type": "account",
+            "data": data
+        }
+    }
+
+    // const info = {
+    //     "id": "T00123457",
+    //     "date": "2025-10-16",
+    //     "reference": "PAY-9876/XYZ",
+    //     "bank": "Trust Union",
+    //     "Account": "0054-4435-9454",
+    //     "Amount": "500.00",
+    //     "Currency": "EUR"
+    //
+    // }
+
+
+
+
 
     const navigate = useNavigate();
 
@@ -41,8 +91,7 @@ const RedirectionPage = ()=>{
         const timer = setTimeout(()=>{
             navigate("/accounts-central/home",{
                 state:{
-                    "type":"payment",
-                    "transaction":info
+                    operationState : state
                 }
             })
         },1000);

@@ -25,23 +25,21 @@ import {Controller, useForm} from "react-hook-form";
 export interface OutletContext{
     onSuccessHandler : () => void;
     navigationData : any;
-    accountsToAdd : any;
 }
 
 interface loginformData{
     email: string;
-    password: string;
 }
 
 // interface LoginPageProps {
 //     onSuccessHandler:()=>void;
 // }
-const LoginPage = ()=>{
+const LoginWithEmailPage = ()=>{
 
     const { onSuccessHandler, } = useOutletContext<OutletContext>();
     const {control, handleSubmit, formState: {errors}} = useForm<loginformData>({
         defaultValues:{
-            email:'', password:''
+            email:''
         }
     })
 
@@ -66,18 +64,6 @@ const LoginPage = ()=>{
                         )}/>
                     </FormControl>
 
-                    <FormControl fullWidth={true} margin={'normal'} >
-                        <label>password</label>
-                        <Controller name={'password'} control={control} render={({field}) => (
-                            <OutlinedInput
-                                {...field}
-                                placeholder={"Enter your password"}
-                                type={"password"}
-                                error={!!errors.email}
-                            />
-                        )}/>
-                    </FormControl>
-
                     <Box sx={{marginTop:'1rem', display:'flex', justifyContent:'end', gap:'1rem'}}>
                         <Button variant={'contained'} onClick={onSuccessHandler} sx={{width:'6rem',height:'3rem'}}>Login</Button>
                         <Button variant={'outlined'} sx={{width:'6rem',height:'3rem'}}>Cancel</Button>
@@ -90,4 +76,4 @@ const LoginPage = ()=>{
     )
 }
 
-export default LoginPage;
+export default LoginWithEmailPage;
