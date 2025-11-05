@@ -30,12 +30,15 @@ import {
 } from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
+import type {SelectedAccountEntry} from "./accounts-selection-two-page.tsx";
 
 const AccountsAuthorizationTwoPage = ()=>{
 
-    const { onSuccessHandler,navigationData } = useOutletContext<OutletContext>();
+    const { onSuccessHandler,navigationData, accountsToAdd } = useOutletContext<OutletContext>();
 
     console.log(navigationData)
+    console.log(accountsToAdd)
+    console.log("============*============")
 
     return(
         <>
@@ -53,31 +56,26 @@ const AccountsAuthorizationTwoPage = ()=>{
                     </Box>
 
                     <FormControl sx={{display:'flex', flexDirection:'column', marginTop:'5%', height:'16rem', overflowY:'auto'}}>
-                        <Box sx={{display:'flex', flexDirection:'column'}}>
-                            <p>Permission to : </p> <h3>Read Account Information</h3>
 
-                            <List sx={{ listStyleType: 'disc', pl: 4 }}>
-                                <ListItem sx={{display: 'list-item'}}>0006-00500-33234</ListItem>
-                                <ListItem sx={{display: 'list-item'}}>0006-00500-33234</ListItem>
-                                <ListItem sx={{display: 'list-item'}}>0006-00500-33234</ListItem>
-
-                            </List>
-                        </Box>
-
-                        <Box sx={{display:'flex', flexDirection:'column'}}>
-                            <p>Permission to : </p> <h3>Read Account Information</h3>
-
-                            <List sx={{ listStyleType: 'disc', pl: 4 }}>
-
-                                <ListItem sx={{display: 'list-item'}}>0006-00500-33234</ListItem>
-                                <ListItem sx={{display: 'list-item'}}>0006-00500-33234</ListItem>
-                                <ListItem sx={{display: 'list-item'}}>0006-00500-33234</ListItem>
-
-                            </List>
-                        </Box>
+                        {accountsToAdd.current.data[0].map((account:SelectedAccountEntry,index:number)=>{
 
 
+                            console.log("========")
+                            console.log(account)
 
+                            return (
+                                <Box key={index} sx={{display:'flex', flexDirection:'column'}}>
+                                    <p>Permission to : </p> <h3>{account.permission}</h3>
+
+                                    <List sx={{ listStyleType: 'disc', pl: 4 }}>
+
+                                        {account.accounts.map((iban, idx) => (
+                                            <ListItem key={idx} sx={{display: 'list-item'}}>{iban}</ListItem>
+                                        ))}
+                                    </List>
+                                </Box>
+                            )
+                        })}
 
                     </FormControl>
 

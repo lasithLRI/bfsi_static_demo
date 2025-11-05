@@ -63,6 +63,8 @@ export interface BanksWithAccounts{
     total: number;
 }
 
+
+
 const LATEST_TRANSACTION_COUNT = 4;
 
 const useConfigContext = () => {
@@ -149,7 +151,7 @@ const useConfigContext = () => {
                 setTransactionDatas(config.transactions ?? []);
                 window.history.replaceState({}, document.title, location.pathname);
 
-            }else if(location.state.operationState && location.state.operationState.type === "account"){
+            }else if(location.state.operationState && location.state.operationState.type === "single"){
                 console.log(location.state.operationState)
                 const newAccountData = location.state.operationState.data;
                 console.log("newAccountData:", newAccountData);
@@ -162,7 +164,6 @@ const useConfigContext = () => {
                     console.log(baseConfig);
 
                     const accountToBeAdded= {id:newAccountData.accountDetails[0], bank:newAccountData.bankInfo,name:"savings account",balance:500}
-
 
                     const updateNewAccounts = [...baseConfig.accounts,accountToBeAdded]
 
@@ -179,6 +180,85 @@ const useConfigContext = () => {
                 config = newConfigWithAccount as Config;
                 window.history.replaceState({}, document.title, location.pathname);
 
+            }else if (location.state.operationState && location.state.operationState.type === "multiple"){
+                console.log(location.state.operationState)
+
+                const multipleAccountData = location.state.operationState.data;
+
+                console.log("multipleAccountData:", multipleAccountData);
+
+                const CONFIG_QUER_KEY = ["appConfig"];
+
+                const newConfigWithAccount = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
+                    const baseConfig = oldConfig || configData;
+
+                    console.log(baseConfig);
+
+                    const structuredPermissionsData = multipleAccountData.accountDetails[0];
+                    const bankName = multipleAccountData.bankInfo;
+
+
+                    console.log(structuredPermissionsData);
+                    console.log(bankName)
+
+                    const accNumbers = structuredPermissionsData.flatMap((permissionEntry:{permission:"",accounts:string[]}) => {
+                        return permissionEntry.accounts || [];
+                    });
+
+                    console.log(accNumbers);
+
+
+
+                    // // 1. Loop through permissions data and flatten into newAccounts array
+                    // structuredPermissionsData.forEach(entry => {
+                    //     // Use optional chaining to safely iterate over accounts array
+                    //     entry.accounts?.forEach(iban => {
+                    //         if (!addedIbans.has(iban)) {
+                    //             // Create the simple Account object and push it
+                    //             newAccounts.push({
+                    //                 id: iban,
+                    //                 bank: bankName,
+                    //                 name: "savings account",
+                    //                 balance: 500,
+                    //             });
+                    //             addedIbans.add(iban);
+                    //         }
+                    //     });
+                    // });
+
+
+
+
+                    const generatedNewAccounts: Account[] = accNumbers.map((entry:string) => {
+
+                                return {
+                                    id: entry,
+                                    bank: bankName,
+                                    name: "savings (M)",
+                                    balance: 500,
+                                };
+                    });
+
+                    console.log(generatedNewAccounts);
+
+                    // 2. Combine existing accounts with the newly generated ones
+                    const updateNewAccounts = [...baseConfig.accounts, ...generatedNewAccounts];
+
+                    console.log("New unique accounts generated:", generatedNewAccounts);
+                    console.log("Combined accounts length:", updateNewAccounts.length);
+
+                    // 3. Return the updated configuration
+                    return {
+                        ...baseConfig!,
+                        accounts: updateNewAccounts
+                    }
+                })
+
+                console.log("+++++++++++#####################")
+
+                // The manual config assignment must be done outside the setQueryData callback
+                config = newConfigWithAccount as Config;
+                window.history.replaceState({}, document.title, location.pathname);
             }
 
         }
@@ -239,5 +319,4 @@ const useConfigContext = () => {
     };
 };
 
-// @ts-ignore
 export default useConfigContext;

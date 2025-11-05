@@ -34,6 +34,9 @@ const RedirectionPage = ()=>{
 
     let state = null;
 
+    console.log(accountsToAdd)
+    console.log("#############################################")
+
     if(navigationData.current?.formData != null){
         id = id+1;
         data = {
@@ -50,39 +53,36 @@ const RedirectionPage = ()=>{
             "type": "payment",
             "data": data
         }
-    }else if(accountsToAdd.current?.length > 0 ){
+    }else if(accountsToAdd.current?.data?.length > 0 && accountsToAdd.current?.type === "single" ){
         console.log("Accounts are available!");
-    }
 
-    console.log(data)
-
-    if (accountsToAdd.current?.length > 0 ){
-        console.log("Accounts are available!");
+        console.log(accountsToAdd.current?.data);
 
         data={
-            accountDetails : accountsToAdd.current,
+            accountDetails : accountsToAdd.current.data,
             bankInfo : navigationData.current?.bankInfo.name,
         }
 
         state = {
-            "type": "account",
+            "type": "single",
+            "data": data
+        }
+
+        console.log(state);
+        console.log("Accounts are initialized!");
+    }else if(accountsToAdd.current?.data.length > 0 && accountsToAdd.current?.type === "multiple"){
+        console.log("&&&&&&&********&&&&&&&&&");
+
+        data={
+            accountDetails : accountsToAdd.current.data,
+            bankInfo : navigationData.current?.bankInfo.name,
+        }
+
+        state = {
+            "type": "multiple",
             "data": data
         }
     }
-
-    // const info = {
-    //     "id": "T00123457",
-    //     "date": "2025-10-16",
-    //     "reference": "PAY-9876/XYZ",
-    //     "bank": "Trust Union",
-    //     "Account": "0054-4435-9454",
-    //     "Amount": "500.00",
-    //     "Currency": "EUR"
-    //
-    // }
-
-
-
 
 
     const navigate = useNavigate();

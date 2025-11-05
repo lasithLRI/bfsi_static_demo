@@ -43,7 +43,11 @@ const AccountsSelectionPage = ()=>{
     const [selectedAccount, setSelectedAccount] = useState<string>('');
 
     const handleAccountSelection = () => {
-        accountsToAdd.current.push(selectedAccount);
+
+        console.log("Accounts selection selected");
+        console.log(selectedAccount);
+
+        accountsToAdd.current = {type:"single",data:[selectedAccount]};
         onSuccessHandler();
     }
 

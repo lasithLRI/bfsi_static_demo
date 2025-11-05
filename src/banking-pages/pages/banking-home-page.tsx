@@ -33,13 +33,18 @@ export interface BankingHomePageProps {
     appInfo: AppInfo
 }
 
+export interface  accountsToAddContent {
+    type: string;
+    data: []
+}
+
 const BankingHomePage = ({ useCases,bank }: BankingHomePageProps) => {
 
 
     const navigate = useNavigate();
     const location = useLocation();
     const navigationData = useRef(location.state)
-    const accountsToAdd = useRef([]);
+    const accountsToAdd = useRef({type:"",data:[]});
 
     console.log(navigationData)
 
