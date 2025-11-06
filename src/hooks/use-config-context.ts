@@ -92,10 +92,22 @@ const useConfigContext = () => {
     const [useCasesData, setUseCasesData] = useState<Type[]>([]);
     const [allBanks, setAllBanks] = useState<Bank[]>([]);
 
+
+
     useEffect(() => {
         if (!configData) return;
 
         let config: Config = configData;
+
+        const CONFIG_QUER_KEY = ["config"];
+
+        const updateSessionStorage = (updatedConfig: Config) => {
+            try {
+                sessionStorage.setItem(CONFIG_QUER_KEY[0], JSON.stringify(updatedConfig));
+            } catch (e) {
+                console.error("Failed to update session storage:", e);
+            }
+        }
 
         if (location.state != null){
             console.log("location.state:", location.state);
@@ -116,7 +128,7 @@ const useConfigContext = () => {
                 const sourceBankName = newTransactionData.bank;
                 const sourceAccountNumber = newTransactionData.Account;
 
-                const CONFIG_QUER_KEY = ["appConfig"];
+
 
                 const newConfig = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
                     const baseConfig = oldConfig || configData;
@@ -148,15 +160,17 @@ const useConfigContext = () => {
                 })
 
                 config = newConfig as Config;
-                setTransactionDatas(config.transactions ?? []);
                 window.history.replaceState({}, document.title, location.pathname);
+                updateSessionStorage(config);
+                location.state.operationState = null
+
 
             }else if(location.state.operationState && location.state.operationState.type === "single"){
                 console.log(location.state.operationState)
                 const newAccountData = location.state.operationState.data;
                 console.log("newAccountData:", newAccountData);
 
-                const CONFIG_QUER_KEY = ["appConfig"];
+                const CONFIG_QUER_KEY = ["config"];
 
                 const newConfigWithAccount = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
                     const baseConfig = oldConfig || configData;
@@ -177,8 +191,12 @@ const useConfigContext = () => {
 
                 })
 
-                config = newConfigWithAccount as Config;
                 window.history.replaceState({}, document.title, location.pathname);
+                config = newConfigWithAccount as Config;
+
+                updateSessionStorage(config);
+                location.state.operationState = null
+
 
             }else if (location.state.operationState && location.state.operationState.type === "multiple"){
                 console.log(location.state.operationState)
@@ -187,7 +205,7 @@ const useConfigContext = () => {
 
                 console.log("multipleAccountData:", multipleAccountData);
 
-                const CONFIG_QUER_KEY = ["appConfig"];
+                const CONFIG_QUER_KEY = ["config"];
 
                 const newConfigWithAccount = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
                     const baseConfig = oldConfig || configData;
@@ -207,28 +225,6 @@ const useConfigContext = () => {
 
                     console.log(accNumbers);
 
-
-
-                    // // 1. Loop through permissions data and flatten into newAccounts array
-                    // structuredPermissionsData.forEach(entry => {
-                    //     // Use optional chaining to safely iterate over accounts array
-                    //     entry.accounts?.forEach(iban => {
-                    //         if (!addedIbans.has(iban)) {
-                    //             // Create the simple Account object and push it
-                    //             newAccounts.push({
-                    //                 id: iban,
-                    //                 bank: bankName,
-                    //                 name: "savings account",
-                    //                 balance: 500,
-                    //             });
-                    //             addedIbans.add(iban);
-                    //         }
-                    //     });
-                    // });
-
-
-
-
                     const generatedNewAccounts: Account[] = accNumbers.map((entry:string) => {
 
                                 return {
@@ -241,13 +237,13 @@ const useConfigContext = () => {
 
                     console.log(generatedNewAccounts);
 
-                    // 2. Combine existing accounts with the newly generated ones
+
                     const updateNewAccounts = [...baseConfig.accounts, ...generatedNewAccounts];
 
                     console.log("New unique accounts generated:", generatedNewAccounts);
                     console.log("Combined accounts length:", updateNewAccounts.length);
 
-                    // 3. Return the updated configuration
+
                     return {
                         ...baseConfig!,
                         accounts: updateNewAccounts
@@ -256,9 +252,11 @@ const useConfigContext = () => {
 
                 console.log("+++++++++++#####################")
 
-                // The manual config assignment must be done outside the setQueryData callback
+
                 config = newConfigWithAccount as Config;
+                updateSessionStorage(config);
                 window.history.replaceState({}, document.title, location.pathname);
+                location.state.operationState = null
             }
 
         }
@@ -283,7 +281,6 @@ const useConfigContext = () => {
         setChartDatas(chart);
 
 
-
         setTotalBalances(totals.reduce((s, b) => s + b.total, 0));
 
         const banksWithAccounts = config.banks.map((bank) => {
@@ -292,6 +289,8 @@ const useConfigContext = () => {
             return { bank, accounts, total };
         });
         setBanksWithAllAccounts(banksWithAccounts);
+
+
 
         setTransactionDatas(config.transactions ?? []);
         setStandingOrdersList(config.standingOrders ?? []);
@@ -303,6 +302,8 @@ const useConfigContext = () => {
     }, [configData,location]);
 
     console.log(transactionDatas)
+
+    console.log(banksWithAllAccounts);
 
     return {
         appInfo: configData?.name as AppInfo,
@@ -319,4 +320,5 @@ const useConfigContext = () => {
     };
 };
 
+// @ts-ignore
 export default useConfigContext;
