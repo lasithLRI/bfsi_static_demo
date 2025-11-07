@@ -32,23 +32,24 @@ const PaymentConfirmationPage = ()=>{
     return(
         <>
             <Grid container className={'payments-outer-container'}>
-                Please authorize following payment:
+                <h3>Payment Authorization</h3>
 
                 <Grid className={"payment-info-container"}>
 
-                   <Box sx={{width:'80%', marginTop:'2rem'}}>
+                   <Box sx={{marginTop:'1rem',width:'100%'}}>
                         <Typography>
-                                <p>Debited Account : {navigationData.current.formData.userAccount}</p>
-                                <List>
-                                    <ListItem>Amount : {navigationData.current.formData?.amount}</ListItem>
-                                    <ListItem>Currency : {navigationData.current.formData?.currency}</ListItem>
-                                    <ListItem>Payee : {navigationData.current.formData?.payeeAccount}</ListItem>
-                                    <ListItem>Reference : {navigationData.current.formData?.reference}</ListItem>
+                                <p>Debited Account :</p>
+                                <p style={{marginLeft:'1rem', fontWeight:'600'}}>{navigationData.current.formData.userAccount}</p>
+                                <List sx={{ listStyleType: 'disc', pl: 2}}>
+                                    <ListItem sx={{ display: 'list-item'}}>Amount : {navigationData.current.formData?.amount}</ListItem>
+                                    <ListItem sx={{ display: 'list-item'}}>Currency : {navigationData.current.formData?.currency}</ListItem>
+                                    <ListItem sx={{ display: 'list-item'}}>Payee : <br /> &nbsp; {navigationData.current.formData?.payeeAccount}</ListItem>
+                                    <ListItem sx={{ display: 'list-item' }}>Reference : {navigationData.current.formData?.reference}</ListItem>
                                 </List>
                         </Typography>
                    </Box>
 
-                    <Box sx={{marginTop:'20%', gap:'1rem',display:'flex'}}>
+                    <Box sx={{gap:'1rem',display:'flex', justifyContent:'end', width:'100%', marginTop:'1rem', marginBottom:'1rem'}}>
                         <Button variant={'contained'} onClick={onSuccessHandler}>Confirm</Button>
                         <Button variant={'outlined'} >Cancel</Button>
                     </Box>

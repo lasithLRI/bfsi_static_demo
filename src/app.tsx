@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import Home from "./pages/home-page/home.jsx";
 import useConfigContext from "./hooks/use-config-context.ts";
 import AppThemeProvider from "./providers/app-theme-provider.tsx";
@@ -59,6 +59,7 @@ function App() {
             <Routes>
                 <Route path={`/${appInfo.route}/*`} element={
                     <Routes>
+                        <Route index element={<Navigate to="home" replace />} />
                         <Route path="home"
                                element={
                                    <Home userInfo={userInfo}
