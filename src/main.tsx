@@ -21,6 +21,10 @@ import {createRoot} from 'react-dom/client'
 import './index.scss'
 import App from './app.tsx'
 import React from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { HashRouter } from 'react-router-dom';
+
+export const queryClient = new QueryClient();
 
 
 
@@ -34,14 +38,20 @@ import React from 'react';
  */
 
 const rootElement = document.getElementById("root");
-if (!rootElement) throw new Error('Root element not found');
-
+if (!rootElement) {
+  throw new Error("Root element with id 'root' not found");
+}
 const root = createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
-    <App />
+    <QueryClientProvider client={queryClient}>
+        <HashRouter>
+            <App />
+        </HashRouter>
+    </QueryClientProvider>
   </React.StrictMode>
-
 );
+
+
 
