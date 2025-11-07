@@ -31,7 +31,7 @@ import type {
 } from "./config-interfaces.ts";
 import {useLocation} from "react-router-dom";
 import {useConfig} from "./use-config.ts";
-import {queryClient} from "../main.tsx";
+import {queryClient} from "../app.tsx";
 
 
 /**

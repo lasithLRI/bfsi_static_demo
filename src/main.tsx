@@ -16,27 +16,32 @@
  * under the License.
  */
 
-import {StrictMode} from 'react'
+
 import {createRoot} from 'react-dom/client'
 import './index.scss'
 import App from './app.tsx'
-import { HashRouter} from "react-router-dom";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import React from 'react';
 
-export  const queryClient = new QueryClient()
+
+
+
+
 /**
  * The entry point of the React application.
  * It creates a new React root for the DOM element with the ID 'root',
  * and renders the main App component wrapped in StrictMode and BrowserRouter
  * for development checks and client-side routing.
  */
-createRoot(document.getElementById('root')!).render(
-    <StrictMode>
-        <QueryClientProvider client={queryClient}>
-            <HashRouter>
-                <App/>
-            </HashRouter>
-        </QueryClientProvider>
-    </StrictMode>,
-)
+
+const rootElement = document.getElementById("root");
+if (!rootElement) throw new Error('Root element not found');
+
+const root = createRoot(rootElement);
+
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+
+);
 

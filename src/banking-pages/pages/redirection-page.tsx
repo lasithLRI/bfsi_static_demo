@@ -22,10 +22,13 @@
 import {useNavigate, useOutletContext} from "react-router-dom";
 import {useEffect} from "react";
 import type {OutletContext} from "./login-page.tsx";
+import type { AppInfo } from "../../hooks/config-interfaces.ts";
 
+interface RedirectionPageProps {
+    appConfig: AppInfo
+}
 
-
-const RedirectionPage = ()=>{
+const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
 
     const { navigationData,accountsToAdd} = useOutletContext<OutletContext>();
 
@@ -34,8 +37,6 @@ const RedirectionPage = ()=>{
 
     let state = null;
 
-    console.log(accountsToAdd)
-    console.log("#############################################")
 
     if(navigationData.current?.formData != null){
         id = id+1;
@@ -87,16 +88,17 @@ const RedirectionPage = ()=>{
 
     const navigate = useNavigate();
 
+
     useEffect(() => {
         const timer = setTimeout(()=>{
-            navigate("/accounts-central/home",{
+            navigate(`/${appConfig.route}/home`,{
                 state:{
                     operationState : state
                 }
             })
         },1000);
         return () => clearTimeout(timer);
-    }, [navigate]);
+    }, [navigate,appConfig.route,state]);
 
 
     return (
