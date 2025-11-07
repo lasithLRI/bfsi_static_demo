@@ -44,11 +44,12 @@ const AccountsSelectionPage = ()=>{
 
     const handleAccountSelection = () => {
 
-        console.log("Accounts selection selected");
-        console.log(selectedAccount);
+        if(selectedAccount.length>0){
+            accountsToAdd.current = {type:"single",data:[selectedAccount]};
+            onSuccessHandler();
+        }
 
-        accountsToAdd.current = {type:"single",data:[selectedAccount]};
-        onSuccessHandler();
+
     }
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {

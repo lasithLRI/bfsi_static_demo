@@ -34,11 +34,7 @@ import type {SelectedAccountEntry} from "./accounts-selection-two-page.tsx";
 
 const AccountsAuthorizationTwoPage = ()=>{
 
-    const { onSuccessHandler,navigationData, accountsToAdd } = useOutletContext<OutletContext>();
-
-    console.log(navigationData)
-    console.log(accountsToAdd)
-    console.log("============*============")
+    const { onSuccessHandler, accountsToAdd } = useOutletContext<OutletContext>();
 
     return(
         <>
@@ -51,17 +47,13 @@ const AccountsAuthorizationTwoPage = ()=>{
                         <FormLabel id={"check-box-group"}>Select your account to add from the list</FormLabel>
                     </FormControl>
                     <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                        <FormControlLabel control={<Switch id={"account-one"}/>} label={"Recurring"} labelPlacement={'start'}/>
+                        <FormControlLabel control={<Switch id={"account-one"} checked disabled={true}/>} label={"Recurring"} labelPlacement={'start'}/>
                         <p>Frequency : 4 Days</p>
                     </Box>
 
                     <FormControl sx={{display:'flex', flexDirection:'column', marginTop:'5%', height:'16rem', overflowY:'auto'}}>
 
                         {accountsToAdd.current.data[0].map((account:SelectedAccountEntry,index:number)=>{
-
-
-                            console.log("========")
-                            console.log(account)
 
                             return (
                                 <Box key={index} sx={{display:'flex', flexDirection:'column'}}>

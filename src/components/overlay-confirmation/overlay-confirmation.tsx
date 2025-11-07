@@ -21,31 +21,34 @@
 
 import '../components.scss'
 import {Box, Button, Card} from "@oxygen-ui/react";
-import type {PaymentFormData} from "../../pages/payments-page/payment-form/payment-form.tsx";
 
 interface ConfirmationOverlayProps {
-    data: PaymentFormData | null;
     onConfirm: () => void;
-    onCancel: () => void;
+    onCancel?: () => void;
+    title?: string;
+    content?: string;
+    mainButtonText?: string;
+    secondaryButtonText?: string;
 }
 
-const OverlayConfirmationComponent: React.FC<ConfirmationOverlayProps> = ({data, onConfirm, onCancel}) =>{
+const OverlayConfirmationComponent: React.FC<ConfirmationOverlayProps> = ({onConfirm, onCancel, title,content, mainButtonText,secondaryButtonText}) =>{
+
+    const shouldShowSecondaryButton = !!secondaryButtonText;
+
     return (
         <>
             <div className="overlay-outer">
                 <Card className="overlay-inner">
-                    <h4>Confirm Payment</h4>
-                    <p>Are you sure you want to proceed with the payment of
-                        <strong>{data?.amount}</strong> in
-                        <strong>{data?.currency}</strong>
-                    </p>
+                    <h4>{title}</h4>
+                    <p>{content}</p>
 
                     <Box className="button-container">
-                        <Button variant={"contained"} onClick={onConfirm}>Confirm</Button>
-                        <Button variant={"outlined"} onClick={onCancel}>cancel</Button>
+                        <Button variant={"contained"} onClick={onConfirm}>{mainButtonText}</Button>
+                        {shouldShowSecondaryButton &&
+                            <Button variant={"outlined"} onClick={onCancel} >{secondaryButtonText}</Button>
+                        }
                     </Box>
                 </Card>
-
             </div>
         </>
     );

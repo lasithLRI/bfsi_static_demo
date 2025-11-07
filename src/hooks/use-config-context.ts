@@ -63,6 +63,19 @@ export interface BanksWithAccounts{
     total: number;
 }
 
+export interface OverlayDataProp{
+    flag: boolean;
+    overlayData:OverlayData;
+}
+
+export interface OverlayData{
+    title: string;
+    context: string;
+    mainButtonText: string;
+    secondaryButtonText: string;
+    onMainButtonClick: () => void;
+}
+
 
 
 const LATEST_TRANSACTION_COUNT = 4;
@@ -91,6 +104,11 @@ const useConfigContext = () => {
     const [payeesData, setPayeesData] = useState<Payee[]>([]);
     const [useCasesData, setUseCasesData] = useState<Type[]>([]);
     const [allBanks, setAllBanks] = useState<Bank[]>([]);
+    const [overlayInformation, setOverlayInformation] = useState<OverlayDataProp>({flag:false,overlayData:{context:"",secondaryButtonText:"",mainButtonText:"",title:"",onMainButtonClick:()=>{}}});
+
+    const handleOverlay = ()=>{
+        setOverlayInformation({flag:false,overlayData:{context:"",secondaryButtonText:"",mainButtonText:"",title:"",onMainButtonClick:()=>{}}});
+    }
 
 
 
@@ -162,7 +180,8 @@ const useConfigContext = () => {
                 config = newConfig as Config;
                 window.history.replaceState({}, document.title, location.pathname);
                 updateSessionStorage(config);
-                location.state.operationState = null
+                location.state.operationState = null;
+                setOverlayInformation({flag:true,overlayData:{context:"Payment Done",secondaryButtonText:"",mainButtonText:"Ok",title:"Payment Done Successfully", onMainButtonClick:handleOverlay}});
 
 
             }else if(location.state.operationState && location.state.operationState.type === "single"){
@@ -196,6 +215,7 @@ const useConfigContext = () => {
 
                 updateSessionStorage(config);
                 location.state.operationState = null
+                setOverlayInformation({flag:true,overlayData:{context:"Single Account Added Done",secondaryButtonText:"",mainButtonText:"Ok",title:"Account added Successfully",onMainButtonClick:handleOverlay}});
 
 
             }else if (location.state.operationState && location.state.operationState.type === "multiple"){
@@ -257,6 +277,7 @@ const useConfigContext = () => {
                 updateSessionStorage(config);
                 window.history.replaceState({}, document.title, location.pathname);
                 location.state.operationState = null
+                setOverlayInformation({flag:true,overlayData:{context:"Multiple Accounts added Successfully",secondaryButtonText:"",mainButtonText:"Ok",title:"Multiple Accounts add Successfully",onMainButtonClick:handleOverlay}});
             }
 
         }
@@ -299,7 +320,7 @@ const useConfigContext = () => {
         setAllBanks(config.banks ?? []);
 
 
-    }, [configData,location]);
+    }, [configData,location,overlayInformation]);
 
     console.log(transactionDatas)
 
@@ -317,6 +338,7 @@ const useConfigContext = () => {
         payeesData: payeesData,
         useCases: useCasesData,
         banksList: allBanks,
+        overlayInformation: overlayInformation,
     };
 };
 

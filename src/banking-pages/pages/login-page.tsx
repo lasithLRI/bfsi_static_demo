@@ -21,6 +21,7 @@
 import {Box, Button, FormControl, Grid, OutlinedInput} from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
 import {Controller, useForm} from "react-hook-form";
+import {ErrorMessage} from "../../pages/payments-page/payment-form/payment-form.tsx";
 
 export interface OutletContext{
     onSuccessHandler : () => void;
@@ -45,18 +46,25 @@ const LoginPage = ()=>{
         }
     })
 
-    const onSubmit = ()=>{
+    const onSubmitHandler = (data:loginformData)=>{
         console.log("Submitting...")
+
+        if (data.email === 'john@gmail.com' && data.password !== ''){
+            onSuccessHandler();
+        }else{
+             alert('wrong email or password')
+        }
+
     }
 
     return (
         <>
             <Grid container className={'login-container'}>
                 <h3>Login Page</h3>
-                <form onSubmit={handleSubmit(onSubmit)} className={"form-input"}>
+                <form onSubmit={handleSubmit(onSubmitHandler)} className={"form-input"}>
                     <FormControl fullWidth={true} margin={'normal'} >
                         <label>Email</label>
-                        <Controller name={'email'} control={control} render={({field}) => (
+                        <Controller name={'email'} control={control} rules={{required:'Email address required'}} render={({field}) => (
                             <OutlinedInput
                                 {...field}
                                 placeholder={"Enter your email"}
@@ -64,22 +72,24 @@ const LoginPage = ()=>{
                                 error={!!errors.email}
                             />
                         )}/>
+                        <ErrorMessage error={errors.email}/>
                     </FormControl>
 
                     <FormControl fullWidth={true} margin={'normal'} >
                         <label>password</label>
-                        <Controller name={'password'} control={control} render={({field}) => (
+                        <Controller name={'password'} control={control} rules={{required:'Password required to proceed'}} render={({field}) => (
                             <OutlinedInput
                                 {...field}
                                 placeholder={"Enter your password"}
                                 type={"password"}
-                                error={!!errors.email}
+                                error={!!errors.password}
                             />
                         )}/>
+                        <ErrorMessage error={errors.password}/>
                     </FormControl>
 
                     <Box sx={{marginTop:'1rem', display:'flex', justifyContent:'end', gap:'1rem'}}>
-                        <Button variant={'contained'} onClick={onSuccessHandler} sx={{width:'6rem',height:'3rem'}}>Login</Button>
+                        <Button variant={'contained'} sx={{width:'6rem',height:'3rem'}} type={'submit'}>Login</Button>
                         <Button variant={'outlined'} sx={{width:'6rem',height:'3rem'}}>Cancel</Button>
                     </Box>
                 </form>

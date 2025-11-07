@@ -68,14 +68,12 @@ const AccountsSelectionTwoPage = ()=>{
 
     const handleSubmit = () => {
 
-        console.log("Final Selected Accounts with Permissions:", selectedData);
-
-        accountsToAdd.current = {type:"multiple",data:[selectedData]};
-
-        console.log("================================**")
-        console.log(accountsToAdd)
-
-        onSuccessHandler();
+        if(selectedData.length>0){
+            accountsToAdd.current = {type:"multiple",data:[selectedData]};
+            onSuccessHandler();
+        }else{
+            alert("You must select account to add")
+        }
     };
 
     return(

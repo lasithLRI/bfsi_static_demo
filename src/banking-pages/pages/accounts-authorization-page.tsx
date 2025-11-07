@@ -24,12 +24,15 @@ import type {OutletContext} from "./login-page.tsx";
 
 const AccountsAuthorizationPage = ()=>{
 
-    const { onSuccessHandler,navigationData, accountsToAdd } = useOutletContext<OutletContext>();
+    const { onSuccessHandler, accountsToAdd } = useOutletContext<OutletContext>();
 
     const permissions = ["Read the accounts balances","Read defaults","Write the accounts balance","Write defaults"];
 
-    console.log(accountsToAdd)
-    console.log(navigationData)
+    const getFutureDate = () => {
+        const futureDate = new Date();
+        futureDate.setMonth(futureDate.getMonth() + 2);
+        return futureDate.toLocaleDateString();
+    };
 
     return(
         <>
@@ -48,7 +51,7 @@ const AccountsAuthorizationPage = ()=>{
                         })}
                     </List>
 
-                    <p>Sharing Period : {new Date().toLocaleDateString()}</p>
+                    <p>Sharing Period : {getFutureDate()}</p>
 
                     <Box sx={{marginTop:'20%'}}>
                         <Button variant={'contained'} onClick={onSuccessHandler}>Success</Button>

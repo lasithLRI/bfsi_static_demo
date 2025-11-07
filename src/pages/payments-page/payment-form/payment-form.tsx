@@ -35,7 +35,7 @@ export interface PaymentFormData {
     userAccount: string;
     payeeAccount: string;
     currency: string;
-    amount: number| string;
+    amount: number;
     reference: string;
     appInfo: AppInfo;
 }
@@ -49,6 +49,11 @@ interface PaymentFormProps {
 
 const currency = ["GBP","EURO","USD"]
 
+export const ErrorMessage = ({error}:{error:any})=>{
+    if (!error)return null;
+
+    return <p className={"error-message-payments"}>{error.message}</p>
+}
 
 const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:PaymentFormProps) => {
 
@@ -72,7 +77,6 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
     const [formDataToSubmit, setFormDataToSubmit] = useState<PaymentFormData | null>(null)
 
     const onSubmit = (data: PaymentFormData) => {
-        console.log(data);
         setFormDataToSubmit(data);
         setIsConfirming(true);
 
@@ -80,21 +84,16 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
 
     const handleConfirmedAndRedirect = () => {
         if (formDataToSubmit){
-            console.log("Submitting data and redirecting:", formDataToSubmit);
             setIsConfirming(false);
 
             const bankName = formDataToSubmit.userAccount.split('-')[0];
-            console.log("=================++++++++++++++++")
-            console.log(bankName)
+
 
             const target = appInfo.banksInfo.find((bank)=>{
                 return bank.name === bankName;
             })
 
-            console.log(target)
-
             const relaventBank = banksList.find((bank)=>{return bank.name === bankName})
-            console.log(relaventBank)
 
             navigate("/"+target?.route+"/login?type=payment",{
                 state:{
@@ -112,6 +111,8 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
         setFormDataToSubmit(null);
     }
 
+    const paymentConfirmationMsg = `Are you sure you want to proceed with the payment of ${formDataToSubmit?.currency} ${formDataToSubmit?.amount} to payee ${formDataToSubmit?.payeeAccount}? `
+
     return (
         <>
             <h2 className={"payment-form-heading"}>Payment Information</h2>
@@ -119,7 +120,7 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
 
                 <FormControl fullWidth={true} margin={'dense'}>
                     <label>User Account</label>
-                    <Controller name={'userAccount'} control={control} render={({field}) => (
+                    <Controller name={'userAccount'} control={control} rules={{required: 'User required'}} render={({field}) => (
                         <Select {...field}
                                 displayEmpty
                                 renderValue={(value) => {
@@ -140,12 +141,13 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
                             )}
                         </Select>
                     )}/>
+                    <ErrorMessage error={errors.userAccount}/>
                 </FormControl>
 
 
                 <FormControl fullWidth={true} margin={'dense'}>
                     <label>Payee Account</label>
-                    <Controller name={'payeeAccount'} control={control} render={({field}) => (
+                    <Controller name={'payeeAccount'} control={control} rules={{required:'Payee required'}} render={({field}) => (
                         <Select {...field}
                                 displayEmpty
                                 renderValue={(value) => {
@@ -163,12 +165,13 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
                             ))}
                         </Select>
                     )}/>
+                    <ErrorMessage error={errors.payeeAccount}/>
                 </FormControl>
 
                 <div style={{display: 'flex',gap:'1rem'}}>
                     <FormControl fullWidth={true} margin={'dense'}>
                         <label>Currency</label>
-                        <Controller name={'currency'} control={control} render={({field}) => (
+                        <Controller name={'currency'} control={control} rules={{required:'Currency must select'}} render={({field}) => (
 
                             <Select {...field}
                                     displayEmpty
@@ -188,11 +191,15 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
                                 ))}
                             </Select>
                         )}/>
+                        <ErrorMessage error={errors.currency}/>
                     </FormControl>
 
                     <FormControl fullWidth={true} margin={'dense'}>
                         <label>Amount</label>
-                        <Controller name={'amount'} control={control} render={({field}) => (
+                        <Controller name={'amount'} control={control} rules={{required:'Add amount to transfer',min: {
+                                value: 0.01,
+                                message: 'Amount must be greater than 0.00'
+                            }}} render={({field}) => (
                             <NumericFormat
                                 {...field}
                                 value={field.value === 0 ? '' : field.value}
@@ -211,12 +218,13 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
                                 type="text"
                             />
                         )}/>
+                        <ErrorMessage error={errors.amount}/>
                     </FormControl>
                 </div>
 
                 <FormControl fullWidth={true} margin={'dense'} sx={{height: '10vh'}}>
                     <label>Reference</label>
-                    <Controller name={'reference'} control={control} render={({field}) => (
+                    <Controller name={'reference'} control={control} rules={{required:'Reference need to be added'}} render={({field}) => (
                         <OutlinedInput
                             {...field}
                             placeholder={"Enter your reference"}
@@ -224,6 +232,7 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
                             error={!!errors.reference}
                         />
                     )}/>
+                    <ErrorMessage error={errors.reference}/>
                 </FormControl>
                 <Box className={"payment-button-container"} flexDirection={responsiveDirection}>
                     <FormControl fullWidth={true} margin={'dense'}>
@@ -235,7 +244,7 @@ const PaymentForm = ({appInfo,banksWithAllAccounts, payeeData, banksList}:Paymen
                 </Box>
 
                 {isConfirming && (
-                    <OverlayConfirmation data={formDataToSubmit} onConfirm={handleConfirmedAndRedirect} onCancel={handleCancelConfirmation}/>
+                    <OverlayConfirmation title={"Payment Confirmation"} content={paymentConfirmationMsg} onConfirm={handleConfirmedAndRedirect} onCancel={handleCancelConfirmation} mainButtonText={"Confirm"} secondaryButtonText={"Cancel"}/>
                 )}
 
             </form>

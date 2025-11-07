@@ -21,6 +21,7 @@
 import {Box, Button, FormControl, Grid, OutlinedInput} from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
 import {Controller, useForm} from "react-hook-form";
+import {ErrorMessage} from "../../pages/payments-page/payment-form/payment-form.tsx";
 
 export interface OutletContext{
     onSuccessHandler : () => void;
@@ -31,9 +32,7 @@ interface loginformData{
     email: string;
 }
 
-// interface LoginPageProps {
-//     onSuccessHandler:()=>void;
-// }
+
 const LoginWithEmailPage = ()=>{
 
     const { onSuccessHandler, } = useOutletContext<OutletContext>();
@@ -43,8 +42,14 @@ const LoginWithEmailPage = ()=>{
         }
     })
 
-    const onSubmit = ()=>{
-        console.log("Submitting...")
+    const onSubmit = (data:loginformData)=>{
+        if (data.email === 'john@gmail.com'){
+            onSuccessHandler()
+        }else{
+            alert("Email not matched")
+        }
+
+
     }
 
     return (
@@ -62,16 +67,15 @@ const LoginWithEmailPage = ()=>{
                                 error={!!errors.email}
                             />
                         )}/>
+                        <ErrorMessage error={errors.email}/>
                     </FormControl>
 
                     <Box sx={{marginTop:'1rem', display:'flex', justifyContent:'end', gap:'1rem'}}>
-                        <Button variant={'contained'} onClick={onSuccessHandler} sx={{width:'6rem',height:'3rem'}}>Login</Button>
+                        <Button variant={'contained'} type={'submit'} sx={{width:'6rem',height:'3rem'}}>Login</Button>
                         <Button variant={'outlined'} sx={{width:'6rem',height:'3rem'}}>Cancel</Button>
                     </Box>
                 </form>
             </Grid>
-
-
         </>
     )
 }

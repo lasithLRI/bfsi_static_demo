@@ -21,6 +21,12 @@
 import {Box, Button, FormControl, Grid, OutlinedInput} from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
+import {Controller, useForm} from "react-hook-form";
+import {ErrorMessage} from "../../pages/payments-page/payment-form/payment-form.tsx";
+
+interface OtpFormData{
+    code:string;
+}
 
 const OtpPage = ()=>{
 
@@ -28,24 +34,46 @@ const OtpPage = ()=>{
 
     console.log(navigationData)
 
+    const {control,handleSubmit,formState:{errors}} = useForm<OtpFormData>({
+        defaultValues:{
+            code:''
+        }
+    })
+
+    const onSubmitHandler=(data:OtpFormData)=>{
+        if(data.code==='55555'){
+            onSuccessHandler()
+        }else{
+            alert("Check your Otp and re-enter")
+        }
+
+    }
+
     return(
         <>
             <Grid container className={'payments-outer-container'}>
                 SMS Authentication
 
                 <Grid className={"form-input"}>
-                    <FormControl fullWidth={true} margin={'normal'} >
-                        <label>OTP code</label>
-                        <OutlinedInput
-                            placeholder={"Enter your email"}
-                            type={"number"}
-                        />
-                    </FormControl>
+                    <form onSubmit={handleSubmit(onSubmitHandler)}>
+                        <FormControl fullWidth={true} margin={'normal'} >
+                            <label>OTP code</label>
+                            <Controller name={'code'} control={control} rules={{required:'Email address required'}}  render={({field}) => (
+                                <OutlinedInput
+                                    {...field}
+                                    placeholder={"Enter otp"}
+                                    type={"text"}
+                                    error={!!errors.code}
+                                />
+                            )}/>
+                            <ErrorMessage error={errors.code}/>
+                        </FormControl>
 
-                    <Box sx={{marginTop:'60%'}}>
-                        <Button variant={'contained'} onClick={onSuccessHandler}>Success</Button>
-                        <Button variant={'outlined'} >Cancel</Button>
-                    </Box>
+                        <Box sx={{marginTop:'60%'}}>
+                            <Button variant={'contained'} type={'submit'}>Success</Button>
+                            <Button variant={'outlined'} >Cancel</Button>
+                        </Box>
+                    </form>
                 </Grid>
             </Grid>
 

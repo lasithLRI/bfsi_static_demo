@@ -18,7 +18,7 @@
  *
  */
 
-import {Box, Button, Grid, Typography,} from "@oxygen-ui/react";
+import {Box, Button, Grid, List, ListItem, Typography,} from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import '../banking.scss'
@@ -32,13 +32,19 @@ const PaymentConfirmationPage = ()=>{
     return(
         <>
             <Grid container className={'payments-outer-container'}>
-                Payment Information
+                Please authorize following payment:
 
                 <Grid className={"payment-info-container"}>
 
-                   <Box sx={{width:'80%'}}>
+                   <Box sx={{width:'80%', marginTop:'2rem'}}>
                         <Typography>
-                            survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+                                <p>Debited Account : {navigationData.current.formData.userAccount}</p>
+                                <List>
+                                    <ListItem>Amount : {navigationData.current.formData?.amount}</ListItem>
+                                    <ListItem>Currency : {navigationData.current.formData?.currency}</ListItem>
+                                    <ListItem>Payee : {navigationData.current.formData?.payeeAccount}</ListItem>
+                                    <ListItem>Reference : {navigationData.current.formData?.reference}</ListItem>
+                                </List>
                         </Typography>
                    </Box>
 

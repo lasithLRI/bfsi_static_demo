@@ -43,7 +43,7 @@ import AccountsAuthorizationTwoPage from "./banking-pages/pages/accounts-authori
  */
 function App() {
 
-    const {appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList,payeesData,useCases,banksList} = useConfigContext();
+    const {overlayInformation,appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList,payeesData,useCases,banksList} = useConfigContext();
     console.log("appInfo",useCases);
 
     if (!appInfo) {
@@ -70,6 +70,7 @@ function App() {
                                          standingOrderList={standingOrderList}
                                          appInfo={appInfo}
                                          banksList={banksList}
+                                         overlayInformation={overlayInformation}
                                    />
                                }/>
                         <Route path="payments" element={<PaymentsPage banksList={banksList} payeeData={payeesData} banksWithAccounts={banksWithAccounts} appInfo={appInfo}/>}/>
