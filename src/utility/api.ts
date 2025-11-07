@@ -23,7 +23,7 @@
  * It uses the native `fetch` API, prepends the `baseUrl` to all endpoints,
  * and includes basic error handling for network issues and bad HTTP status codes.
  */
-const baseUrl = '/configurations';
+const baseUrl = '/bfsi_static_demo/configurations';
 
 /**
  * Asynchronously fetches JSON data from a specific API endpoint.
