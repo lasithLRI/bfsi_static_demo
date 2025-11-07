@@ -33,13 +33,14 @@ const BankingOuterLayout = ({children, image}:BankingOuterLayoutProps)=>{
     return(
         <>
             <Grid container className="banks-pages-inner-container">
-                <Box className="banking-logo-container">
-                    <img src={image} alt="" style={{width:'100%', height:'100%'}} />
-                </Box>
-
-                <Grid sx={{width:'100%',display:'flex',flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
-                    {children}
-                </Grid>
+                    <Grid  >
+                        <Box className="banking-logo-container">
+                            <img src={image} alt="" style={{width:'100%', height:'100%'}} />
+                        </Box>
+                    </Grid>
+                    <Grid sx={{width:'100%',display:'flex',flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
+                        {children}
+                    </Grid>
             </Grid>
 
 

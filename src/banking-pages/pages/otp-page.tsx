@@ -52,13 +52,13 @@ const OtpPage = ()=>{
     return(
         <>
             <Grid container className={'payments-outer-container'}>
-                <h3>SMS Authentication</h3>
+                SMS Authentication
 
                 <Grid className={"form-input"}>
                     <form onSubmit={handleSubmit(onSubmitHandler)}>
                         <FormControl fullWidth={true} margin={'normal'} >
-                            <label>OTP code:</label>
-                            <Controller name={'code'} control={control} rules={{required:'OTP verification required'}}  render={({field}) => (
+                            <label>OTP code</label>
+                            <Controller name={'code'} control={control} rules={{required:'Email address required'}}  render={({field}) => (
                                 <OutlinedInput
                                     {...field}
                                     placeholder={"Enter otp"}
@@ -69,8 +69,8 @@ const OtpPage = ()=>{
                             <ErrorMessage error={errors.code}/>
                         </FormControl>
 
-                        <Box sx={{marginTop:'40%', display:'flex',justifyContent:'end',gap:'1rem'}}>
-                            <Button variant={'contained'} type={'submit'}>Confirm</Button>
+                        <Box sx={{marginTop:'60%'}}>
+                            <Button variant={'contained'} type={'submit'}>Success</Button>
                             <Button variant={'outlined'} >Cancel</Button>
                         </Box>
                     </form>

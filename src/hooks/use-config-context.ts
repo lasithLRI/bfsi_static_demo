@@ -81,9 +81,11 @@ export interface OverlayData{
 const LATEST_TRANSACTION_COUNT = 4;
 
 const useConfigContext = () => {
-    const { data: configData } = useConfig() ;
+    const { data: configData, isLoading } = useConfig() ;
 
     const location = useLocation();
+
+    console.log("configData:", configData, "isLoading:", isLoading);
 
     const [totalsOfBanks, setTotalsOfBanks] = useState<BankWithTotal[]>([]);
     const [chartDatas, setChartDatas] = useState<ChartData>({
@@ -126,7 +128,7 @@ const useConfigContext = () => {
         }
 
         if (location.state != null){
-
+            console.log("location.state:", location.state);
             if (location.state.operationState && location.state.operationState.type === "payment") {
                 const newTransactionData = location.state.operationState.data;
 
@@ -139,6 +141,8 @@ const useConfigContext = () => {
                 const transactionAmount = parseFloat(newTransactionData.amount);
                 newTransactionData.Amount = parseFloat(newTransactionData.amount);
 
+                console.log(newTransactionData.Account)
+                console.log("newTransactionData:", newTransactionData);
                 const sourceBankName = newTransactionData.bank;
                 const sourceAccountNumber = newTransactionData.Account;
 
@@ -173,14 +177,11 @@ const useConfigContext = () => {
                     }
                 })
 
-
-                const paymentConfirmationText = `Payment of ${newTransactionData.Amount} ${newTransactionData.Currency} from account ${sourceAccountNumber} completed successfully.`;
-
                 config = newConfig as Config;
                 window.history.replaceState({}, document.title, location.pathname);
                 updateSessionStorage(config);
                 location.state.operationState = null;
-                setOverlayInformation({flag:true,overlayData: {context:paymentConfirmationText,secondaryButtonText:"",mainButtonText:"Ok",title:"Payment Done Successfully", onMainButtonClick:handleOverlay}});
+                setOverlayInformation({flag:true,overlayData:{context:"Payment Done",secondaryButtonText:"",mainButtonText:"Ok",title:"Payment Done Successfully", onMainButtonClick:handleOverlay}});
 
 
             }else if(location.state.operationState && location.state.operationState.type === "single"){
