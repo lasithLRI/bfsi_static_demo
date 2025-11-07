@@ -32,8 +32,8 @@ const BankingOuterLayout = ({children, image}:BankingOuterLayoutProps)=>{
 
     return(
         <>
-            <Grid container className="banks-pages-inner-container" md={12} xs={12} sm={12}>
-                    <Grid sx={{justifyContent:'center', display:'flex', alignContent:'center'}} md={12} xs={12} sm={12} >
+            <Grid container className="banks-pages-inner-container">
+                    <Grid  >
                         <Box className="banking-logo-container">
                             <img src={image} alt="" style={{width:'100%', height:'100%'}} />
                         </Box>
