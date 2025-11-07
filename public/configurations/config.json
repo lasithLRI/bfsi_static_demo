@@ -2,7 +2,7 @@
   "user": {
     "name": "James Smith",
     "image": "/bfsi_static_demo/resources/assets/images/profile/dp-image.webp",
-    "background":"/bfsi_static_demo/resources/assets/images/background/bg-image.webp"
+    "background":"/bfsi_static_demo/resources/assets/images/background/bg_image.webp"
   },
   "name": {
     "route": "accounts-central",
