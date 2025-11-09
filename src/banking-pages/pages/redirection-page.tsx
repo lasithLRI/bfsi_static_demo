@@ -23,6 +23,7 @@ import {useNavigate, useOutletContext} from "react-router-dom";
 import {useEffect} from "react";
 import type {OutletContext} from "./login-page.tsx";
 import type { AppInfo } from "../../hooks/config-interfaces.ts";
+import { queryClient } from "../../utility/query-client.ts";
 
 interface RedirectionPageProps {
     appConfig: AppInfo
@@ -87,15 +88,29 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
 
 
     const navigate = useNavigate();
+    
+    const BASE_URL = "/bfsi_static_demo/";
 
 
     useEffect(() => {
         const timer = setTimeout(()=>{
-            navigate(`/bfsi_static_demo/#/${appConfig.route}/home`,{
-                state:{
-                    operationState : state
-                }
-            })
+            // navigate(`/bfsi_static_demo/#/${appConfig.route}/home`,{
+            //     state:{
+            //         operationState : state
+            //     }
+            // })
+
+            queryClient.setQueryData(['redirectState'], state);
+
+            const routePath = appConfig.route.startsWith('/') ? appConfig.route.substring(1) : appConfig.route;
+            const targetPath = `${BASE_URL}#/${routePath}/home`;
+
+            const fullRedirectURL = window.location.origin + targetPath;
+
+            window.location.replace(fullRedirectURL);
+
+
+
         },1000);
         return () => clearTimeout(timer);
     }, [navigate,appConfig.route,state]);
@@ -109,3 +124,6 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
 }
 
 export default RedirectionPage;
+
+
+

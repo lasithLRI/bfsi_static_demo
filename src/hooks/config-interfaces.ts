@@ -109,3 +109,34 @@ export interface Config {
     standingOrders: StandingOrders[];
     types: Type[];
 }
+
+interface PaymentData {
+    type: "payment";
+    data: { 
+        id: string; 
+        amount: string; 
+        currency: string; 
+        account:string;
+        bank:string;
+        date:string;
+        reference:string;
+    };
+}
+
+interface SingleAccountState {
+    type: "single";
+    data: { 
+        accountDetails: any; 
+        bankInfo: string; 
+    };
+}
+
+interface MultipleAccountState {
+    type: "multiple";
+    data: { 
+        accountDetails: any; 
+        bankInfo: string; 
+    };
+}
+
+export type OperationState = PaymentData | SingleAccountState | MultipleAccountState;

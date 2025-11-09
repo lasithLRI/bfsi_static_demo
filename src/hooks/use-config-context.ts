@@ -24,6 +24,7 @@ import type {
     AppInfo,
     Bank,
     Config,
+    OperationState,
     Payee,
     StandingOrders,
     TransactionData, Type,
@@ -112,6 +113,11 @@ const useConfigContext = () => {
     }
 
 
+    const redirectState = queryClient.getQueryData<OperationState>(['redirectState']);
+
+    console.log(redirectState);
+    
+
 
     useEffect(() => {
         if (!configData) return;
@@ -128,24 +134,24 @@ const useConfigContext = () => {
             }
         }
 
-        if (location.state != null){
+        if (location.state != null || redirectState != null) {
             console.log("location.state:", location.state);
-            if (location.state.operationState && location.state.operationState.type === "payment") {
-                const newTransactionData = location.state.operationState.data;
+            if (redirectState?.type === "payment") {
+                const newTransactionData = redirectState.data;
 
                 const fullAccountNumber = newTransactionData.account;
                 const firstHyphenIndex = fullAccountNumber.indexOf('-');
-                newTransactionData.Account = fullAccountNumber.substring(firstHyphenIndex + 1);
+                newTransactionData.account = fullAccountNumber.substring(firstHyphenIndex + 1);
 
-                newTransactionData.Currency = newTransactionData.currency;
+                newTransactionData.currency = newTransactionData.currency;
 
                 const transactionAmount = parseFloat(newTransactionData.amount);
-                newTransactionData.Amount = parseFloat(newTransactionData.amount);
+                // newTransactionData.amount = parseFloat(newTransactionData.amount);
 
-                console.log(newTransactionData.Account)
+                console.log(newTransactionData.account)
                 console.log("newTransactionData:", newTransactionData);
                 const sourceBankName = newTransactionData.bank;
-                const sourceAccountNumber = newTransactionData.Account;
+                const sourceAccountNumber = newTransactionData.account;
 
 
 
@@ -183,7 +189,7 @@ const useConfigContext = () => {
                 config = newConfig as Config;
                 window.history.replaceState({}, document.title, location.pathname);
                 updateSessionStorage(config);
-                location.state.operationState = null;
+                
                 setOverlayInformation({flag:true,overlayData:{context:paymentOverlayText, secondaryButtonText:"",mainButtonText:"Done",title:"Payment Successfull", onMainButtonClick:handleOverlay}});
 
 
@@ -284,6 +290,12 @@ const useConfigContext = () => {
             }
 
         }
+
+
+        queryClient.removeQueries({ queryKey: ['redirectState']});
+
+        console.log(config);
+        
 
         const totals = config.banks.map((bank) => {
             const total = config.accounts
