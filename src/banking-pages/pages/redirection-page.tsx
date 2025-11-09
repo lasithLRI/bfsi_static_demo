@@ -91,7 +91,7 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
 
     useEffect(() => {
         const timer = setTimeout(()=>{
-            navigate(`/${appConfig.route}/home`,{
+            navigate(`/bfsi_static_demo/#/${appConfig.route}/home`,{
                 state:{
                     operationState : state
                 }
