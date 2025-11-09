@@ -24,6 +24,7 @@ import {useEffect} from "react";
 import type {OutletContext} from "./login-page.tsx";
 import type { AppInfo } from "../../hooks/config-interfaces.ts";
 import { queryClient } from "../../utility/query-client.ts";
+import { baseUrl } from "../../utility/api.ts";
 
 interface RedirectionPageProps {
     appConfig: AppInfo
@@ -88,8 +89,6 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
 
 
     const navigate = useNavigate();
-    
-    const BASE_URL = "/bfsi_static_demo/";
 
 
     useEffect(() => {
@@ -103,9 +102,9 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
             queryClient.setQueryData(['redirectState'], state);
 
             const routePath = appConfig.route.startsWith('/') ? appConfig.route.substring(1) : appConfig.route;
-            const targetPath = `${BASE_URL}#/${routePath}/home`;
+            const targetHashPath = `#/${routePath}/home`;
 
-            const fullRedirectURL = window.location.origin + targetPath;
+           const fullRedirectURL = baseUrl + targetHashPath;
 
             window.location.replace(fullRedirectURL);
 
