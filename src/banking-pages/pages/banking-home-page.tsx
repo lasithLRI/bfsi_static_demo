@@ -19,19 +19,17 @@
  */
 
 import {useSearchParams, useNavigate, Outlet, useLocation} from "react-router-dom";
-import {Button, Grid,} from "@oxygen-ui/react";
-import type {AppInfo, DynamicBanks, Type} from "../../hooks/config-interfaces.ts";
 import {useBankNavigationHook} from "../banking-hooks/use-bank-navigation-hook.ts";
 import {useEffect, useRef} from "react";
 import '../banking.scss'
 import BankingOuterLayout from "../banking-layouts/banking-outer-layout.tsx";
 import BankingMainContentLayout from "../banking-layouts/banking-main-content-layout.tsx";
+import type { DynamicBanks, Type } from "../../hooks/config-interfaces.ts";
 
 
 export interface BankingHomePageProps {
     useCases: Type[];
     bank: DynamicBanks
-    appInfo: AppInfo
 }
 
 export interface  accountsToAddContent {

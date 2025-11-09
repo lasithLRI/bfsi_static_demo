@@ -83,7 +83,7 @@ export function App() {
 
 
                 {appInfo.banksInfo.map((bank,index)=>(
-                    <Route key={index} path={`/${bank.route}/*`} element={<BankingHomePage appInfo={appInfo} useCases={useCases} bank={bank}/>}>
+                    <Route key={index} path={`/${bank.route}/*`} element={<BankingHomePage useCases={useCases} bank={bank}/>}>
                         <Route path={"login"} element={<LoginPage />}/>
                         <Route path={"otp"} element={<OtpPage />}/>
                         <Route path={"payment-confirmation"} element={<PaymentConfirmationPage/>}/>
