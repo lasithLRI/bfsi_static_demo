@@ -18,18 +18,20 @@
  *
  */
 
-import {Box, Button, FormControl, Grid, OutlinedInput} from "@oxygen-ui/react";
-import {useOutletContext} from "react-router-dom";
-import {Controller, useForm} from "react-hook-form";
-import {ErrorMessage} from "../../pages/payments-page/payment-form/payment-form.tsx";
+import { Box, Button, FormControl, Grid, OutlinedInput, useTheme } from "@oxygen-ui/react";
+import { useOutletContext } from "react-router-dom";
+import { Controller, useForm } from "react-hook-form";
+import { ErrorMessage } from "../../pages/payments-page/payment-form/payment-form.tsx";
+import './inner-pages-stylings.scss'
+import { useMediaQuery } from "@mui/material";
 
-export interface OutletContext{
-    onSuccessHandler : () => void;
-    navigationData : any;
-    accountsToAdd : any;
+export interface OutletContext {
+    onSuccessHandler: () => void;
+    navigationData: any;
+    accountsToAdd: any;
 }
 
-interface loginformData{
+interface loginformData {
     email: string;
     password: string;
 }
@@ -37,62 +39,71 @@ interface loginformData{
 // interface LoginPageProps {
 //     onSuccessHandler:()=>void;
 // }
-const LoginPage = ()=>{
+const LoginPage = () => {
+
+    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
+    const responsivePadding = isSmallScreen ? '1rem' : '2rem';
 
     const { onSuccessHandler, } = useOutletContext<OutletContext>();
-    const {control, handleSubmit, formState: {errors}} = useForm<loginformData>({
-        defaultValues:{
-            email:'', password:''
+    const { control, handleSubmit, formState: { errors } } = useForm<loginformData>({
+        defaultValues: {
+            email: '', password: ''
         }
     })
 
-    const onSubmitHandler = (data:loginformData)=>{
+    const onSubmitHandler = (data: loginformData) => {
         console.log("Submitting...")
 
-        if (data.email === 'john@gmail.com' && data.password !== ''){
+        if (data.email === 'john@gmail.com' && data.password !== '') {
             onSuccessHandler();
-        }else{
-             alert('wrong email or password')
+        } else {
+            alert('wrong email or password')
         }
 
     }
 
     return (
         <>
-            <Grid container className={'login-container'}>
-                <h3>Login Page</h3>
-                <form onSubmit={handleSubmit(onSubmitHandler)} className={"form-input"}>
-                    <FormControl fullWidth={true} margin={'normal'} >
-                        <label>Email</label>
-                        <Controller name={'email'} control={control} rules={{required:'Email address required'}} render={({field}) => (
-                            <OutlinedInput
-                                {...field}
-                                placeholder={"Enter your email"}
-                                type={"text"}
-                                error={!!errors.email}
-                            />
-                        )}/>
-                        <ErrorMessage error={errors.email}/>
-                    </FormControl>
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
+                <Grid className="page-name-container">
+                    <h3>Login Page</h3>
+                </Grid>
 
-                    <FormControl fullWidth={true} margin={'normal'} >
-                        <label>password</label>
-                        <Controller name={'password'} control={control} rules={{required:'Password required to proceed'}} render={({field}) => (
-                            <OutlinedInput
-                                {...field}
-                                placeholder={"Enter your password"}
-                                type={"password"}
-                                error={!!errors.password}
-                            />
-                        )}/>
-                        <ErrorMessage error={errors.password}/>
-                    </FormControl>
+                <Grid className="form-login-one-container">
+                    <form onSubmit={handleSubmit(onSubmitHandler)}>
 
-                    <Box sx={{marginTop:'1rem', display:'flex', justifyContent:'end', gap:'1rem'}}>
-                        <Button variant={'contained'} sx={{width:'6rem',height:'3rem'}} type={'submit'}>Login</Button>
-                        <Button variant={'outlined'} sx={{width:'6rem',height:'3rem'}}>Cancel</Button>
-                    </Box>
-                </form>
+                        <FormControl fullWidth={true} margin={'normal'} >
+                            <label>Email</label>
+                            <Controller name={'email'} control={control} rules={{ required: 'Email address required' }} render={({ field }) => (
+                                <OutlinedInput
+                                    {...field}
+                                    placeholder={"Enter your email"}
+                                    type={"text"}
+                                    error={!!errors.email}
+                                />
+                            )} />
+                            <ErrorMessage error={errors.email} />
+                        </FormControl>
+
+                        <FormControl fullWidth={true} margin={'normal'} >
+                            <label>password</label>
+                            <Controller name={'password'} control={control} rules={{ required: 'Password required to proceed' }} render={({ field }) => (
+                                <OutlinedInput
+                                    {...field}
+                                    placeholder={"Enter your password"}
+                                    type={"password"}
+                                    error={!!errors.password}
+                                />
+                            )} />
+                            <ErrorMessage error={errors.password} />
+                        </FormControl>
+
+                        <Box className="form-buttons-container">
+                            <Button className="button-styles" variant={'contained'} type={'submit'}>Login</Button>
+                            <Button variant={'outlined'} className="button-styles">Cancel</Button>
+                        </Box>
+                    </form>
+                </Grid>
             </Grid>
 
 

@@ -18,17 +18,22 @@
  *
  */
 
-import {Box, Button, FormControl, Grid, OutlinedInput} from "@oxygen-ui/react";
+import {Box, Button, FormControl, Grid, OutlinedInput, useTheme} from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import {Controller, useForm} from "react-hook-form";
 import {ErrorMessage} from "../../pages/payments-page/payment-form/payment-form.tsx";
+import { useMediaQuery } from "@mui/material";
+import './inner-pages-stylings.scss';
 
 interface OtpFormData{
     code:string;
 }
 
 const OtpPage = ()=>{
+
+    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
+    const responsivePadding = isSmallScreen ? '1rem' : '2rem';
 
     const { onSuccessHandler,navigationData } = useOutletContext<OutletContext>();
 
@@ -51,11 +56,15 @@ const OtpPage = ()=>{
 
     return(
         <>
-            <Grid container className={'payments-outer-container'}>
-                SMS Authentication
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
+                <Grid className="page-name-container">
+                    <h3>SMS Authentication</h3>
+                </Grid>
+                
+                <Grid className={"form-login-one-container"}>
 
-                <Grid className={"form-input"}>
                     <form onSubmit={handleSubmit(onSubmitHandler)}>
+                        
                         <FormControl fullWidth={true} margin={'normal'} >
                             <label>OTP code</label>
                             <Controller name={'code'} control={control} rules={{required:'Email address required'}}  render={({field}) => (
@@ -69,9 +78,9 @@ const OtpPage = ()=>{
                             <ErrorMessage error={errors.code}/>
                         </FormControl>
 
-                        <Box sx={{marginTop:'60%'}}>
-                            <Button variant={'contained'} type={'submit'}>Success</Button>
-                            <Button variant={'outlined'} >Cancel</Button>
+                        <Box className="form-buttons-container">
+                            <Button variant={'contained'} className="button-styles" type={'submit'}>Confirm</Button>
+                            <Button variant={'outlined'} className="button-styles" >Cancel</Button>
                         </Box>
                     </form>
                 </Grid>

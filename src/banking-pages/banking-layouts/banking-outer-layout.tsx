@@ -18,8 +18,8 @@
  *
  */
 
-import {Box, Grid } from "@oxygen-ui/react";
-import '../banking.scss'
+import {Grid } from "@oxygen-ui/react";
+import './banking-layouts-styles.scss'
 
 interface BankingOuterLayoutProps {
     children: React.ReactNode;
@@ -33,12 +33,10 @@ const BankingOuterLayout = ({children, image}:BankingOuterLayoutProps)=>{
     return(
         <>
             <Grid container className="banks-pages-inner-container">
-                    <Grid  >
-                        <Box className="banking-logo-container">
-                            <img src={image} alt="" style={{width:'100%', height:'100%'}} />
-                        </Box>
+                    <Grid className="banking-logo-container">
+                        <img src={image} alt="" />
                     </Grid>
-                    <Grid sx={{width:'100%',display:'flex',flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
+                    <Grid className={'banking-dynemic-content'}>
                         {children}
                     </Grid>
             </Grid>

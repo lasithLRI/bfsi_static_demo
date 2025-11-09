@@ -25,6 +25,7 @@ import {useBankNavigationHook} from "../banking-hooks/use-bank-navigation-hook.t
 import {useEffect, useRef} from "react";
 import '../banking.scss'
 import BankingOuterLayout from "../banking-layouts/banking-outer-layout.tsx";
+import BankingMainContentLayout from "../banking-layouts/banking-main-content-layout.tsx";
 
 
 export interface BankingHomePageProps {
@@ -67,26 +68,13 @@ const BankingHomePage = ({ useCases,bank }: BankingHomePageProps) => {
 
     return(
         <>
-            <Grid container className={'banking-outer-layout'}>
-                <h3>{navigationData.current?.bankInfo?.name}</h3>
-                <Grid className="banking-usecase-layout">
-                    {usecasesList.map((useCase,index) => {
+            <BankingMainContentLayout usecasesList={usecasesList} selectedUsecaseIndex={selectedUsecaseIndex} usecaseSelectionHandler={usecaseSelectionHandler} bankName={bank.name}>
+                <BankingOuterLayout image={navigationData.current?.bankInfo.image}>
+                    <Outlet context={{onSuccessHandler, navigationData,accountsToAdd}} />
+                </BankingOuterLayout>
+            </BankingMainContentLayout>
 
-                       const isSelected = selectedUsecaseIndex === index;
-
-                        return (
-                            <Button key={index} variant={isSelected?'contained':'outlined'} onClick={()=>{usecaseSelectionHandler(index)}}>{useCase.title}</Button>
-                        )
-                    })}
-                </Grid>
-
-                <Grid className={'banking-inner-component-container'}>
-                    <BankingOuterLayout image={navigationData.current?.bankInfo.image}>
-                        <Outlet context={{onSuccessHandler, navigationData,accountsToAdd}} />
-                    </BankingOuterLayout>
-
-                </Grid>
-            </Grid>
+            
 
         </>
     )

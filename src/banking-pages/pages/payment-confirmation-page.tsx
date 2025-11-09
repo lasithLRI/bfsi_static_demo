@@ -18,12 +18,16 @@
  *
  */
 
-import {Box, Button, Grid, List, ListItem, Typography,} from "@oxygen-ui/react";
+import {Box, Button, Grid, List, ListItem, Typography, useTheme,} from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
-import '../banking.scss'
+import './inner-pages-stylings.scss'
+import { useMediaQuery } from "@mui/material";
 
 const PaymentConfirmationPage = ()=>{
+
+    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
+    const responsivePadding = isSmallScreen ? '1rem' : '2rem';
 
     const { onSuccessHandler,navigationData } = useOutletContext<OutletContext>();
 
@@ -31,26 +35,31 @@ const PaymentConfirmationPage = ()=>{
 
     return(
         <>
-            <Grid container className={'payments-outer-container'}>
-                Please authorize following payment:
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
 
-                <Grid className={"payment-info-container"}>
+                <Grid className="page-name-container">
+                    <h3>Please authorize following payment</h3>
+                </Grid>
+                
 
-                   <Box sx={{width:'80%', marginTop:'2rem'}}>
-                        <Typography>
-                                <p>Debited Account : {navigationData.current.formData.userAccount}</p>
-                                <List>
-                                    <ListItem>Amount : {navigationData.current.formData?.amount}</ListItem>
-                                    <ListItem>Currency : {navigationData.current.formData?.currency}</ListItem>
-                                    <ListItem>Payee : {navigationData.current.formData?.payeeAccount}</ListItem>
-                                    <ListItem>Reference : {navigationData.current.formData?.reference}</ListItem>
+                <Grid className={"form-login-one-container"}>
+
+                   <Box sx={{width:'100%', marginTop:'1rem'}}>
+            
+                                <p>Debited Account : <br />
+                                <span style={{fontWeight:'600'}}>{navigationData.current.formData.userAccount}</span></p>
+
+                                <List sx={{listStyleType: 'disc', pl: 4, display: 'flex', flexDirection: 'column', gap: '0'}}>
+                                    <ListItem sx={{display: 'list-item', padding:'0 1rem'}}>Amount : {navigationData.current.formData?.amount}</ListItem>
+                                    <ListItem sx={{display: 'list-item', padding:'0 1rem'}}>Currency : {navigationData.current.formData?.currency}</ListItem>
+                                    <ListItem sx={{display: 'list-item', padding:'0 1rem',}}>Payee : <br /><span style={{paddingLeft:'1rem', fontWeight:'600'}}>{navigationData.current.formData?.payeeAccount}</span></ListItem>
+                                    <ListItem sx={{display: 'list-item', padding:'0 1rem'}}>Reference : {navigationData.current.formData?.reference}</ListItem>
                                 </List>
-                        </Typography>
                    </Box>
 
-                    <Box sx={{marginTop:'20%', gap:'1rem',display:'flex'}}>
-                        <Button variant={'contained'} onClick={onSuccessHandler}>Confirm</Button>
-                        <Button variant={'outlined'} >Cancel</Button>
+                    <Box className="form-buttons-container">
+                        <Button variant={'contained'} onClick={onSuccessHandler} className="button-styles">Confirm</Button>
+                        <Button variant={'outlined'} className="button-styles">Cancel</Button>
                     </Box>
                 </Grid>
             </Grid>

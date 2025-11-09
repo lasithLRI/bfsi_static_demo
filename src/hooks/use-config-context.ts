@@ -31,7 +31,7 @@ import type {
 } from "./config-interfaces.ts";
 import {useLocation} from "react-router-dom";
 import {useConfig} from "./use-config.ts";
-import {queryClient} from "../main.tsx";
+import {queryClient} from "../utility/query-client.ts";
 
 
 
@@ -178,11 +178,13 @@ const useConfigContext = () => {
                     }
                 })
 
+                const paymentOverlayText = `your payment of ${newTransactionData.amount} ${newTransactionData.currency} has been successfully processed.`;
+
                 config = newConfig as Config;
                 window.history.replaceState({}, document.title, location.pathname);
                 updateSessionStorage(config);
                 location.state.operationState = null;
-                setOverlayInformation({flag:true,overlayData:{context:"Payment Done",secondaryButtonText:"",mainButtonText:"Ok",title:"Payment Done Successfully", onMainButtonClick:handleOverlay}});
+                setOverlayInformation({flag:true,overlayData:{context:paymentOverlayText, secondaryButtonText:"",mainButtonText:"Done",title:"Payment Successfull", onMainButtonClick:handleOverlay}});
 
 
             }else if(location.state.operationState && location.state.operationState.type === "single"){

@@ -42,7 +42,7 @@ import AccountsAuthorizationTwoPage from "./banking-pages/pages/accounts-authori
  * using the configured router name (accessed via `context.routerName.route`).
  * It then defines **nested routes**, such as the 'home' page, within this main product route.
  */
-function App() {
+export function App() {
 
     const {overlayInformation,appInfo,userInfo,total, chartInfo,banksWithAccounts,transactions,standingOrderList,payeesData,useCases,banksList} = useConfigContext();
     console.log("appInfo",useCases);
@@ -58,9 +58,10 @@ function App() {
     return (<>
         <AppThemeProvider>
             <Routes>
-                <Route index element={<Navigate to="home" replace />} />
+                
                 <Route path={`/${appInfo.route}/*`} element={
                     <Routes>
+                        <Route index element={<Navigate to="home" replace />} />
                         <Route path="home"
                                element={
                                    <Home userInfo={userInfo}
@@ -103,5 +104,5 @@ function App() {
 
 }
 
-export default App
+
 

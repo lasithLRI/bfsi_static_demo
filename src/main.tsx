@@ -19,14 +19,11 @@
 
 import {createRoot} from 'react-dom/client'
 import './index.scss'
-import App from './app.tsx'
+import {App} from './app.tsx'
 import React from 'react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { HashRouter } from 'react-router-dom';
-
-export const queryClient = new QueryClient();
-
-
+import { queryClient } from './utility/query-client.ts';
 
 
 
