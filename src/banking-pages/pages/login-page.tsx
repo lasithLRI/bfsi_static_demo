@@ -72,7 +72,7 @@ const LoginPage = () => {
                 <Grid className="form-login-one-container">
                     <form onSubmit={handleSubmit(onSubmitHandler)}>
 
-                        <FormControl fullWidth={true} margin={'normal'} >
+                        <FormControl fullWidth={true} >
                             <label>Email</label>
                             <Controller name={'email'} control={control} rules={{ required: 'Email address required' }} render={({ field }) => (
                                 <OutlinedInput
@@ -85,7 +85,7 @@ const LoginPage = () => {
                             <ErrorMessage error={errors.email} />
                         </FormControl>
 
-                        <FormControl fullWidth={true} margin={'normal'} >
+                        <FormControl fullWidth={true}>
                             <label>password</label>
                             <Controller name={'password'} control={control} rules={{ required: 'Password required to proceed' }} render={({ field }) => (
                                 <OutlinedInput
