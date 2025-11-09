@@ -18,7 +18,7 @@
  *
  */
 
-import {Box, Button, Grid, List, ListItem, Typography, useTheme,} from "@oxygen-ui/react";
+import {Box, Button, Grid, List, ListItem, useTheme,} from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import './inner-pages-stylings.scss'
