@@ -86,12 +86,23 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
             "data": data
         }
     }
+    
 
 
     const navigate = useNavigate();
 
 
-    useEffect(() => {
+
+
+
+    
+    
+    const fullUrl = `${window.location.origin}/bfsi_static_demo/#/${appConfig.route}/home`
+
+   
+
+
+         useEffect(() => {
         const timer = setTimeout(()=>{
             // navigate(`/bfsi_static_demo/#/${appConfig.route}/home`,{
             //     state:{
@@ -99,20 +110,30 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
             //     }
             // })
 
-            queryClient.setQueryData(['redirectState'], state);
+            sessionStorage.setItem('redirectState', JSON.stringify(state));
+                  window.location.replace(fullUrl);
+    
 
-            const routePath = appConfig.route.startsWith('/') ? appConfig.route.substring(1) : appConfig.route;
-            const targetHashPath = `#/${routePath}/home`;
+        //     queryClient.setQueryData(['redirectState'], state);
 
-           const fullRedirectURL = baseUrl + targetHashPath;
-
-            window.location.replace(fullRedirectURL);
+        //     const routePath = appConfig.route.startsWith('/') ? appConfig.route.substring(1) : appConfig.route;
+        //     const targetHashPath = `${window.location.origin}/bfsi_static_demo/#/accounts-central/home`;
 
 
+        //     queryClient.setQueryData(['redirectState'], state);
+
+
+        //     console.log(fullUrl);
+            
+        
+
+        //    queryClient.setQueryData(['redirectState'], state);
+
+            
 
         },1000);
         return () => clearTimeout(timer);
-    }, [navigate,appConfig.route,state]);
+    }, []);
 
 
     return (
