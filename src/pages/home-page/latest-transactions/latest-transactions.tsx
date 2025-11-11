@@ -46,7 +46,8 @@ const LatestTransactions = ({transactions}:LatestTransactionsProps)=>{
                         </TableHead>
                         <TableBody>
                             {transactions.map((transactionData, index)=>{
-
+                                console.log("==========================================")
+                                console.log(transactionData)
                                 return(
                                     <TableRow key={index}>
                                         <TableCell>{transactionData.id}</TableCell>
