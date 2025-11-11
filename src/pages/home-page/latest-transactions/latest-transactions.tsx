@@ -18,7 +18,7 @@
  *
  */
 
-import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@oxygen-ui/react";
+import {Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@oxygen-ui/react"
 import type {TransactionData} from "../../../hooks/config-interfaces.ts";
 import '../home.scss';
 import {formatCurrency} from "../../../utility/number-formatter.ts";
@@ -46,15 +46,16 @@ const LatestTransactions = ({transactions}:LatestTransactionsProps)=>{
                         </TableHead>
                         <TableBody>
                             {transactions.map((transactionData, index)=>{
+
                                 return(
                                     <TableRow key={index}>
                                         <TableCell>{transactionData.id}</TableCell>
                                         <TableCell>{transactionData.date}</TableCell>
                                         <TableCell>{transactionData.reference}</TableCell>
                                         <TableCell>{transactionData.bank}</TableCell>
-                                        <TableCell>{transactionData.Account}</TableCell>
-                                        <TableCell>{transactionData.Currency}</TableCell>
-                                        <TableCell>{formatCurrency(transactionData.Amount)}</TableCell>
+                                        <TableCell>{transactionData.account}</TableCell>
+                                        <TableCell>{transactionData.currency}</TableCell>
+                                        <TableCell>{formatCurrency(transactionData.amount)}</TableCell>
                                     </TableRow>
                                 );
                             })}

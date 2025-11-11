@@ -63,9 +63,9 @@ export interface TransactionData{
     "date": string,
     "reference": string,
     "bank": string,
-    "Account": string,
-    "Amount": string,
-    "Currency": string
+    "account": string,
+    "amount": string,
+    "currency": string
 }
 
 
