@@ -23,8 +23,6 @@ import {useNavigate, useOutletContext} from "react-router-dom";
 import {useEffect} from "react";
 import type {OutletContext} from "./login-page.tsx";
 import type { AppInfo } from "../../hooks/config-interfaces.ts";
-import { queryClient } from "../../utility/query-client.ts";
-import { baseUrl } from "../../utility/api.ts";
 
 interface RedirectionPageProps {
     appConfig: AppInfo

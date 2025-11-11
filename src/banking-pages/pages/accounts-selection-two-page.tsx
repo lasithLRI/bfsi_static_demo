@@ -18,10 +18,22 @@
  *
  */
 
-import {Box, Button, Checkbox, FormControl, FormControlLabel, FormLabel, Grid, Switch} from "@oxygen-ui/react";
+import {
+    Box,
+    Button,
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Grid,
+    Switch,
+    useTheme
+} from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import {useState} from "react";
+import './inner-pages-stylings.scss'
+import {useMediaQuery} from "@mui/material";
 
 export interface SelectedAccountEntry {
     permission: string;
@@ -68,6 +80,8 @@ const AccountsSelectionTwoPage = ()=>{
 
     const handleSubmit = () => {
 
+
+
         if(selectedData.length>0){
             accountsToAdd.current = {type:"multiple",data:[selectedData]};
             onSuccessHandler();
@@ -76,20 +90,26 @@ const AccountsSelectionTwoPage = ()=>{
         }
     };
 
+    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
+    const responsivePadding = isSmallScreen ? '0.2rem' : '0.5rem';
+
     return(
         <>
-            <Grid container className={'payments-outer-container'}>
-                Please authorize to share following data with accounts central:
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
 
-                <Grid className={"form-input"}>
+                <Grid className="page-name-container">
+                    <h3>Account Authorization</h3>
+                </Grid>
+
+
+
+                <Grid className={"form-login-one-container"} sx={{maxHeight: '40vh'}}>
 
                     <FormControl>
-
                         <FormLabel id={"check-box-group"}>Select your account to add from the list</FormLabel>
-
                     </FormControl>
 
-                    <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+                    <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center",height:'fit-content'}}>
 
                         <FormControlLabel control={<Switch id={"account-one"} checked disabled={true}/>} label={"Recurring"} labelPlacement={'start'}/>
 
@@ -97,7 +117,7 @@ const AccountsSelectionTwoPage = ()=>{
 
                     </Box>
 
-                    <FormControl sx={{display:'flex', flexDirection:'column', marginTop:'5%', height:'16rem', overflowY:'auto'}}>
+                    <FormControl sx={{display:'flex', flexDirection:'column', height:'20rem', overflowY: 'auto'}}>
 
                         {listOfPermissions.map((item, index) => {
                             const currentAccounts = selectedData.find(d => d.permission === item)?.accounts || [];
@@ -121,7 +141,7 @@ const AccountsSelectionTwoPage = ()=>{
 
                     </FormControl>
 
-                    <Box sx={{marginTop:'5%'}}>
+                    <Box className="form-buttons-container">
                         <Button variant={'contained'} onClick={handleSubmit}>Success</Button>
                         <Button variant={'outlined'} >Cancel</Button>
                     </Box>

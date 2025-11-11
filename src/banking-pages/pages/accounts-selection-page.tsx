@@ -26,15 +26,20 @@ import {
     FormLabel,
     Grid,
     Radio,
-    RadioGroup
+    RadioGroup, useTheme
 } from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import {useState} from "react";
+import {useMediaQuery} from "@mui/material";
+import './inner-pages-stylings.scss'
 
 
 
 const AccountsSelectionPage = ()=>{
+
+    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
+    const responsivePadding = isSmallScreen ? '1rem' : '2rem';
 
     const { onSuccessHandler,navigationData, accountsToAdd } = useOutletContext<OutletContext>();
 
@@ -48,8 +53,6 @@ const AccountsSelectionPage = ()=>{
             accountsToAdd.current = {type:"single",data:[selectedAccount]};
             onSuccessHandler();
         }
-
-
     }
 
     const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,16 +61,20 @@ const AccountsSelectionPage = ()=>{
 
     return(
         <>
-            <Grid container className={'payments-outer-container'}>
-                Select the account
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
+                <Grid className="page-name-container">
+                    <h3>Account Selection</h3>
+                </Grid>
 
-                <Grid className={"form-input"}>
 
-                    <FormControl>
-                        <FormLabel id={"check-box-group"}>Select your account to add from the list</FormLabel>
+
+                <Grid className={"form-login-one-container"}>
+
+                    <FormControl sx={{display:'flex', justifyContent:'center', marginTop:'5%', alignItems:'center'}}>
+                        <FormLabel>Select your account to add from the list</FormLabel>
                     </FormControl>
 
-                    <FormControl sx={{display:'flex', flexDirection:'column', marginTop:'10%'}}>
+                    <FormControl sx={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:'5%'}}>
 
                         <RadioGroup aria-label="select-account" name="account-selection-group" value={selectedAccount} onChange={handleRadioChange}>
                             {accountsList.map((account, index) => {
@@ -79,8 +86,8 @@ const AccountsSelectionPage = ()=>{
 
                     </FormControl>
 
-                    <Box sx={{marginTop:'20%'}}>
-                        <Button variant={'contained'} onClick={handleAccountSelection}>Success</Button>
+                    <Box className="form-buttons-container">
+                        <Button variant={'contained'} onClick={handleAccountSelection}>Done</Button>
                         <Button variant={'outlined'} >Cancel</Button>
                     </Box>
                 </Grid>

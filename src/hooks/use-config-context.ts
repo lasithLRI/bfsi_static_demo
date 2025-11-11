@@ -336,6 +336,105 @@ const useConfigContext = () => {
             // The payment logic modifies configData, so configData must be EXCLUDED from dependencies
             // to prevent the infinite loop. We only depend on the state that triggers the change.
 
+        }else if(redirectState?.type === "single"){
+            console.log(redirectState.data)
+            const newAccountData = redirectState.data;
+
+            const CONFIG_QUER_KEY = ["appConfig"];
+
+            const newConfigWithAccount = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
+                const baseConfig = oldConfig || configData;
+
+                const accountToBeAdded= {id:newAccountData.accountDetails[0], bank:newAccountData.bankInfo,name:"savings account",balance:500}
+                const updateNewAccounts = [...baseConfig.accounts,accountToBeAdded]
+                console.log(updateNewAccounts)
+
+                return {
+                        ...baseConfig!,
+                        accounts: updateNewAccounts
+                    }
+            })
+
+            console.log(newConfigWithAccount)
+
+            queryClient.invalidateQueries({ queryKey: CONFIG_QUER_KEY });
+
+            updateSessionStorage(newConfigWithAccount as Config);
+
+            console.log(configData)
+
+
+
+            setOverlayInformation({flag:true,overlayData:{context:"Single Account Added Done",secondaryButtonText:"",mainButtonText:"Ok",title:"Account added Successfully",onMainButtonClick:handleOverlayClose}});
+
+            navigate(location.pathname, { replace: true, state: {} });
+
+        }else if(redirectState?.type === "multiple"){
+            console.log(redirectState.data)
+            console.log("&&&&&&&&&&&&&&&&&&####################################################################")
+
+            const newAccounts = redirectState.data;
+
+            const CONFIG_QUER_KEY = ["appConfig"];
+
+            const newConfigWithAccount = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
+                const baseConfig = oldConfig || configData;
+
+                console.log(baseConfig);
+
+                const structuredPermissionsData = newAccounts.accountDetails[0];
+                const bankName = newAccounts.bankInfo;
+
+
+                console.log(structuredPermissionsData);
+                console.log(bankName)
+
+                const accNumbers = structuredPermissionsData.flatMap((permissionEntry: {
+                    permission: "",
+                    accounts: string[]
+                }) => {
+                    return permissionEntry.accounts || [];
+                });
+
+                console.log(accNumbers)
+                console.log("******************@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+
+                const generatedNewAccounts: Account[] = accNumbers.map((entry:string) => {
+
+                    return {
+                        id: entry,
+                        bank: bankName,
+                        name: "savings (M)",
+                        balance: 500,
+                    };
+                });
+
+                    console.log(generatedNewAccounts);
+
+                const updateNewAccounts = [...baseConfig.accounts, ...generatedNewAccounts];
+
+                console.log("New unique accounts generated:", generatedNewAccounts);
+                console.log("Combined accounts length:", updateNewAccounts.length);
+
+
+                return {
+                    ...baseConfig!,
+                    accounts: updateNewAccounts
+                }
+
+            });
+
+            console.log(newAccounts)
+            console.log(newConfigWithAccount)
+
+            const config = newConfigWithAccount as Config;
+
+            queryClient.invalidateQueries({ queryKey: CONFIG_QUER_KEY });
+
+            updateSessionStorage(config);
+
+            setOverlayInformation({flag:true,overlayData:{context:"Multiple Accounts added Successfully",secondaryButtonText:"",mainButtonText:"Ok",title:"Multiple Accounts add Successfully",onMainButtonClick:handleOverlayClose}});
+
         }
 
 
