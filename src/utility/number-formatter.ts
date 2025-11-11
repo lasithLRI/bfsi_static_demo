@@ -22,7 +22,6 @@ export const formatCurrency = (value: number | string | null | undefined): strin
 
     let numericValue = parseFloat(String(value));
 
-    console.log(numericValue);
     
 
     if (isNaN(numericValue)) {

@@ -97,21 +97,20 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
 
     
     
-    const fullUrl = `${window.location.origin}/bfsi_static_demo/#/${appConfig.route}/home`
+    // const fullUrl = `${window.location.origin}/bfsi_static_demo/#/${appConfig.route}/home`
 
    
 
 
          useEffect(() => {
         const timer = setTimeout(()=>{
-            // navigate(`/bfsi_static_demo/#/${appConfig.route}/home`,{
-            //     state:{
-            //         operationState : state
-            //     }
-            // })
+            navigate(`/${appConfig.route}/home`,{
+                state:{
+                    operationState : state
+                }
+            })
 
-            sessionStorage.setItem('redirectState', JSON.stringify(state));
-                  window.location.replace(fullUrl);
+            // sessionStorage.setItem('redirectState', JSON.stringify(state));
     
 
         //     queryClient.setQueryData(['redirectState'], state);

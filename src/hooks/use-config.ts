@@ -22,18 +22,24 @@
 import { useQuery} from "@tanstack/react-query";
 import type { Config } from "./config-interfaces";
 import { api } from "../utility/api";
+import {queryClient} from "../utility/query-client.ts";
 
 
 export const STORAGE_KEY = "appConfig";
 
 export const useConfig = () =>
+
+
     useQuery<Config, Error>({
-        queryKey: ["config"],
+
+        queryKey: ["appConfig"],
         queryFn: async () => {
             try {
-                const raw = sessionStorage.getItem(STORAGE_KEY);
+                // const raw = sessionStorage.getItem(STORAGE_KEY);
+                const raw = queryClient.getQueryData(["appConfig"]) as Config;
+
                 if (raw) {
-                    return JSON.parse(raw) as Config;
+                    return raw;
                 }
             } catch {
 
@@ -41,9 +47,10 @@ export const useConfig = () =>
 
             const res = await api.get<Config>("config.json");
             const data = ((res as any)?.data ?? res) as Config;
-
             try {
-                sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                // sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                queryClient.setQueryData(["appConfig"],data as Config);
+
             } catch {
 
             }
