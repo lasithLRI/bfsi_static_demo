@@ -81,7 +81,7 @@ const AccountsSelectionThreePage = ()=>{
 
 
 
-                <Grid className={"form-login-one-container"} sx={{maxHeight: '50vh', overflowY: 'auto', justifyContent:'center', alignItems: 'center'}}>
+                <Grid className={"form-login-one-container"} sx={{maxHeight: '50vh', overflowY: 'auto', justifyContent:'flex-start', alignItems: 'stretch'}}>
 
                     <FormControl>
                         <FormLabel id={"check-box-group"}>Following permissions Granted</FormLabel>
