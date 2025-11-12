@@ -28,7 +28,7 @@ import {
     ListItem,
     Switch, useTheme
 } from "@oxygen-ui/react";
-import {useOutletContext} from "react-router-dom";
+import {useNavigate, useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import type {SelectedAccountEntry} from "./accounts-selection-two-page.tsx";
 import './inner-pages-stylings.scss'
@@ -40,6 +40,8 @@ const AccountsAuthorizationTwoPage = ()=>{
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '0.2rem' : '0.5rem';
+
+    const navigate = useNavigate();
 
     return(
         <>
@@ -80,7 +82,7 @@ const AccountsAuthorizationTwoPage = ()=>{
 
                     <Box className="form-buttons-container">
                         <Button variant={'contained'} onClick={onSuccessHandler}>Confirm</Button>
-                        <Button variant={'outlined'} >Cancel</Button>
+                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}}>Cancel</Button>
                     </Box>
                 </Grid>
             </Grid>

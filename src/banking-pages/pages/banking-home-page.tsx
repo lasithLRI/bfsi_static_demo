@@ -24,12 +24,13 @@ import {useEffect, useRef} from "react";
 import '../banking.scss'
 import BankingOuterLayout from "../banking-layouts/banking-outer-layout.tsx";
 import BankingMainContentLayout from "../banking-layouts/banking-main-content-layout.tsx";
-import type { DynamicBanks, Type } from "../../hooks/config-interfaces.ts";
+import type {AppInfo, DynamicBanks, Type} from "../../hooks/config-interfaces.ts";
 
 
 export interface BankingHomePageProps {
     useCases: Type[];
     bank: DynamicBanks
+    appInfo: AppInfo
 }
 
 export interface  accountsToAddContent {
@@ -37,7 +38,7 @@ export interface  accountsToAddContent {
     data: []
 }
 
-const BankingHomePage = ({ useCases,bank }: BankingHomePageProps) => {
+const BankingHomePage = ({ useCases,bank,appInfo }: BankingHomePageProps) => {
 
 
     const navigate = useNavigate();
@@ -68,7 +69,7 @@ const BankingHomePage = ({ useCases,bank }: BankingHomePageProps) => {
         <>
             <BankingMainContentLayout usecasesList={usecasesList} selectedUsecaseIndex={selectedUsecaseIndex} usecaseSelectionHandler={usecaseSelectionHandler} bankName={bank.name}>
                 <BankingOuterLayout image={navigationData.current?.bankInfo.image}>
-                    <Outlet context={{onSuccessHandler, navigationData,accountsToAdd}} />
+                    <Outlet context={{onSuccessHandler, navigationData,accountsToAdd,appInfo}} />
                 </BankingOuterLayout>
             </BankingMainContentLayout>
 

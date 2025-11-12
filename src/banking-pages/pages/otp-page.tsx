@@ -19,7 +19,7 @@
  */
 
 import {Box, Button, FormControl, Grid, OutlinedInput, useTheme} from "@oxygen-ui/react";
-import {useOutletContext} from "react-router-dom";
+import {useNavigate, useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import {Controller, useForm} from "react-hook-form";
 import {ErrorMessage} from "../../pages/payments-page/payment-form/payment-form.tsx";
@@ -54,6 +54,8 @@ const OtpPage = ()=>{
 
     }
 
+    const navigate = useNavigate();
+
     return(
         <>
             <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
@@ -80,7 +82,7 @@ const OtpPage = ()=>{
 
                         <Box className="form-buttons-container">
                             <Button variant={'contained'} className="button-styles" type={'submit'}>Confirm</Button>
-                            <Button variant={'outlined'} className="button-styles" >Cancel</Button>
+                            <Button variant={'outlined'} className="button-styles" onClick={()=>{navigate(-1)}}>Cancel</Button>
                         </Box>
                     </form>
                 </Grid>

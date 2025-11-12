@@ -24,26 +24,36 @@ import {
     FormControl,
     FormControlLabel,
     FormLabel,
-    Grid,
-    Radio,
-    RadioGroup, useTheme
+    Grid, List, ListItem, Radio, RadioGroup,
+    Switch,
+    useTheme
 } from "@oxygen-ui/react";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import {useState} from "react";
-import {useMediaQuery} from "@mui/material";
 import './inner-pages-stylings.scss'
+import {useMediaQuery} from "@mui/material";
 
+export interface SelectedAccountEntry {
+    permission: string;
+    accounts: string[];
+}
 
-
-const AccountsSelectionPage = ()=>{
-
-    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
-    const responsivePadding = isSmallScreen ? '1rem' : '2rem';
+const AccountsSelectionThreePage = ()=>{
 
     const { onSuccessHandler,navigationData, accountsToAdd } = useOutletContext<OutletContext>();
 
+    console.log(accountsToAdd);
+
+    console.log(navigationData)
+
     const accountsList = ["0006-0566-1212","0006-0045-2020","0006-0400-1010"];
+    const permissions = ["Read the accounts balances","Read defaults","Write the accounts balance","Write defaults"];
+
+
+
+    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
+    const responsivePadding = isSmallScreen ? '0.2rem' : '0.5rem';
 
     const [selectedAccount, setSelectedAccount] = useState<string>('');
 
@@ -63,18 +73,32 @@ const AccountsSelectionPage = ()=>{
 
     return(
         <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding, flexGrow:1}}>
+
                 <Grid className="page-name-container">
-                    <h3>Account Selection</h3>
+                    <h3>Account Authorization</h3>
                 </Grid>
 
 
 
-                <Grid className={"form-login-one-container"}>
+                <Grid className={"form-login-one-container"} sx={{maxHeight: '50vh', overflowY: 'auto', justifyContent:'center', alignItems: 'center'}}>
 
-                    <FormControl sx={{display:'flex', justifyContent:'center', marginTop:'5%', alignItems:'center'}}>
-                        <FormLabel>Select your account to add from the list</FormLabel>
+                    <FormControl>
+                        <FormLabel id={"check-box-group"}>Following permissions Granted</FormLabel>
+                        <List sx={{ listStyleType: 'disc', pl: 4 }}>
+                            {permissions.map((item, index) => {
+                                return (<ListItem key={index} sx={{display: 'list-item'}}>{item}</ListItem>)
+                            })}
+                        </List>
                     </FormControl>
+
+                    <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center",height:'fit-content'}}>
+
+                        <FormControlLabel control={<Switch id={"account-one"} checked disabled={true}/>} label={"Recurring"} labelPlacement={'start'}/>
+
+                        <p>Frequency : 4 Days</p>
+
+                    </Box>
 
                     <FormControl sx={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:'5%'}}>
 
@@ -88,15 +112,17 @@ const AccountsSelectionPage = ()=>{
 
                     </FormControl>
 
-                    <Box className="form-buttons-container">
+
+                    <Box className="form-buttons-container" justifyContent="end">
                         <Button variant={'contained'} onClick={handleAccountSelection}>Done</Button>
                         <Button variant={'outlined'} onClick={()=>{navigate(-1)}}>Cancel</Button>
                     </Box>
                 </Grid>
-            </Grid>
 
+
+            </Grid>
         </>
     )
 }
 
-export default AccountsSelectionPage;
+export default AccountsSelectionThreePage;

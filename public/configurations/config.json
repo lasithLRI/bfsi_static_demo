@@ -200,7 +200,7 @@
       "useCases": [
         {
           "id": "use case 2",
-          "title": "Add Account UC1",
+          "title": "use case 2",
           "steps": [
             { "id": "1", "name": "Login to your email", "component": "login-with-email" },
             { "id": "2", "name": "Two step verification", "component": "otp" },
@@ -211,7 +211,7 @@
         },
         {
           "id": "use case 3",
-          "title": "Add Account UC2",
+          "title": "use case 3",
           "steps": [
             { "id": "1", "name": "Login to your Account", "component": "login" },
             { "id": "2", "name": "Two step verification", "component": "otp" },
@@ -222,13 +222,23 @@
         },
         {
           "id": "use case 4",
-          "title": "Add Account UC3",
+          "title": "use case 4",
           "steps": [
             { "id": "1", "name": "Login to your Account", "component": "login" },
             { "id": "2", "name": "Two step verification", "component": "otp" },
             { "id": "3", "name": "select the account two", "component": "account-select" },
             { "id": "4", "name": "authorize the selection", "component": "account-authorize"},
             { "id": "5", "name": "redirection", "component": "redirecting"}
+          ]
+        },
+        {
+          "id": "use case 5",
+          "title": "use case 5",
+          "steps": [
+            { "id": "1", "name": "Login to your Account", "component": "login" },
+            { "id": "2", "name": "Two step verification", "component": "otp" },
+            { "id": "3", "name": "select the account three", "component": "account-select-uc-3" },
+            { "id": "4", "name": "redirection", "component": "redirecting"}
           ]
         }
       ]

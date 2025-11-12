@@ -29,7 +29,7 @@ import {
     Switch,
     useTheme
 } from "@oxygen-ui/react";
-import {useOutletContext} from "react-router-dom";
+import {useNavigate, useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import {useState} from "react";
 import './inner-pages-stylings.scss'
@@ -93,6 +93,8 @@ const AccountsSelectionTwoPage = ()=>{
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '0.2rem' : '0.5rem';
 
+    const navigate = useNavigate();
+
     return(
         <>
             <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding, flexGrow:1}}>
@@ -143,7 +145,7 @@ const AccountsSelectionTwoPage = ()=>{
 
                     <Box className="form-buttons-container">
                         <Button variant={'contained'} onClick={handleSubmit}>Confirm</Button>
-                        <Button variant={'outlined'} >Cancel</Button>
+                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}}>Cancel</Button>
                     </Box>
                 </Grid>
 

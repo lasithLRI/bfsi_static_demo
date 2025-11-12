@@ -32,6 +32,7 @@ import AccountsSelectionPage from "./banking-pages/pages/accounts-selection-page
 import AccountsAuthorizationPage from "./banking-pages/pages/accounts-authorization-page.tsx";
 import AccountsSelectionTwoPage from "./banking-pages/pages/accounts-selection-two-page.tsx";
 import AccountsAuthorizationTwoPage from "./banking-pages/pages/accounts-authorization-two-page.tsx";
+import AccountsSelectionThreePage from "./banking-pages/pages/accounts-selection-three-page.tsx";
 
 
 /**
@@ -84,7 +85,7 @@ export function App() {
 
 
                 {appInfo.banksInfo.map((bank,index)=>(
-                    <Route key={index} path={`/${bank.route}/*`} element={<BankingHomePage useCases={useCases} bank={bank}/>}>
+                    <Route key={index} path={`/${bank.route}/*`} element={<BankingHomePage appInfo={appInfo} useCases={useCases} bank={bank}/>}>
                         <Route path={"login"} element={<LoginPage />}/>
                         <Route path={"otp"} element={<OtpPage />}/>
                         <Route path={"payment-confirmation"} element={<PaymentConfirmationPage/>}/>
@@ -94,6 +95,7 @@ export function App() {
                         <Route path={"account-authorize"} element={<AccountsAuthorizationPage/>}/>
                         <Route path={"account-select-uc-2"} element={<AccountsSelectionTwoPage/>}/>
                         <Route path={"account-authorization-uc-2"} element={<AccountsAuthorizationTwoPage/>}/>
+                        <Route path={"account-select-uc-3"} element={<AccountsSelectionThreePage/>}/>
                     </Route>
                 ))}
 

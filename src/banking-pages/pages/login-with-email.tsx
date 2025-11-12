@@ -19,14 +19,16 @@
  */
 
 import {Box, Button, FormControl, Grid, OutlinedInput, useTheme} from "@oxygen-ui/react";
-import {useOutletContext} from "react-router-dom";
+import {useNavigate, useOutletContext} from "react-router-dom";
 import {Controller, useForm} from "react-hook-form";
 import {ErrorMessage} from "../../pages/payments-page/payment-form/payment-form.tsx";
 import {useMediaQuery} from "@mui/material";
+import type {AppInfo} from "../../hooks/config-interfaces.ts";
 
 export interface OutletContext{
     onSuccessHandler : () => void;
     navigationData : any;
+    appInfo : AppInfo;
 }
 
 interface loginformData{
@@ -36,7 +38,7 @@ interface loginformData{
 
 const LoginWithEmailPage = ()=>{
 
-    const { onSuccessHandler, } = useOutletContext<OutletContext>();
+    const { onSuccessHandler, appInfo} = useOutletContext<OutletContext>();
     const {control, handleSubmit, formState: {errors}} = useForm<loginformData>({
         defaultValues:{
             email:''
@@ -55,6 +57,8 @@ const LoginWithEmailPage = ()=>{
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '1rem' : '2rem';
+
+    const navigate = useNavigate();
 
     return (
         <>
@@ -80,7 +84,7 @@ const LoginWithEmailPage = ()=>{
 
                         <Box className="form-buttons-container">
                             <Button variant={'contained'} type={'submit'} sx={{width:'6rem',height:'3rem'}}>Login</Button>
-                            <Button variant={'outlined'} sx={{width:'6rem',height:'3rem'}}>Cancel</Button>
+                            <Button variant={'outlined'} sx={{width:'6rem',height:'3rem'}} onClick={()=>{navigate(`/${appInfo.route}/home`)}}>Cancel</Button>
                         </Box>
                     </form>
 

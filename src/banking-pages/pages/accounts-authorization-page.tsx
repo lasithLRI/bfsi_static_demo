@@ -19,7 +19,7 @@
  */
 
 import {Box, Button, FormControl, FormLabel, Grid, List, ListItem, useTheme} from "@oxygen-ui/react";
-import {useOutletContext} from "react-router-dom";
+import {useNavigate, useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import './inner-pages-stylings.scss'
 import {useMediaQuery} from "@mui/material";
@@ -39,6 +39,8 @@ const AccountsAuthorizationPage = ()=>{
 
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '1rem' : '2rem';
+
+    const navigate = useNavigate();
 
     return(
         <>
@@ -63,7 +65,7 @@ const AccountsAuthorizationPage = ()=>{
 
                     <Box className="form-buttons-container">
                         <Button variant={'contained'} onClick={onSuccessHandler}>Confirm</Button>
-                        <Button variant={'outlined'} >Cancel</Button>
+                        <Button variant={'outlined'} onClick={()=>{navigate(-1)}}>Cancel</Button>
                     </Box>
                 </Grid>
             </Grid>

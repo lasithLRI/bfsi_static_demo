@@ -19,7 +19,7 @@
  */
 
 import {Box, Button, Grid, List, ListItem, useTheme,} from "@oxygen-ui/react";
-import {useOutletContext} from "react-router-dom";
+import {useNavigate, useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import './inner-pages-stylings.scss'
 import { useMediaQuery } from "@mui/material";
@@ -31,7 +31,7 @@ const PaymentConfirmationPage = ()=>{
 
     const { onSuccessHandler,navigationData } = useOutletContext<OutletContext>();
 
-    console.log(navigationData)
+    const navigate = useNavigate();
 
     return(
         <>
@@ -59,7 +59,7 @@ const PaymentConfirmationPage = ()=>{
 
                     <Box className="form-buttons-container">
                         <Button variant={'contained'} onClick={onSuccessHandler} className="button-styles">Confirm</Button>
-                        <Button variant={'outlined'} className="button-styles">Cancel</Button>
+                        <Button variant={'outlined'} className="button-styles" onClick={()=>{navigate(-1)}}>Cancel</Button>
                     </Box>
                 </Grid>
             </Grid>
@@ -68,4 +68,5 @@ const PaymentConfirmationPage = ()=>{
     )
 }
 
+// @ts-ignore
 export default PaymentConfirmationPage;
