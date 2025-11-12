@@ -175,11 +175,10 @@ const useConfigContext = () => {
                 })
 
             queryClient.invalidateQueries({ queryKey: CONFIG_QUER_KEY });
-
-                updateSessionStorage(newConfig as Config);
+            updateSessionStorage(newConfig as Config);
 
             const paymentOverlayText = `your payment of ${newTransactionData.amount} ${newTransactionData.currency} has been successfully processed.`;
-            console.log(paymentOverlayText);
+
 
             setOverlayInformation({flag:true, overlayData:{context: paymentOverlayText,secondaryButtonText:"", title:"Payment Success",onMainButtonClick:handleOverlayClose, mainButtonText:"OK"}})
 
@@ -187,33 +186,30 @@ const useConfigContext = () => {
 
 
         }else if(redirectState?.type === "single"){
-            console.log(redirectState.data)
             const newAccountData = redirectState.data;
 
             const CONFIG_QUER_KEY = ["appConfig"];
+
 
             const newConfigWithAccount = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
                 const baseConfig = oldConfig || configData;
 
                 const accountToBeAdded= {id:newAccountData.accountDetails[0], bank:newAccountData.bankInfo,name:"savings account",balance:500}
                 const updateNewAccounts = [...baseConfig.accounts,accountToBeAdded]
-                console.log(updateNewAccounts)
 
                 return {
                         ...baseConfig!,
                         accounts: updateNewAccounts
                     }
-            })
-
-            console.log(newConfigWithAccount)
+            }) as Config
 
             queryClient.invalidateQueries({ queryKey: CONFIG_QUER_KEY });
 
-            updateSessionStorage(newConfigWithAccount as Config);
+            updateSessionStorage(newConfigWithAccount);
 
-            console.log(configData)
+            const singleAccountOverlay = `The new account ${newConfigWithAccount?.accounts[0] } was added successfully. You can now access it and start making transactions.`;
 
-            setOverlayInformation({flag:true,overlayData:{context:"Single Account Added Done",secondaryButtonText:"",mainButtonText:"Ok",title:"Account added Successfully",onMainButtonClick:handleOverlayClose}});
+            setOverlayInformation({flag:true,overlayData:{context:singleAccountOverlay,secondaryButtonText:"",mainButtonText:"Ok",title:"Account added Successfully",onMainButtonClick:handleOverlayClose}});
 
             navigate(location.pathname, { replace: true, state: {} });
 
@@ -223,10 +219,10 @@ const useConfigContext = () => {
 
             const CONFIG_QUER_KEY = ["appConfig"];
 
+            let generatedAccounts:Account[] = [];
+
             const newConfigWithAccount = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
                 const baseConfig = oldConfig || configData;
-
-                console.log(baseConfig);
 
                 const structuredPermissionsData = newAccounts.accountDetails[0];
                 const bankName = newAccounts.bankInfo;
@@ -253,6 +249,8 @@ const useConfigContext = () => {
                     };
                 });
 
+                generatedAccounts = generatedNewAccounts;
+
                 const updateNewAccounts = [...baseConfig.accounts, ...generatedNewAccounts];
 
                 return {
@@ -268,7 +266,11 @@ const useConfigContext = () => {
 
             updateSessionStorage(config);
 
-            setOverlayInformation({flag:true,overlayData:{context:"Multiple Accounts added Successfully",secondaryButtonText:"",mainButtonText:"Ok",title:"Multiple Accounts add Successfully",onMainButtonClick:handleOverlayClose}});
+
+
+            const multipleAccountOverlayContext = `The new account ${generatedAccounts?.map((account)=>account.id).join(", ") } were added successfully. You can now access it and start making transactions.`;
+
+            setOverlayInformation({flag:true,overlayData:{context:multipleAccountOverlayContext,secondaryButtonText:"",mainButtonText:"Ok",title:"Multiple Accounts add Successfully",onMainButtonClick:handleOverlayClose}});
             navigate(location.pathname, { replace: true, state: {} });
         }
 
