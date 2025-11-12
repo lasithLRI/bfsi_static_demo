@@ -147,7 +147,7 @@ const useConfigContext = () => {
 
 
                 const newConfig = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig: Config | undefined) => {
-                    const baseConfig = oldConfig || configData; // Use configData as fallback
+                    const baseConfig = oldConfig || configData;
 
                     const currentTransaction = baseConfig?.transactions || [];
 
@@ -207,7 +207,7 @@ const useConfigContext = () => {
 
             updateSessionStorage(newConfigWithAccount);
 
-            const singleAccountOverlay = `The new account ${newConfigWithAccount?.accounts[0] } was added successfully. You can now access it and start making transactions.`;
+            const singleAccountOverlay = `The new account ${newConfigWithAccount?.accounts[0].id } was added successfully. You can now access it and start making transactions.`;
 
             setOverlayInformation({flag:true,overlayData:{context:singleAccountOverlay,secondaryButtonText:"",mainButtonText:"Ok",title:"Account added Successfully",onMainButtonClick:handleOverlayClose}});
 
