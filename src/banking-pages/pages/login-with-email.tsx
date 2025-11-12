@@ -18,10 +18,11 @@
  *
  */
 
-import {Box, Button, FormControl, Grid, OutlinedInput} from "@oxygen-ui/react";
+import {Box, Button, FormControl, Grid, OutlinedInput, useTheme} from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
 import {Controller, useForm} from "react-hook-form";
 import {ErrorMessage} from "../../pages/payments-page/payment-form/payment-form.tsx";
+import {useMediaQuery} from "@mui/material";
 
 export interface OutletContext{
     onSuccessHandler : () => void;
@@ -52,29 +53,38 @@ const LoginWithEmailPage = ()=>{
 
     }
 
+    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
+    const responsivePadding = isSmallScreen ? '1rem' : '2rem';
+
     return (
         <>
-            <Grid container className={'login-container'}>
-                <h3>Login Page</h3>
-                <form onSubmit={handleSubmit(onSubmit)} className={"form-input"}>
-                    <FormControl fullWidth={true} margin={'normal'} >
-                        <label>Email</label>
-                        <Controller name={'email'} control={control} render={({field}) => (
-                            <OutlinedInput
-                                {...field}
-                                placeholder={"Enter your email"}
-                                type={"text"}
-                                error={!!errors.email}
-                            />
-                        )}/>
-                        <ErrorMessage error={errors.email}/>
-                    </FormControl>
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
+                <Grid className="page-name-container">
+                    <h3>Login Page</h3>
+                </Grid>
 
-                    <Box sx={{marginTop:'1rem', display:'flex', justifyContent:'end', gap:'1rem'}}>
-                        <Button variant={'contained'} type={'submit'} sx={{width:'6rem',height:'3rem'}}>Login</Button>
-                        <Button variant={'outlined'} sx={{width:'6rem',height:'3rem'}}>Cancel</Button>
-                    </Box>
-                </form>
+                <Grid className={"form-login-one-container"}>
+                    <form onSubmit={handleSubmit(onSubmit)} className={"form-input"}>
+                        <FormControl fullWidth={true} margin={'normal'} >
+                            <label>Email</label>
+                            <Controller name={'email'} control={control} render={({field}) => (
+                                <OutlinedInput
+                                    {...field}
+                                    placeholder={"Enter your email"}
+                                    type={"text"}
+                                    error={!!errors.email}
+                                />
+                            )}/>
+                            <ErrorMessage error={errors.email}/>
+                        </FormControl>
+
+                        <Box className="form-buttons-container">
+                            <Button variant={'contained'} type={'submit'} sx={{width:'6rem',height:'3rem'}}>Login</Button>
+                            <Button variant={'outlined'} sx={{width:'6rem',height:'3rem'}}>Cancel</Button>
+                        </Box>
+                    </form>
+
+                </Grid>
             </Grid>
         </>
     )

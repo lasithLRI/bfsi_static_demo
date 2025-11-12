@@ -95,7 +95,7 @@ const AccountsSelectionTwoPage = ()=>{
 
     return(
         <>
-            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding, flexGrow:1}}>
 
                 <Grid className="page-name-container">
                     <h3>Account Authorization</h3>
@@ -103,7 +103,7 @@ const AccountsSelectionTwoPage = ()=>{
 
 
 
-                <Grid className={"form-login-one-container"} sx={{maxHeight: '40vh'}}>
+                <Grid className={"form-login-one-container"} sx={{maxHeight: '50vh'}}>
 
                     <FormControl>
                         <FormLabel id={"check-box-group"}>Select your account to add from the list</FormLabel>
@@ -117,7 +117,7 @@ const AccountsSelectionTwoPage = ()=>{
 
                     </Box>
 
-                    <FormControl sx={{display:'flex', flexDirection:'column', height:'20rem', overflowY: 'auto'}}>
+                    <FormControl sx={{display:'flex', flexDirection:'column', overflowY: 'auto'}}>
 
                         {listOfPermissions.map((item, index) => {
                             const currentAccounts = selectedData.find(d => d.permission === item)?.accounts || [];
@@ -142,14 +142,15 @@ const AccountsSelectionTwoPage = ()=>{
                     </FormControl>
 
                     <Box className="form-buttons-container">
-                        <Button variant={'contained'} onClick={handleSubmit}>Success</Button>
+                        <Button variant={'contained'} onClick={handleSubmit}>Confirm</Button>
                         <Button variant={'outlined'} >Cancel</Button>
                     </Box>
                 </Grid>
+
+
             </Grid>
         </>
     )
 }
 
-// @ts-ignore
 export default AccountsSelectionTwoPage;

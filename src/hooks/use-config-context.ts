@@ -43,10 +43,10 @@
 //  * It returns all application information and processed financial totals for global use.
 //  */
 //
-interface BankWithTotal{
-    bank: Bank;
-    total: number;
-}
+// interface BankWithTotal{
+//     bank: Bank;
+//     total: number;
+// }
 
 export interface ChartData{
     label: string;

@@ -18,9 +18,12 @@
  *
  */
 
-import {Box, Button, FormControl, FormLabel, Grid, List, ListItem} from "@oxygen-ui/react";
+import {Box, Button, FormControl, FormLabel, Grid, List, ListItem, useTheme} from "@oxygen-ui/react";
 import {useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
+import './inner-pages-stylings.scss'
+import {useMediaQuery} from "@mui/material";
+import './inner-pages-stylings.scss'
 
 const AccountsAuthorizationPage = ()=>{
 
@@ -34,12 +37,17 @@ const AccountsAuthorizationPage = ()=>{
         return futureDate.toLocaleDateString();
     };
 
+    const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
+    const responsivePadding = isSmallScreen ? '1rem' : '2rem';
+
     return(
         <>
-            <Grid container className={'payments-outer-container'}>
-                Please authorize to share following data with TPP application.
+            <Grid container className={'content-page-container'} xs={12} sm={8} md={6} lg={4} sx={{padding:responsivePadding}}>
+                <Grid className="page-name-container">
+                    <h3>Authorize the Account</h3>
+                </Grid>
 
-                <Grid className={"form-input"}>
+                <Grid className={"form-login-one-container"}>
 
                     <FormControl>
                         <FormLabel id={"check-box-group"}>Account : {accountsToAdd.current[0]}</FormLabel>
@@ -53,8 +61,8 @@ const AccountsAuthorizationPage = ()=>{
 
                     <p>Sharing Period : {getFutureDate()}</p>
 
-                    <Box sx={{marginTop:'20%'}}>
-                        <Button variant={'contained'} onClick={onSuccessHandler}>Success</Button>
+                    <Box className="form-buttons-container">
+                        <Button variant={'contained'} onClick={onSuccessHandler}>Confirm</Button>
                         <Button variant={'outlined'} >Cancel</Button>
                     </Box>
                 </Grid>
