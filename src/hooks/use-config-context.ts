@@ -1,21 +1,19 @@
-/*
- * *
- * * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
- * *
- * * WSO2 LLC. licenses this file to you under the Apache License,
- * * Version 2.0 (the "License"); you may not use this file except
- * * in compliance with the License.
- * * You may obtain a copy of the License at
- * *
- * * http://www.apache.org/licenses/LICENSE-2.0
- * *
- * * Unless required by applicable law or agreed to in writing,
- * * software distributed under the License is distributed on an
- * * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * * KIND, either express or implied. See the License for the
- * * specific language governing permissions and limitations
- * * under the License.
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 
@@ -48,22 +46,11 @@ export interface OverlayData{
     onMainButtonClick: () => void;
 }
 
-
 import {useEffect, useMemo, useState} from "react";
-import type {
-    Account,
-    AppInfo,
-    Bank,
-    Config,
-    User
-} from "./config-interfaces.ts";
+import type {Account, AppInfo, Bank, Config, User} from "./config-interfaces.ts";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useConfig} from "./use-config.ts";
 import {queryClient} from "../utility/query-client.ts";
-
-
-
-
 
 const LATEST_TRANSACTION_COUNT = 4;
 const CONFIG_QUER_KEY = ["appConfig"];
@@ -84,7 +71,7 @@ const useConfigContext = () => {
 
     const updateSessionStorage = (updatedConfig: Config) => {
         try {
-            sessionStorage.setItem(CONFIG_QUER_KEY[0], JSON.stringify(updatedConfig));
+            queryClient.setQueryData(CONFIG_QUER_KEY, updatedConfig);
         } catch (e) {
             console.error("Failed to update session storage:", e);
         }
@@ -162,8 +149,7 @@ const useConfigContext = () => {
                             };
                         }
                         return account;
-                    });
-                    console.log(updatedAccounts)
+                    })
 
                     return {
                         ...baseConfig!,
@@ -179,7 +165,6 @@ const useConfigContext = () => {
 
             const paymentOverlayText = `your payment of ${newTransactionData.amount} ${newTransactionData.currency} has been successfully processed.`;
 
-
             setOverlayInformation({flag:true, overlayData:{context: paymentOverlayText,secondaryButtonText:"", title:"Payment Success",onMainButtonClick:handleOverlayClose, mainButtonText:"OK"}})
 
             navigate(location.pathname, { replace: true, state: {} });
@@ -188,17 +173,12 @@ const useConfigContext = () => {
         }else if(redirectState?.type === "single"){
             const newAccountData = redirectState.data;
 
-            const CONFIG_QUER_KEY = ["appConfig"];
-
-
             const newConfigWithAccount = queryClient.setQueryData(CONFIG_QUER_KEY, (oldConfig:Config | undefined)=> {
                 const baseConfig = oldConfig || configData;
-
                 const accountToBeAdded= {id:newAccountData.accountDetails[0], bank:newAccountData.bankInfo,name:"savings account",balance:500}
                 const updateNewAccounts = [...baseConfig.accounts,accountToBeAdded]
-
                 return {
-                        ...baseConfig!,
+                        ...baseConfig,
                         accounts: updateNewAccounts
                     }
             }) as Config
@@ -207,7 +187,7 @@ const useConfigContext = () => {
 
             updateSessionStorage(newConfigWithAccount);
 
-            const singleAccountOverlay = `The new account ${newConfigWithAccount?.accounts[0].id } was added successfully. You can now access it and start making transactions.`;
+            const singleAccountOverlay = `The new account ${newConfigWithAccount?.accounts[newConfigWithAccount.accounts.length-1].id } was added successfully. You can now access it and start making transactions.`;
 
             setOverlayInformation({flag:true,overlayData:{context:singleAccountOverlay,secondaryButtonText:"",mainButtonText:"Ok",title:"Account added Successfully",onMainButtonClick:handleOverlayClose}});
 
@@ -227,17 +207,12 @@ const useConfigContext = () => {
                 const structuredPermissionsData = newAccounts.accountDetails[0];
                 const bankName = newAccounts.bankInfo;
 
-
-                console.log(structuredPermissionsData);
-                console.log(bankName)
-
                 const accNumbers = structuredPermissionsData.flatMap((permissionEntry: {
                     permission: "",
                     accounts: string[]
                 }) => {
                     return permissionEntry.accounts || [];
                 });
-
 
                 const generatedNewAccounts: Account[] = accNumbers.map((entry:string) => {
 
@@ -249,7 +224,7 @@ const useConfigContext = () => {
                     };
                 });
 
-                generatedAccounts = generatedNewAccounts;
+                generatedAccounts = generatedNewAccounts; //scope issue
 
                 const updateNewAccounts = [...baseConfig.accounts, ...generatedNewAccounts];
 
@@ -266,8 +241,6 @@ const useConfigContext = () => {
 
             updateSessionStorage(config);
 
-
-
             const multipleAccountOverlayContext = `The new account ${generatedAccounts?.map((account)=>account.id).join(", ") } were added successfully. You can now access it and start making transactions.`;
 
             setOverlayInformation({flag:true,overlayData:{context:multipleAccountOverlayContext,secondaryButtonText:"",mainButtonText:"Ok",title:"Multiple Accounts add Successfully",onMainButtonClick:handleOverlayClose}});
@@ -283,18 +256,13 @@ const useConfigContext = () => {
         chartInfo: chartInfo,
         total: totalBalances,
         banksWithAccounts: banksWithAllAccounts,
-
         transactions: (configData?.transactions ?? []).slice(0, LATEST_TRANSACTION_COUNT),
         standingOrderList: configData?.standingOrders ?? [],
         payeesData: configData?.payees ?? [],
         useCases: configData?.types ?? [],
         banksList: configData?.banks ?? [],
-
         overlayInformation: overlayInformation,
     };
-
-
 };
 
-// @ts-ignore
 export default useConfigContext;

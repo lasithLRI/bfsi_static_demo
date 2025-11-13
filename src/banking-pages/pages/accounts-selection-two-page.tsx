@@ -18,17 +18,7 @@
  *
  */
 
-import {
-    Box,
-    Button,
-    Checkbox,
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    Grid,
-    Switch,
-    useTheme
-} from "@oxygen-ui/react";
+import {Box, Button, Checkbox, FormControl, FormControlLabel, FormLabel, Grid, Switch, useTheme} from "@oxygen-ui/react";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import {useState} from "react";
@@ -103,8 +93,6 @@ const AccountsSelectionTwoPage = ()=>{
                     <h3>Account Authorization</h3>
                 </Grid>
 
-
-
                 <Grid className={"form-login-one-container"} sx={{maxHeight: '50vh'}}>
 
                     <FormControl>
@@ -112,15 +100,11 @@ const AccountsSelectionTwoPage = ()=>{
                     </FormControl>
 
                     <Box sx={{display: "flex", justifyContent: "space-between", alignItems: "center",height:'fit-content'}}>
-
                         <FormControlLabel control={<Switch id={"account-one"} checked disabled={true}/>} label={"Recurring"} labelPlacement={'start'}/>
-
                         <p>Frequency : 4 Days</p>
-
                     </Box>
 
                     <FormControl sx={{display:'flex', flexDirection:'column', overflowY: 'auto'}}>
-
                         {listOfPermissions.map((item, index) => {
                             const currentAccounts = selectedData.find(d => d.permission === item)?.accounts || [];
                             return (
@@ -138,9 +122,7 @@ const AccountsSelectionTwoPage = ()=>{
                                         )
                                 })}
                             </Box>)
-
                         })}
-
                     </FormControl>
 
                     <Box className="form-buttons-container">
@@ -148,8 +130,6 @@ const AccountsSelectionTwoPage = ()=>{
                         <Button variant={'outlined'} onClick={()=>{navigate(-1)}}>Cancel</Button>
                     </Box>
                 </Grid>
-
-
             </Grid>
         </>
     )

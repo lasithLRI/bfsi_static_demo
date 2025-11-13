@@ -18,16 +18,7 @@
  *
  */
 
-import {
-    Box,
-    Button,
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    Grid, List,
-    ListItem,
-    Switch, useTheme
-} from "@oxygen-ui/react";
+import {Box, Button, FormControl, FormControlLabel, FormLabel, Grid, List, ListItem, Switch, useTheme} from "@oxygen-ui/react";
 import {useNavigate, useOutletContext} from "react-router-dom";
 import type {OutletContext} from "./login-page.tsx";
 import type {SelectedAccountEntry} from "./accounts-selection-two-page.tsx";

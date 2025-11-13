@@ -34,9 +34,7 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
 
     let data = null;
     let id = 2345;
-
     let state = null;
-
 
     if(navigationData.current?.formData != null){
         id = id+1;
@@ -55,9 +53,6 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
             "data": data
         }
     }else if(accountsToAdd.current?.data?.length > 0 && accountsToAdd.current?.type === "single" ){
-        console.log("Accounts are available!");
-
-        console.log(accountsToAdd.current?.data);
 
         data={
             accountDetails : accountsToAdd.current.data,
@@ -69,10 +64,7 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
             "data": data
         }
 
-        console.log(state);
-        console.log("Accounts are initialized!");
     }else if(accountsToAdd.current?.data.length > 0 && accountsToAdd.current?.type === "multiple"){
-        console.log("&&&&&&&********&&&&&&&&&");
 
         data={
             accountDetails : accountsToAdd.current.data,
@@ -89,45 +81,13 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
 
     const navigate = useNavigate();
 
-
-
-
-
-    
-    
-    // const fullUrl = `${window.location.origin}/bfsi_static_demo/#/${appConfig.route}/home`
-
-   
-
-
-         useEffect(() => {
+    useEffect(() => {
         const timer = setTimeout(()=>{
             navigate(`/${appConfig.route}/home`,{
                 state:{
                     operationState : state
                 }
             })
-
-            // sessionStorage.setItem('redirectState', JSON.stringify(state));
-    
-
-        //     queryClient.setQueryData(['redirectState'], state);
-
-        //     const routePath = appConfig.route.startsWith('/') ? appConfig.route.substring(1) : appConfig.route;
-        //     const targetHashPath = `${window.location.origin}/bfsi_static_demo/#/accounts-central/home`;
-
-
-        //     queryClient.setQueryData(['redirectState'], state);
-
-
-        //     console.log(fullUrl);
-            
-        
-
-        //    queryClient.setQueryData(['redirectState'], state);
-
-            
-
         },1000);
         return () => clearTimeout(timer);
     }, []);

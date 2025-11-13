@@ -35,9 +35,7 @@ const OtpPage = ()=>{
     const isSmallScreen = useMediaQuery(useTheme().breakpoints.down('md'));
     const responsivePadding = isSmallScreen ? '1rem' : '2rem';
 
-    const { onSuccessHandler,navigationData } = useOutletContext<OutletContext>();
-
-    console.log(navigationData)
+    const { onSuccessHandler } = useOutletContext<OutletContext>();
 
     const {control,handleSubmit,formState:{errors}} = useForm<OtpFormData>({
         defaultValues:{
@@ -64,9 +62,7 @@ const OtpPage = ()=>{
                 </Grid>
                 
                 <Grid className={"form-login-one-container"}>
-
                     <form onSubmit={handleSubmit(onSubmitHandler)}>
-                        
                         <FormControl fullWidth={true} margin={'normal'} >
                             <label>OTP code</label>
                             <Controller name={'code'} control={control} rules={{required:'Email address required'}}  render={({field}) => (
@@ -87,7 +83,6 @@ const OtpPage = ()=>{
                     </form>
                 </Grid>
             </Grid>
-
         </>
     )
 }

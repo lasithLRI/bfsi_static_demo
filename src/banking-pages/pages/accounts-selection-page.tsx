@@ -68,8 +68,6 @@ const AccountsSelectionPage = ()=>{
                     <h3>Account Selection</h3>
                 </Grid>
 
-
-
                 <Grid className={"form-login-one-container"}>
 
                     <FormControl sx={{display:'flex', justifyContent:'center', marginTop:'5%', alignItems:'center'}}>
@@ -94,7 +92,6 @@ const AccountsSelectionPage = ()=>{
                     </Box>
                 </Grid>
             </Grid>
-
         </>
     )
 }
