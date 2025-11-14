@@ -51,7 +51,7 @@ const LoginPage = () => {
 
     const onSubmitHandler = (data: loginformData) => {
         console.log("Submitting...")
-        if (data.email === 'john@gmail.com' && data.password !== '') {
+        if (data.email !== '' && data.password !== '') {
             onSuccessHandler();
         } else {
             alert('wrong email or password')
