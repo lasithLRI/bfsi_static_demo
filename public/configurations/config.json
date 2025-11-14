@@ -199,8 +199,8 @@
       "title": "Account",
       "useCases": [
         {
-          "id": "use case 2",
-          "title": "use case 2",
+          "id": "use case 1",
+          "title": "use case 1",
           "steps": [
             { "id": "1", "name": "Login to your email", "component": "login-with-email" },
             { "id": "2", "name": "Two step verification", "component": "otp" },
@@ -210,8 +210,8 @@
           ]
         },
         {
-          "id": "use case 3",
-          "title": "use case 3",
+          "id": "use case 2",
+          "title": "use case 2",
           "steps": [
             { "id": "1", "name": "Login to your Account", "component": "login" },
             { "id": "2", "name": "Two step verification", "component": "otp" },
@@ -221,8 +221,8 @@
           ]
         },
         {
-          "id": "use case 4",
-          "title": "use case 4",
+          "id": "use case 3",
+          "title": "use case 3",
           "steps": [
             { "id": "1", "name": "Login to your Account", "component": "login" },
             { "id": "2", "name": "Two step verification", "component": "otp" },
@@ -232,8 +232,8 @@
           ]
         },
         {
-          "id": "use case 5",
-          "title": "use case 5",
+          "id": "use case 4",
+          "title": "use case 4",
           "steps": [
             { "id": "1", "name": "Login to your Account", "component": "login" },
             { "id": "2", "name": "Two step verification", "component": "otp" },
