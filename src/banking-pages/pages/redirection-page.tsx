@@ -76,8 +76,6 @@ const RedirectionPage = ({appConfig}:RedirectionPageProps)=>{
             "data": data
         }
     }
-    
-
 
     const navigate = useNavigate();
 
